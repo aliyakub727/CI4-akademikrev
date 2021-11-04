@@ -40,20 +40,6 @@
                         <div class="row  ml-4 mt-1">
                             <div class="col-5">
                                 <div class="form-group">
-                                    <label for="fullname">Fullname</label>
-                                    <input type="text" class="form-control " name="fullname" placeholder="Masukkan Fullname" value="">
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <div class="form-group">
-                                    <label for="no_telp_users">Nomor Telepon</label>
-                                    <input type="text" class="form-control " name="no_telp_users" placeholder="Masukkan Nomer Telepon" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row  ml-4 mt-1">
-                            <div class="col-5">
-                                <div class="form-group">
                                     <label for="password"><?= lang('Auth.password') ?></label>
                                     <input type="password" name="password" class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>" autocomplete="off">
                                 </div>
