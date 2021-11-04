@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class SiswaModel extends Model
 {
     protected $table = "siswa";
-    protected $allowedFields = ['nama_lengkap', 'jenis_kelamin', 'nis', 'alamat', 'no_telp', 'tgl_lahir', 'tempat_lahir', 'agama', 'nama_orangtua', 'alamat_orangtua', 'no_telp_orangtua', 'jurusan'];
+    protected $allowedFields = ['id_akun', 'nama_lengkap', 'jenis_kelamin', 'nis', 'alamat', 'no_telp', 'tgl_lahir', 'tempat_lahir', 'agama', 'nama_orang_tua', 'alamat_ortu', 'no_telp_ortu', 'jurusan'];
 
     public function getsiswa($nis = false)
     {
@@ -16,7 +16,7 @@ class SiswaModel extends Model
         }
         return $this->where(['nis' => $nis])->first();
     }
-     public function updateSiswa($data, $id)
+    public function updateSiswa($data, $id)
     {
         $query = $this->db->table('siswa')->update($data, array('id' => $id));
         return $query;
@@ -25,8 +25,5 @@ class SiswaModel extends Model
     {
         $query = $this->db->table('siswa')->delete(array('id' => $id));
         return $query;
-    } 
-
-
-
+    }
 }

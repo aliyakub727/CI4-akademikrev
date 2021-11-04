@@ -7,7 +7,7 @@ use Myth\Auth\Models\UserModel;
 use App\Models\GuruModel;
 use App\Models\UsersModel;
 
-class Acoount extends BaseController
+class Admin extends BaseController
 {
     protected $usermodel;
     protected $innerjoin;
@@ -25,6 +25,14 @@ class Acoount extends BaseController
     }
 
     public function index()
+    {
+        $data = [
+            'judul' => 'SUZURAN|ADMIN',
+        ];
+        return view('index', $data);
+    }
+
+    public function dataakun()
     {
         $this->builder->select('users.id as userid, username, email, name');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');

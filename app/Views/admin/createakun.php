@@ -13,16 +13,15 @@
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Data Akun </h1>
-            </div>
-
             <div class="container">
                 <div class="card">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ml-4 mt-4">
+                        <h1 class="h3 mb-0 text-gray-800">Data Akun </h1>
+                    </div>
                     <?= view('Myth\Auth\Views\_message_block') ?>
                     <form action="<?= route_to('register') ?>" method="post">
                         <?= csrf_field() ?>
-                        <div class="row  ml-4 mt-4">
+                        <div class="row ml-4 mt-4">
                             <div class="col-5">
                                 <div class="form-group">
                                     <label for="email"><?= lang('Auth.email') ?></label>

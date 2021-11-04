@@ -31,25 +31,25 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/siswa/">
+                <a class="nav-link" href="<?= base_url(); ?>/operator/datasiswa">
                     <i class="fas fa-plus-circle"></i>
                     <span>Data Siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/guru/">
+                <a class="nav-link" href="<?= base_url(); ?>/operator/dataguru">
                     <i class="fas fa-plus-circle"></i>
                     <span>Guru</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/masterdata/">
+                <a class="nav-link" href="<?= base_url(); ?>/operator/masterpelajaran">
                     <i class="fas fa-plus-circle"></i>
                     <span>Master Data</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/">
+                <a class="nav-link" href="<?= base_url(); ?>/operator/akun">
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
@@ -188,9 +188,9 @@
                 <div id="collapseone" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Ditambahkan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/mapel/">Mata Pelajaran</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/jurusan/">Jurusan</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/tahunajaran/">tahun ajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/matapelajaran">Mata Pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/jurusan">Jurusan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/tahunajaran">tahun ajaran</a>
                     </div>
                 </div>
             </li>
@@ -202,9 +202,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan-Laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/siswa/#">Data Siswa</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/guru/#">Data Guru</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/mapel/#">Data pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporansiswa">Data Siswa</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanguru">Data Guru</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanpelajaran">Data pelajaran</a>
                     </div>
                 </div>
             </li>
@@ -230,7 +230,7 @@
 
         <?php if (in_groups('admin')) : ?>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/acoount/">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/dataakun/">
                     <i class="fas fa-cog"></i>
                     <span>Kelola Akun</span>
                 </a>

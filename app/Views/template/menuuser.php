@@ -19,7 +19,7 @@
                         <?php if (logged_in()) : ?>
                             <a class="nav-link tombol" href="/logout">Logout</a>
                         <?php else : ?>
-                            <a class="nav-link tombol" href="/dashboard">Login</a>
+                            <a class="nav-link tombol" href="/login">Login</a>
                         <?php endif; ?>
                     </li>
                 </ul>
