@@ -20,15 +20,15 @@
 					Sekolah ini adalah salah satu sekolah yang bergengsi di sekitar wilayah jakarta, yang berlokasi di sekitar jl halim xxxx yang memiliki beberapa jurusan yang terdiri dari teknologi komunikasi dan jaringan, MultiMedia, Administrasi perkantoran,Akuntansi dan Rekayasa Perangkat Lunax
 				</p>
 				<?php if (logged_in()) : ?>
-					<?php if (user()->id == '1') { ?>
+					<?php if (in_groups('admin') == 'admin') { ?>
 						<a href="<?= base_url(); ?>/admin" class="tombol">Yuk Kedashboard</a>
-					<?php } elseif (user()->id == '2') { ?>
+					<?php } elseif (in_groups('guru') == 'guru') { ?>
 						<a href="<?= base_url(); ?>/guru" class="tombol">Yuk Kedashboard</a>
-					<?php } elseif (user()->id == '3') { ?>
+					<?php } elseif (in_groups('siswa') == 'siswa') { ?>
 						<a href="<?= base_url(); ?>/siswa" class="tombol">Yuk Kedashboard</a>
-					<?php } elseif (user()->id == '4') { ?>
+					<?php } elseif (in_groups('kepalasekolah') == 'kepalasekolah') { ?>
 						<a href="<?= base_url(); ?>/kepelasekolah" class="tombol">Yuk Kedashboard</a>
-					<?php } else { ?>
+					<?php } elseif (in_groups('operator') == 'operator') { ?>
 						<a href="<?= base_url(); ?>/operator" class="tombol">Yuk Kedashboard</a>
 					<?php } ?>
 				<?php else : ?>

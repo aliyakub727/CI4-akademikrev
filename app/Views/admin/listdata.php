@@ -21,7 +21,7 @@
                 <!-- Content Row -->
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/admin/createakun">Tambah Akun</a>
+                        <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/admin/buatakun">Tambah Akun</a>
                         <?php if (session()->getFlashdata('Pesan')) : ?>
                             <div class="alert alert-success" role="alert">
                                 <?= session()->getFlashdata('Pesan'); ?>

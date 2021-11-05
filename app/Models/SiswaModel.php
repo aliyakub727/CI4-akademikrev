@@ -9,12 +9,12 @@ class SiswaModel extends Model
     protected $table = "siswa";
     protected $allowedFields = ['id_akun', 'nama_lengkap', 'jenis_kelamin', 'nis', 'alamat', 'no_telp', 'tgl_lahir', 'tempat_lahir', 'agama', 'nama_orang_tua', 'alamat_ortu', 'no_telp_ortu', 'jurusan'];
 
-    public function getsiswa($nis = false)
+    public function getsiswa($id = false)
     {
-        if ($nis == false) {
+        if ($id == false) {
             return $this->findAll();
         }
-        return $this->where(['nis' => $nis])->first();
+        return $this->where(['id' => $id])->first();
     }
     public function updateSiswa($data, $id)
     {

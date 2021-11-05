@@ -108,7 +108,7 @@ class Admin extends BaseController
         ];
         return view('admin/detailakun', $data);
     }
-    public function createakun()
+    public function buatakun()
     {
 
         $data = [
