@@ -5,10 +5,15 @@ namespace App\Controllers;
 use App\Models\SiswaModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
+use App\Models\GuruModel;
+use App\Models\MapelModel;
 
 class Operator extends BaseController
 {
     protected $siswamodel;
+    protected $db, $builder;
+    protected $gurumodel;
+    protected $mapel;
     protected $user;
     protected $jurusan;
     public function __construct()
@@ -16,6 +21,8 @@ class Operator extends BaseController
         $this->siswamodel = new SiswaModel();
         $this->user = new UserModel();
         $this->jurusan = new JurusanModel();
+        $this->gurumodel = new GuruModel();
+        $this->mapel =  new MapelModel();
     }
 
     public function index()
@@ -30,7 +37,7 @@ class Operator extends BaseController
     public function datasiswa()
     {
         $data = [
-            'judul' => 'Akademik | Administrator',
+            'judul' => 'SUZURAN | OPERATOR',
             'siswa' => $this->siswamodel->getsiswa(),
         ];
         return view('operator/data_siswa/index', $data);
@@ -41,7 +48,7 @@ class Operator extends BaseController
     {
         // session();
         $data = [
-            'judul' => 'Form Tambah Data Makanan Favorit',
+            'judul' => 'Form Tambah Data Siswa',
             'validation' => \Config\Services::validation(),
             'user' => $this->user->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -137,9 +144,6 @@ class Operator extends BaseController
             ],
         ])) {
 
-            // $validation = \Config\Services::validation();
-            // dd($validation);
-            // return redirect()->to('/Siswa/create')->withInput()->with('validation', $validation);
             return redirect()->to('/operator/tambahsiswa')->withInput();
         }
 
@@ -178,6 +182,7 @@ class Operator extends BaseController
         ];
         return view('operator/data_siswa/edit', $data);
     }
+
     // save edit data siswa
     public function saveeditsiswa()
     {
@@ -299,9 +304,6 @@ class Operator extends BaseController
             ],
         ])) {
 
-            // $validation = \Config\Services::validation();
-            // dd($validation);
-            // return redirect()->to('/Siswa/create')->withInput()->with('validation', $validation);
             return redirect()->to('/operator/editsiswa/' . $this->request->getVar('id'))->withInput();
         }
 
@@ -336,4 +338,68 @@ class Operator extends BaseController
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
         return redirect()->to('/operator/datasiswa');
     }
+
+    // nampilin data Guru
+    public function dataguru()
+    {
+        $data = [
+            'judul' => 'SUZURAN | OPERATOR',
+            'guru' => $this->gurumodel->getguru(),
+            'user' => $this->user->findAll(),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('operator/data_guru/index', $data);
+    }
+
+    // tambah data guru
+    public function tambahguru()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Guru',
+            'validation' => \Config\Services::validation(),
+            'guru' => $this->gurumodel->getguru(),
+            'user' => $this->user->findAll(),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('operator/data_guru/create', $data);
+    }
+
+    // Save data guru
+    public function saveguru()
+    {
+        $this->gurumodel->save([
+            'id_akun' => $this->request->getVar('id_akun'),
+            'id_mapel' => $this->request->getVar('id_mapel'),
+            'nama_guru' => $this->request->getVar('nama_guru'),
+            'alamat' => $this->request->getVar('alamat'),
+            'no_telp' => $this->request->getVar('no_telp')
+
+        ]);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('/guru');
+    }
+
+    // edit data guru
+    public function editguru($id)
+    {
+        // session();
+        $data = [
+            'judul' => 'Form Edit Data Siswa',
+            'validation' => \Config\Services::validation(),
+            'user' => $this->user->findAll(),
+            'jurusan' => $this->jurusan->getjurusan(),
+            'siswa' => $this->siswamodel->getsiswa($id),
+        ];
+        return view('operator/data_siswa/edit', $data);
+    }
+
+
+    // menampilkan data kelas
+
+
+
+    // menampilkan data matapelajaran
+
 }
