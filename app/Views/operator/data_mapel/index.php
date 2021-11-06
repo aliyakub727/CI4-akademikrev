@@ -1,6 +1,7 @@
 <?= $this->extend('template/templateadmin'); ?>
 
 <?= $this->section('content'); ?>
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -15,49 +16,51 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
             <div class="card">
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-left: 20px;margin-top: 20px">
-                <h1 class="h3 mb-0 text-gray-800">Data Mapel</h1>
-            </div>
-            <hr>
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-left: 20px;margin-top: 20px">
+                    <h1 class="h3 mb-0 text-gray-800">Data Mapel</h1>
+                </div>
+                <hr>
 
-            <div class="container">
-                <!-- Content Row -->
-                <div class="row">
-                    <div class="col">
-                        <a class="btn btn-primary mb-4" id="bayar" hred data-toggle="modal" data-target="#modal">Tambah Mapel</a>
-                        <?php if (session()->getFlashdata('Pesan')) : ?>
-                            <div class="alert alert-success" role="alert">
-                                <?= session()->getFlashdata('Pesan'); ?>
+                <div class="container">
+                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahmapel">Tambah Mapel</a>
+                            <?php if (session()->getFlashdata('Pesan')) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session()->getFlashdata('Pesan'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <div style="padding-right: 20px;padding-left: 20px;padding-bottom: 50px">
+                                <table class="table table-striped" id="data-list">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nama Mapel</th>
+                                            <th scope="col">Nama Kelas</th>
+                                            <th scope="col">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($mapel as $k) : ?>
+                                            <tr>
+                                                <th scope="row"><?= $i++; ?></th>
+                                                <td><?= $k['nama_mapel']; ?></td>
+                                                <td><?= $k['id_kelas']; ?></td>
+                                                <td>
+                                                    <a href="<?= base_url(); ?>/operator/editmapel/<?= $k['id_mapel']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit"></a>
+                                                    <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash "></a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
                             </div>
-                        <?php endif; ?>
-                         <div style="padding-right: 20px;padding-left: 20px;padding-bottom: 50px">
-                        <table class="table table-striped" id="data-list">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama Mapel</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                <?php foreach ($mapel as $k) : ?>
-                                    <tr>
-                                        <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['nama_mapel']; ?></td>
-                                        <td>
-                                            <a href="#" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit "  data-id_mapel="<?= $k['id_mapel'] ?>" data-nama_mapel="<?= $k['nama_mapel']; ?>"></a>
-                                            <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash "data-id_mapel="<?= $k['id_mapel'] ?>"></a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <!-- tambah -->
                 <div class=" modal fade" id="modal">
                     <div class="modal-dialog">
@@ -113,7 +116,7 @@
                     </div>
                 </form>
 
-                <form action="/mapel/delete" method="post">
+                <form action="/operator/deletedatamapel" method="post">
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -152,7 +155,7 @@
 <script>
     $('#data-list').DataTable();
     $(document).ready(function() {
-        
+
         $('.btn-edit').on('click', function() {
             // get data from button edit
             const id_mapel = $(this).data('id_mapel');
@@ -160,6 +163,7 @@
             // Set data to Form Edit
             $('.id_mapel').val(id_mapel);
             $('.nama_mapel').val(nama_mapel);
+
 
 
 

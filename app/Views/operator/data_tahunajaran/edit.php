@@ -18,7 +18,31 @@
             <div class="container-fluid">
                 <div class="container">
 
-                    <!-- isi form -->
+                    <div class="card">
+                        <div class="card-header">
+                            Data Edit
+                        </div>
+                        <div class="card-body">
+                            <form id="form" action="<?= base_url(); ?>/operator/saveedittahunajaran" method="post">
+                                <input type="hidden" value="<?= $tahun_ajaran['id_ajaran']; ?>" name="id_ajaran">
+                                <div class="form-group">
+                                    <label>Tahun Ajaran</label>
+                                    <input type="text" value="<?= $tahun_ajaran['tahun_ajaran']; ?>" class="form-control" name="tahun_ajaran" id="tahun_ajaran" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>ID Jurusan</label>
+                                    <select name="id_jurusan" id="id_jurusan" class="selectpicker form-control form-select <?= ($validation->hasError('id_jurusan')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                        <option selected value="">Pilih id jurusan</option>
+                                        <?php foreach ($jurusan as $ak) : ?>
+                                            <option value="<?= $ak['id_jurusan']; ?>"><?= $ak['jurusan']; ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <button class="btn btn-success" type="submit">Tambah</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

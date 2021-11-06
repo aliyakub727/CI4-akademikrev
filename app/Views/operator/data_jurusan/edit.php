@@ -18,7 +18,30 @@
             <div class="container-fluid">
                 <div class="container">
 
-                    <!-- isi form -->
+                    <div class="card">
+                        <div class="card-header">
+                            Data Jurusan
+                        </div>
+                        <div class="card-body">
+                            <form id="form" action="<?= base_url(); ?>/operator/savejurusan" method="post">
+                                <div class="form-group">
+                                    <label>Nama Jurusan</label>
+                                    <input type="text" class="form-control" name="jurusan" id="jurusan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>ID Kelas</label>
+                                    <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                        <option selected value="">Pilih id Kelas</option>
+                                        <?php foreach ($kelas as $ak) : ?>
+                                            <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <button class="btn btn-success" type="submit">Tambah</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

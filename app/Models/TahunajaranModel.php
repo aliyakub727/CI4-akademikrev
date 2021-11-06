@@ -6,27 +6,27 @@ use CodeIgniter\Model;
 
 class TahunajaranModel extends Model
 {
-    protected $table = "tahunajaran";
-    protected $primaryKey = "id_tahun";
+    protected $table = "tahun_ajaran";
+    protected $primaryKey = "id_ajaran";
 
     protected $useAutoIncrement = true;
-    protected $allowedFields = ['id_tahun', 'tahunajaran', 'status'];
+    protected $allowedFields = ['id_ajaran', 'tahun_ajaran', 'id_jurusan'];
 
-    public function gettahun($tahunajaran = false)
+    public function gettahun($id_ajaran = false)
     {
-        if ($tahunajaran == false) {
+        if ($id_ajaran == false) {
             return $this->findAll();
         }
-        return $this->where(['tahunajaran' => $tahunajaran])->first();
+        return $this->where(['id_ajaran' => $id_ajaran])->first();
     }
-    public function updatetahun($data, $id_tahun)
+    public function updatetahun($data, $id_ajaran)
     {
-        $query = $this->db->table('tahunajaran')->update($data, array('id_tahun' => $id_tahun));
+        $query = $this->db->table('tahun_ajaran')->update($data, array('id_ajaran' => $id_ajaran));
         return $query;
     }
-    public function deletetahun($id_tahun)
+    public function deletetahun($id_ajaran)
     {
-        $query = $this->db->table('tahunajaran')->delete(array('id_tahun' => $id_tahun));
+        $query = $this->db->table('tahun_ajaran')->delete(array('id_ajaran' => $id_ajaran));
         return $query;
     }
 }

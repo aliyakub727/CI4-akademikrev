@@ -25,9 +25,9 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Nama Kelas</label>
-                                    <input type="text" class="form-control <?= ($validation->hasError('kelas')) ? 'is-invalid' : ''; ?>" name="kelas" id="kelas">
+                                    <input type="text" class="form-control <?= ($validation->hasError('nama_kelas')) ? 'is-invalid' : ''; ?>" name="nama_kelas" id="nama_kelas">
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('kelas'); ?>
+                                        <?= $validation->getError('nama_kelas'); ?>
                                     </div>
                                 </div>
                                 <button class="btn btn-success" type="submit">Tambah</button>

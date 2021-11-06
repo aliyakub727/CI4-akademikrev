@@ -21,7 +21,7 @@
                 <!-- Content Row -->
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-primary mb-4" id="bayar" hred data-toggle="modal" data-target="#modal">Tambah Siswa</a>
+                        <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahtahunajaran">Tambah Siswa</a>
                         <?php if (session()->getFlashdata('Pesan')) : ?>
                             <div class="alert alert-success" role="alert">
                                 <?= session()->getFlashdata('Pesan'); ?>
@@ -31,23 +31,21 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID TAHUN AJARAN</th>
+                                    <th scope="col">ID JURUSAN</th>
                                     <th scope="col">TAHUN AJARAN</th>
-                                    <th scope="col">STATUS</th>
                                     <th scope="col">AKSI</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $i = 1; ?>
-                                <?php foreach ($tahunajaran as $k) : ?>
+                                <?php foreach ($tahun_ajaran as $k) : ?>
                                     <tr>
                                         <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['id_tahun']; ?></td>
-                                        <td><?= $k['tahunajaran']; ?></td>
-                                        <td><?= $k['status']; ?></td>
+                                        <td><?= $k['id_jurusan']; ?></td>
+                                        <td><?= $k['tahun_ajaran']; ?></td>
                                         <td>
-                                            <a href="#" class="btn btn-info btn-sm btn-edit" data-id_tahun="<?= $k['id_tahun'] ?>" data-tahunajaran="<?= $k['tahunajaran']; ?> " data-status=" <?= $k['status']; ?>">Edit</a>
-                                            <a href="#" class="btn btn-danger btn-sm btn-delete" data-id_tahun="<?= $k['id_tahun'] ?>">Delete</a>
+                                            <a href="<?= base_url(); ?>/operator/edittahunajaran/<?= $k['id_ajaran']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit"></a>
+                                            <a href="<?= base_url(); ?>/operator/deletedatatahunajaran/<?= $k['id_ajaran']; ?>" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash "></a>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>

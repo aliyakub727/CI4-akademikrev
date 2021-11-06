@@ -8,7 +8,7 @@ class JurusanModel extends Model
 {
     protected $table = "jurusan";
     protected $primaryKey = "id_jurusan";
-    protected $allowedFields = ['jurusan'];
+    protected $allowedFields = ['jurusan', 'id_kelas'];
 
     public function getjurusan($jurusan = false)
     {

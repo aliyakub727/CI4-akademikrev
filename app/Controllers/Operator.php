@@ -6,6 +6,7 @@ use App\Models\SiswaModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\GuruModel;
+use App\Models\TahunajaranModel;
 use App\Models\MapelModel;
 use App\Models\KelasModel;
 
@@ -17,6 +18,7 @@ class Operator extends BaseController
     protected $gurumodel;
     protected $mapel;
     protected $user;
+    protected $tahunajaranmodel;
     protected $jurusan;
     public function __construct()
     {
@@ -25,6 +27,7 @@ class Operator extends BaseController
         $this->jurusan = new JurusanModel();
         $this->gurumodel = new GuruModel();
         $this->mapel =  new MapelModel();
+        $this->tahunajaranmodel = new TahunajaranModel();
         $this->kelasmodel = new KelasModel();
     }
 
@@ -424,7 +427,7 @@ class Operator extends BaseController
     public function savekelas()
     {
         if (!$this->validate([
-            'kelas' => [
+            'nama_kelas' => [
                 'rules' => 'required|is_unique[kelas.nama_kelas]',
                 'errors' => [
                     'required' => 'Kelas Harus diisi.',
@@ -437,8 +440,7 @@ class Operator extends BaseController
             return redirect()->to('/operator/tambahkelas')->withInput();
         }
         $this->kelasmodel->save([
-            'Nama_Kelas' => $this->request->getVar('kelas')
-
+            'nama_kelas' => $this->request->getVar('nama_kelas'),
         ]);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
@@ -510,7 +512,7 @@ class Operator extends BaseController
             'judul' => 'Akademik | Operator',
             'jurusan' => $this->jurusan->getjurusan()
         ];
-        return view('oprator/data_jurusan/index', $data);
+        return view('operator/data_jurusan/index', $data);
     }
 
     // tambah jurusan
@@ -520,6 +522,7 @@ class Operator extends BaseController
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
             'jurusan' => $this->jurusan->getjurusan(),
+            'kelas' => $this->kelasmodel->getkelas(),
         ];
         return view('operator/data_jurusan/create', $data);
     }
@@ -536,7 +539,7 @@ class Operator extends BaseController
                 ]
             ],
             'id_kelas' => [
-                'rules' => 'required|is_unique[kelas.nama_kelas]',
+                'rules' => 'required|is_unique[jurusan.id_kelas]',
                 'errors' => [
                     'required' => 'Kelas Harus diisi.',
                     'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
@@ -548,12 +551,14 @@ class Operator extends BaseController
             return redirect()->to('/operator/editjurusan' . $this->request->getVar('id_jurusan'))->withInput();
         }
         $this->jurusan->save([
-            'jurusan' => $this->request->getVar('jurusan')
+            'jurusan' => $this->request->getVar('jurusan'),
+            'id_kelas' => $this->request->getVar('id_kelas'),
+
         ]);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
-        return redirect()->to('oprator/datajurusan/');
+        return redirect()->to('operator/datajurusan/');
     }
 
     // edit jurusan
@@ -626,8 +631,137 @@ class Operator extends BaseController
         $id_jurusan = $this->request->getPost('id_jurusan');
         $this->jurusan->deletejurusan($id_jurusan);
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
-        return redirect()->to('oprator/data_jurusan/');
+        return redirect()->to('operator/data_jurusan/');
     }
     // menampilkan data matapelajaran
 
+    //MAPEL
+
+    public function datamapel()
+    {
+        $data = [
+            'judul' => 'Akademik | Administrator',
+            'mapel' => $this->mapel->orderBy('nama_mapel', 'DESC')->findAll()
+        ];
+        return view('operator/data_mapel/index', $data);
+    }
+
+    // tambah mapel
+    public function tambahmapel()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Mapel',
+            'validation' => \Config\Services::validation(),
+            'mapel' => $this->mapel->getmapel(),
+            'kelas' => $this->kelasmodel->getkelas(),
+        ];
+        return view('operator/data_mapel/create', $data);
+    }
+
+    //update
+    public function savemapel()
+    {
+        $this->mapel->save([
+            'nama_mapel' => $this->request->getVar('nama_mapel'),
+            'id_kelas' => $this->request->getVar('id_kelas'),
+
+        ]);
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+        return redirect()->to('operator/datamapel/');
+    }
+    public function editmapel($id_mapel)
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Mapel',
+            'validation' => \Config\Services::validation(),
+            'mapel' => $this->mapel->getmapel($id_mapel),
+            'kelas' => $this->kelasmodel->getkelas(),
+        ];
+        return view('operator/data_mapel/edit', $data);
+    }
+    public function saveeditmapel()
+    {
+        $model = new MapelModel();
+        $id_mapel = $this->request->getPost('id_mapel');
+        $data = array(
+            'nama_mapel' => $this->request->getVar('nama_mapel'),
+        );
+        $model->updatemapel($data, $id_mapel);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
+
+        return redirect()->to('/operator/datamapel');
+    }
+    public function deletedatamapel()
+    {
+        $model = new MapelModel();
+        $id_mapel = $this->request->getPost('id_mapel');
+        $model->deletemapel($id_mapel);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('/operator/datamapel');
+    }
+
+    // data tahun ajaran
+    public function datatahunajaran()
+    {
+        $data = [
+            'judul' => 'Akademik | Administrator',
+            'tahun_ajaran' => $this->tahunajaranmodel->gettahun()
+        ];
+        return view('operator/data_tahunajaran/index', $data);
+    }
+
+    // tambah mapel
+    public function tambahtahunajaran()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Mapel',
+            'validation' => \Config\Services::validation(),
+            'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
+            'jurusan' => $this->jurusan->getjurusan(),
+        ];
+        return view('operator/data_tahunajaran/create', $data);
+    }
+
+    //update
+    public function savetahunajaran()
+    {
+        $this->tahunajaranmodel->save([
+            'tahun_ajaran' => $this->request->getVar('tahun_ajaran'),
+            'id_jurusan' => $this->request->getVar('id_jurusan'),
+
+        ]);
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+        return redirect()->to('operator/datatahunajaran/');
+    }
+    public function edittahunajaran($id_ajaran)
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Mapel',
+            'validation' => \Config\Services::validation(),
+            'tahun_ajaran' => $this->tahunajaranmodel->gettahun($id_ajaran),
+            'jurusan' => $this->jurusan->getjurusan(),
+        ];
+        return view('operator/data_tahunajaran/edit', $data);
+    }
+    public function saveedittahunajaran()
+    {
+        $model = new tahunajaranModel();
+        $id_ajaran = $this->request->getPost('id_ajaran');
+        $data = array(
+            'tahun_ajaran' => $this->request->getVar('tahun_ajaran'),
+        );
+        $model->updatetahun($data, $id_ajaran);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
+        return redirect()->to('/operator/datatahunajaran');
+    }
+    public function deletedatatahunajaran()
+    {
+        $model = new TahunajaranModel();
+        $id_ajaran = $this->request->getPost('id_ajaran');
+        $model->deletetahun($id_ajaran);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('/operator/datatahunajaran');
+    }
 }
