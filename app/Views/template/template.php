@@ -14,7 +14,6 @@
 </head>
 
 <body>
-    <?= $this->include('template/menuuser'); ?>
 
     <?= $this->renderSection('content'); ?>
 
