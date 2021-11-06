@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top bg-transparent">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <h4>Suzuran High School</h4>
+                <h4><?php echo $landing_page['']?></h4>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@
                         <a class="nav-link" href="<?= base_url(); ?>/Home/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url(); ?>/About">About</a>
+                        <a class="nav-link" href="<?= base_url(); ?>/Home/about">About</a>
                     </li>
                     <li class="nav-item">
                         <?php if (logged_in()) : ?>

@@ -6,6 +6,37 @@
         margin-top: -8em;
     }
 </style>
+<?php foreach ($landing_page as $k) : ?>
+<div class="container my-3">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top bg-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <h4><?= $k['title']; ?></h4>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url(); ?>/Home/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url(); ?>/Home/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <?php if (logged_in()) : ?>
+                            <a class="nav-link tombol" href="/logout">Logout</a>
+                        <?php else : ?>
+                            <a class="nav-link tombol" href="/login">Login</a>
+                        <?php endif; ?>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<?php endforeach ?>
 <div id="carouselExampleCaptions" class="carousel slide custom" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -14,24 +45,24 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/img/bg6.png" class="d-block w-100" alt="...">
+            <img src="/img/<?= $slider1['gambar_slider']?>" class="d-block" width="100%" height="50%"  alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Suzuran High School</h5>
-                <p>Temukan Jati dirimu di sekolah ini !.</p>
+                <h5><?= $slider1['title']?></h5>
+                <p><?= $slider1['deskripsi']?></p>
             </div>
         </div>
         <div class="carousel-item ">
-            <img src="/img/bg5.png" class="d-block w-100" alt="...">
+            <img src="/img/<?= $slider2['gambar_slider']?>" class="d-block w-100" width="100%" height="50%" alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Enterprenuer</h5>
-                <p>Di dalam sekolah kami terdapat ekstrakulikuler yang membantu siswa dalam pemahan membangun usaha nya sendiri.</p>
+                <h5><?= $slider2['title']?></h5>
+                <p><?= $slider2['deskripsi']?></p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="/img/bg7.png" class="d-block w-100" alt="...">
+            <img src="/img/<?= $slider3['gambar_slider']?>" class="d-block w-100" width="100%" height="50%" alt="...">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Perpustakaan</h5>
-                <p>Temukan Berbagai Buku yang menarik disini .</p>
+                <h5><?= $slider3['title']?></h5>
+                <p><?= $slider3['deskripsi']?></p>
             </div>
         </div>
     </div>

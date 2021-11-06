@@ -25,6 +25,21 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider">
+        <!-- role admin -->
+        <?php if (in_groups('admin')) : ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/landing_page">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Edit Landingpage</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/sliderku">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Edit Sliderku</span>
+                </a>
+            </li>
+        <?php endif ?>
         <!-- role operator -->
         <?php if (in_groups('operator')) : ?>
             <div class="sidebar-heading">
