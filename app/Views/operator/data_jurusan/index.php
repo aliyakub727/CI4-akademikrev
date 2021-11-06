@@ -1,6 +1,7 @@
 <?= $this->extend('template/templateadmin'); ?>
 
 <?= $this->section('content'); ?>
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -15,43 +16,45 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Data Jurusan</h1>
-            </div>
-
             <div class="container">
                 <!-- Content Row -->
-                <div class="row">
-                    <div class="col">
-                        <a class="btn btn-primary mb-4" id="bayar" hred data-toggle="modal" data-target="#modal">Tambah Siswa</a>
-                        <?php if (session()->getFlashdata('Pesan')) : ?>
-                            <div class="alert alert-success" role="alert">
-                                <?= session()->getFlashdata('Pesan'); ?>
+                <div class="card">
+                    <div class="card-header">
+                        Data Jurusan
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahjurusan">Tambah Jurusan</a>
+                                <?php if (session()->getFlashdata('Pesan')) : ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <?= session()->getFlashdata('Pesan'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <table class="table table-striped" id="data-list">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Jurusan</th>
+                                            <th scope="col">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($jurusan as $k) : ?>
+                                            <tr>
+                                                <th scope="row"><?= $i++; ?></th>
+                                                <td><?= $k['jurusan']; ?></td>
+                                                <td>
+                                                    <a href="#" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit " data-id_jurusan="<?= $k['id_jurusan'] ?>" data-jurusan="<?= $k['jurusan']; ?>"></a>
+                                                    <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jurusan="<?= $k['id_jurusan'] ?>"></a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
                             </div>
-                        <?php endif; ?>
-                        <table class="table table-striped" id="data-list">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Jurusan</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                <?php foreach ($jurusan as $k) : ?>
-                                    <tr>
-                                        <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['jurusan']; ?></td>
-                                        <td>
-                                            <a href="#" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit " data-id_jurusan="<?= $k['id_jurusan'] ?>" data-jurusan="<?= $k['jurusan']; ?>"></a>
-                                            <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jurusan="<?= $k['id_jurusan'] ?>"></a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
                 <!-- tambah -->

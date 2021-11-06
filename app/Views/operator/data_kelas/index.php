@@ -13,44 +13,49 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Tambah Data Kelas</h1>
-            </div>
-
             <div class="container">
                 <!-- Content Row -->
-                <div class="row">
-                    <div class="col">
-                        <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahkelas">Tambah Kelas</a>
-                        <?php if (session()->getFlashdata('Pesan')) : ?>
-                            <div class="alert alert-success" role="alert">
-                                <?= session()->getFlashdata('Pesan'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <table class="table table-hover" id="users-list">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Kelas</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                <?php foreach ($kelas as $k) : ?>
-                                    <tr>
-                                        <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['Nama_Kelas']; ?></td>
-                                        <td>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            Data Kelas
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahkelas">Tambah
+                                    Kelas</a>
+                                <?php if (session()->getFlashdata('Pesan')) : ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <?= session()->getFlashdata('Pesan'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <table class="table table-hover" id="users-list">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Kelas</th>
+                                            <th scope="col">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($kelas as $k) : ?>
+                                            <tr>
+                                                <th scope="row"><?= $i++; ?></th>
+                                                <td><?= $k['nama_kelas']; ?></td>
+                                                <td>
 
-                                            <a href="#" class="btn btn-info btn-sm btn-edit" data-id="<?= $k['id_kelas'] ?>">Edit</a>
-                                            <a href="#" class="btn btn-danger btn-sm btn-delete" data-id="<?= $k['id_kelas'] ?>">Delete</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
+                                                    <a href="<?= base_url(); ?>/operator/editdatakelas/<?= $k['id_kelas']; ?>" class="btn btn-info btn-sm">Edit</a>
+                                                    <a href="#" class="btn btn-danger btn-sm btn-delete" data-id="<?= $k['id_kelas'] ?>">Delete</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- tambah -->
@@ -58,19 +63,19 @@
                 <!-- update -->
 
 
-                <form action="/Kelas/deletekelas" method="post">
+                <form action="/operator/deletekelas" method="post">
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Jurusan</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Kelas</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
 
-                                    <h4>Are you sure want to delete this Jurusan?</h4>
+                                    <h4>Are you sure want to delete this Kelas?</h4>
 
                                 </div>
                                 <div class="modal-footer">
@@ -98,19 +103,6 @@
     $('#users-list').DataTable();
 
     $(document).ready(function() {
-        $('.btn-edit').on('click', function() {
-            // get data from button edit
-            const id = $(this).data('id');
-            const kelas = $(this).data('kelas');
-            // Set data to Form Edit
-            $('.id').val(id);
-            $('.kelas').val(kelas);
-
-
-
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
         $('.btn-delete').on('click', function() {
             // get data from button edit
             const id = $(this).data('id');

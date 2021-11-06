@@ -446,29 +446,188 @@ class Operator extends BaseController
         return redirect()->to('/operator/datakelas');
     }
 
-    //save editdata kelas
-    public function saveeditdatakelas()
+    // edit data kelas
+    public function editdatakelas($id_kelas)
     {
+        $data = [
+            'judul' => 'Form Edit Data Kelas',
+            'validation' => \Config\Services::validation(),
+            'kelas' => $this->kelasmodel->getkelas($id_kelas),
+        ];
+        return view('operator/data_kelas/edit', $data);
+    }
+
+    //save editdata kelas
+    public function saveeditkelas()
+    {
+        // ambil data yang lama
+        $namakelaslama = $this->kelasmodel->getkelas(($this->request->getVar('id_kelas')));
+
+        //cek nama kelas diganti atau engga
+        if ($namakelaslama['nama_kelas'] == $this->request->getVar('nama_kelas')) {
+            $rule_nama = 'required';
+        } else {
+            $rule_nama = 'required|is_unique[kelas.nama_kelas]';
+        }
+        if (!$this->validate([
+            'nama_kelas' => [
+                'rules' => $rule_nama,
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/editkelas' . $this->request->getVar('id_kelas'))->withInput();
+        }
+
         $model = new KelasModel();
-        $id = $this->request->getPost('id');
+        $id_kelas = $this->request->getPost('id');
         $data = array(
-            'kelas' => $this->request->getVar('kelas'),
+            'nama_kelas' => $this->request->getVar('nama_kelas'),
         );
-        $model->updateKelas($data, $id);
+        $model->updateKelas($data, $id_kelas);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
 
-        return redirect()->to('/kelas');
+        return redirect()->to('/operator/datakelas');
     }
     public function deletekelas()
     {
         $model = new KelasModel();
-        $id = $this->request->getPost('id');
-        $model->deleteKelas($id);
+        $id_kelas = $this->request->getPost('id');
+        $model->deleteKelas($id_kelas);
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
-        return redirect()->to('/kelas');
+        return redirect()->to('/operator/datakelas');
     }
 
+    // menampilkan data jurusan
+    public function datajurusan()
+    {
+        $data = [
+            'judul' => 'Akademik | Operator',
+            'jurusan' => $this->jurusan->getjurusan()
+        ];
+        return view('oprator/data_jurusan/index', $data);
+    }
+
+    // tambah jurusan
+    public function tambahjurusan()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data jurusan',
+            'validation' => \Config\Services::validation(),
+            'jurusan' => $this->jurusan->getjurusan(),
+        ];
+        return view('operator/data_jurusan/create', $data);
+    }
+
+    // save jurusan
+    public function savejurusan()
+    {
+        if (!$this->validate([
+            'jurusan' => [
+                'rules' => 'required|is_unique[jurusan.jurusan]',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+            'id_kelas' => [
+                'rules' => 'required|is_unique[kelas.nama_kelas]',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/editjurusan' . $this->request->getVar('id_jurusan'))->withInput();
+        }
+        $this->jurusan->save([
+            'jurusan' => $this->request->getVar('jurusan')
+        ]);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('oprator/datajurusan/');
+    }
+
+    // edit jurusan
+    public function editjurusan($id_jurusan)
+    {
+        $data = [
+            'judul' => 'Form Tambah Data jurusan',
+            'validation' => \Config\Services::validation(),
+            'jurusan' => $this->jurusan->getjurusan($id_jurusan),
+        ];
+        return view('operator/data_jurusan/edit', $data);
+    }
+
+    //save edit jurusan
+    public function saveeditjurusan()
+    {
+        // ambil data yang lama
+        $nama =  $this->siswamodel->getsiswa($this->request->getVar('id'));
+        $nama_jurusanlama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
+        $id_kelaslama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
+
+        //cek nama jurusan diganti atau engga
+        if ($nama_jurusanlama['jurusan'] == $this->request->getVar('jurusan')) {
+            $rule_jurusan = 'required';
+        } else {
+            $rule_jurusan = 'required|is_unique[jurusan.jurusan]';
+        }
+
+        //cek id kelas diganti atau engga
+        if ($id_kelaslama['jurusan'] == $this->request->getVar('jurusan')) {
+            $rule_idkelas = 'required';
+        } else {
+            $rule_idkelas = 'required|is_unique[jurusan.id_kelas]';
+        }
+        if (!$this->validate([
+            'jurusan' => [
+                'rules' => $rule_jurusan,
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+            'id_kelas' => [
+                'rules' => $rule_idkelas,
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/editkelas' . $this->request->getVar('id_jurusan'))->withInput();
+        }
+        $id_jurusan = $this->request->getPost('id_jurusan');
+        $data = array(
+            'jurusan' => $this->request->getPost('jurusan'),
+            'id_kelas' => $this->request->getPost('id_kelas')
+        );
+        $this->jurusan->updatejurusan($data, $id_jurusan);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
+
+        return redirect()->to('oprator/datajurusan/');
+    }
+
+    //detele jurusan
+    public function delete()
+    {
+        $id_jurusan = $this->request->getPost('id_jurusan');
+        $this->jurusan->deletejurusan($id_jurusan);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('oprator/data_jurusan/');
+    }
     // menampilkan data matapelajaran
 
 }

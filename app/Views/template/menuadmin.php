@@ -188,9 +188,9 @@
                 <div id="collapseone" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Ditambahkan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/matapelajaran">Mata Pelajaran</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/jurusan">Jurusan</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/tahunajaran">tahun ajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datamatapelajaran">Mata Pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datajurusan">Jurusan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datatahunajaran">tahun ajaran</a>
                         <a class="collapse-item" href="<?= base_url(); ?>/operator/datakelas">Kelas</a>
                     </div>
                 </div>

@@ -17,8 +17,14 @@
 
             <div class="container-fluid">
                 <div class="container">
-
-                    <!-- isi form -->
+                    <form id="form" action="<?= base_url(); ?>/jurusan/tambahjurusan" method="post">
+                        <div class="form-group">
+                            <label>Nama Jurusan</label>
+                            <input type="text" class="form-control" name="jurusan" id="jurusan" required>
+                        </div>
+                        <button class="btn btn-success" type="submit">Tambah</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </form>
                 </div>
             </div>
         </div>

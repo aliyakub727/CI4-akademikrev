@@ -17,8 +17,8 @@
 
             <div class="container-fluid">
                 <div class="container">
-
                     <form id="form" action="<?= base_url(); ?>/operator/saveeditkelas" method="post">
+                        <input type="hidden" value="<?= $kelas['id_kelas']; ?>" name="id_kelas" id="id_kelas">
                         <div class="card">
                             <div class="card-header">
                                 Data Kelas
@@ -26,9 +26,9 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Nama Kelas</label>
-                                    <input type="text" class="form-control <?= ($validation->hasError('kelas')) ? 'is-invalid' : ''; ?>" name="kelas" id="kelas">
+                                    <input type="text" value=" <?= (old('nama_kelas') ? old('nama_kelas') : $kelas['nama_kelas']); ?>" class="form-control <?= ($validation->hasError('nama_kelas')) ? 'is-invalid' : ''; ?>" name="nama_kelas" id="nama_kelas">
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('kelas'); ?>
+                                        <?= $validation->getError('nama_kelas'); ?>
                                     </div>
                                 </div>
                                 <button class="btn btn-success" type="submit">Tambah</button>
