@@ -7,10 +7,12 @@ use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\GuruModel;
 use App\Models\MapelModel;
+use App\Models\KelasModel;
 
 class Operator extends BaseController
 {
     protected $siswamodel;
+    protected $kelasmodel;
     protected $db, $builder;
     protected $gurumodel;
     protected $mapel;
@@ -23,6 +25,7 @@ class Operator extends BaseController
         $this->jurusan = new JurusanModel();
         $this->gurumodel = new GuruModel();
         $this->mapel =  new MapelModel();
+        $this->kelasmodel = new KelasModel();
     }
 
     public function index()
@@ -219,6 +222,7 @@ class Operator extends BaseController
         } else {
             $rule_id_akun = 'required|is_unique[siswa.id_akun]';
         }
+
         if (!$this->validate([
             'nama_lengkap' => [
                 'rules' => $rule_nama,
@@ -397,8 +401,73 @@ class Operator extends BaseController
 
 
     // menampilkan data kelas
+    public function datakelas()
+    {
+        $data = [
+            'judul' => 'Akademik | Operator',
+            'kelas' => $this->kelasmodel->getkelas()
+        ];
+        return view('operator/data_kelas/index', $data);
+    }
 
+    // tambah kelas
+    public function tambahkelas()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data Kelas',
+            'validation' => \Config\Services::validation(),
+        ];
+        return view('operator/data_kelas/create', $data);
+    }
 
+    //save data kelas
+    public function savekelas()
+    {
+        if (!$this->validate([
+            'kelas' => [
+                'rules' => 'required|is_unique[kelas.nama_kelas]',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/tambahkelas')->withInput();
+        }
+        $this->kelasmodel->save([
+            'Nama_Kelas' => $this->request->getVar('kelas')
+
+        ]);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('/operator/datakelas');
+    }
+
+    //save editdata kelas
+    public function saveeditdatakelas()
+    {
+        $model = new KelasModel();
+        $id = $this->request->getPost('id');
+        $data = array(
+            'kelas' => $this->request->getVar('kelas'),
+        );
+        $model->updateKelas($data, $id);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
+
+        return redirect()->to('/kelas');
+    }
+    public function deletekelas()
+    {
+        $model = new KelasModel();
+        $id = $this->request->getPost('id');
+        $model->deleteKelas($id);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('/kelas');
+    }
 
     // menampilkan data matapelajaran
 

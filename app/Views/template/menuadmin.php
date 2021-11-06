@@ -191,6 +191,7 @@
                         <a class="collapse-item" href="<?= base_url(); ?>/operator/matapelajaran">Mata Pelajaran</a>
                         <a class="collapse-item" href="<?= base_url(); ?>/operator/jurusan">Jurusan</a>
                         <a class="collapse-item" href="<?= base_url(); ?>/operator/tahunajaran">tahun ajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datakelas">Kelas</a>
                     </div>
                 </div>
             </li>
