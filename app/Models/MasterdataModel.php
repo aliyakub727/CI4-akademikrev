@@ -7,24 +7,24 @@ use CodeIgniter\Model;
 class MasterdataModel extends Model
 {
 
-    protected $table = "master_data";
-    protected $allowedFields = ['tahun_ajaran', 'nis', 'nama_lengkap', 'kelas', 'jurusan', 'nama_walikelas'];
+    protected $table = "masterdatapelajaran";
+    protected $allowedFields = ['id_ajaran', 'id_siswa', 'nama_lengkap', 'id_kelas', 'id_jurusan', 'id_guru'];
 
-    public function getmasterdata($nama_lengkap = false)
+    public function getmasterdata($id = false)
     {
-        if ($nama_lengkap == false) {
+        if ($id == false) {
             return $this->findAll();
         }
-        return $this->where(['nama_lengkap' => $nama_lengkap])->first();
+        return $this->where(['id' => $id])->first();
     }
     public function update_data($data, $id)
     {
-        $query = $this->db->table('master_data')->update($data, array('id' => $id));
+        $query = $this->db->table('masterdatapelajaran')->update($data, array('id' => $id));
         return $query;
     }
     public function delete_data($id)
     {
-        $query = $this->db->table('master_data')->delete(array('id' => $id));
+        $query = $this->db->table('masterdatapelajaran')->delete(array('id' => $id));
         return $query;
     }
 }

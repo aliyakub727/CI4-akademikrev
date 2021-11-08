@@ -50,8 +50,8 @@
                                                 <td><?= $k['nama_mapel']; ?></td>
                                                 <td><?= $k['id_kelas']; ?></td>
                                                 <td>
-                                                    <a href="<?= base_url(); ?>/operator/editmapel/<?= $k['id_mapel']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit"></a>
-                                                    <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash "></a>
+                                                    <a href="<?= base_url(); ?>/operator/editmapel/<?= $k['id_mapel']; ?>" style="color:#ffffff" class="btn btn-primary  fa fa-edit"></a>
+                                                    <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" data-id_mapel="<?= $k['id_mapel']; ?>" class="btn btn-danger btn-delete fa fa-trash "></a>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -61,60 +61,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- tambah -->
-                <div class=" modal fade" id="modal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Data Mapel</h5>
-                                <button class="close" data-dismiss="modal">
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="form" action="<?= base_url(); ?>/mapel/tambahmapel" method="post">
-                                    <div class="form-group">
-                                        <label>Nama Mapel</label>
-                                        <input type="text" class="form-control" name="nama_mapel" id="nama_mapel" required>
-                                    </div>
-                                    <button class="btn btn-success" type="submit">Tambah</button>
-                                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- update -->
-
-
-                <form action="/mapel/update" method="post">
-                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Ubah Data Mapel</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-group">
-                                        <label>Nama Mapel</label>
-                                        <input type="hidden" class="id_mapel" name="id_mapel">
-                                        <input type="text" class="form-control nama_mapel" name="nama_mapel" id="nama_mapel" required>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
 
                 <form action="/operator/deletedatamapel" method="post">
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -155,21 +101,6 @@
 <script>
     $('#data-list').DataTable();
     $(document).ready(function() {
-
-        $('.btn-edit').on('click', function() {
-            // get data from button edit
-            const id_mapel = $(this).data('id_mapel');
-            const nama_mapel = $(this).data('nama_mapel');
-            // Set data to Form Edit
-            $('.id_mapel').val(id_mapel);
-            $('.nama_mapel').val(nama_mapel);
-
-
-
-
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
         $('.btn-delete').on('click', function() {
             // get data from button edit
             const id_mapel = $(this).data('id_mapel');

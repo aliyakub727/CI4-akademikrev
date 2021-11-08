@@ -23,22 +23,34 @@
                             Data Jurusan
                         </div>
                         <div class="card-body">
-                            <form id="form" action="<?= base_url(); ?>/operator/savejurusan" method="post">
-                                <div class="form-group">
-                                    <label>Nama Jurusan</label>
-                                    <input type="text" class="form-control" name="jurusan" id="jurusan" required>
+                            <form id="form" action="<?= base_url(); ?>/operator/saveeditjurusan" method="post">
+                                <input type="hidden" value="<?= $jurusan['id_jurusan']; ?>" name="id_jurusan">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Nama Jurusan</label>
+                                        <input type="text" value="<?= (old('jurusan')) ? old('jurusan') : $jurusan['jurusan']; ?>" class="form-control <?= ($validation->hasError('jurusan')) ? 'is-invalid' : ''; ?>" name="jurusan" id="jurusan">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('jurusan'); ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>ID Kelas</label>
-                                    <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
-                                        <option selected value="">Pilih id Kelas</option>
-                                        <?php foreach ($kelas as $ak) : ?>
-                                            <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
-                                        <?php endforeach ?>
-                                    </select>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>ID Kelas</label>
+                                        <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                            <option selected value="">Pilih id Kelas</option>
+                                            <?php foreach ($kelas as $ak) : ?>
+                                                <option selected hidden value="<?= (old('id_kelas')) ? old('id_kelas') : $ak['id_kelas'] ?>"><?= (old('nama_kelas')) ? old('nama_kelas') : $ak['nama_kelas'] ?></option>
+                                                <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('id_kelas'); ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button class="btn btn-success" type="submit">Tambah</button>
-                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button class="btn btn-success" type="submit">Simpan</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Batal</button>
                             </form>
                         </div>
                     </div>

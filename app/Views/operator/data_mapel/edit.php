@@ -27,13 +27,17 @@
                                 <input type="hidden" value="<?= $mapel['id_mapel']; ?>" name="id_mapel">
                                 <div class="form-group">
                                     <label>Nama Mapel</label>
-                                    <input type="text" value="<?= $mapel['nama_mapel']; ?>" class="form-control" name="nama_mapel" id="nama_mapel" required>
+                                    <input type="text" value="<?= (old('nama_mapel')) ? old('nama_mapel') : $mapel['nama_mapel'] ?>" class="form-control <?= ($validation->hasError('nama_mapel')) ? 'is-invalid' : ''; ?>" name="nama_mapel" id="nama_mapel">
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('nama_mapel'); ?>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>ID Kelas</label>
                                     <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
                                         <option selected value="">Pilih id Kelas</option>
                                         <?php foreach ($kelas as $ak) : ?>
+                                            <option selected hidden value="<?= (old('id_kelas')) ? old('id_kelas') : $ak['id_kelas'] ?>"><?= (old('nama_kelas')) ? old('nama_kelas') : $ak['nama_kelas'] ?></option>
                                             <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
                                         <?php endforeach ?>
                                     </select>

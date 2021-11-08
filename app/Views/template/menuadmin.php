@@ -58,7 +58,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/operator/masterpelajaran">
+                <a class="nav-link" href="<?= base_url(); ?>/operator/masterdatapelajaran">
                     <i class="fas fa-plus-circle"></i>
                     <span>Master Data</span>
                 </a>

@@ -10,12 +10,12 @@ class JurusanModel extends Model
     protected $primaryKey = "id_jurusan";
     protected $allowedFields = ['jurusan', 'id_kelas'];
 
-    public function getjurusan($jurusan = false)
+    public function getjurusan($id_jurusan = false)
     {
-        if ($jurusan == false) {
+        if ($id_jurusan == false) {
             return $this->findAll();
         }
-        return $this->where(['jurusan' => $jurusan])->first();
+        return $this->where(['id_jurusan' => $id_jurusan])->first();
     }
 
     public function search($keyword)

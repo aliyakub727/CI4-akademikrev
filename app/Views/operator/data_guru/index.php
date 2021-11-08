@@ -56,7 +56,7 @@
                                                 <td><?= $k['alamat']; ?></td>
                                                 <td><?= $k['no_telp']; ?></td>
                                                 <td>
-                                                    <a href="#" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit " data-id_guru="<?= $k['id_guru'] ?>" data-id_mapel="<?= $k['id_mapel'] ?>" data-nama_guru="<?= $k['nama_guru']; ?>" data-alamat="<?= $k['alamat']; ?>" data-no_telp="<?= $k['no_telp']; ?>"></a>
+                                                    <a href="<?= base_url(); ?>/operator/editguru/<?= $k['id_guru']; ?>" style="color:#ffffff" class="btn btn-primary   fa fa-edit "></a>
                                                     <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_guru="<?= $k['id_guru'] ?>"></a>
                                                 </td>
                                             </tr>
@@ -202,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-                <form action="/Guru/deleteguru" method="post">
+                <form action="/operator/deleteguru" method="post">
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">

@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>ID Guru</label>
+                                        <label>ID Akun</label>
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?> " data-live-search="true">
                                             <option selected value="">Pilih Akun</option>
                                             <?php foreach ($user as $as) : ?>
@@ -47,7 +47,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>ID MAPEL yang diampu</label>
+                                            <label>Mapel yang diampu</label>
                                             <select name="id_mapel" id="id_mapel" class="selectpicker form-control form-select <?= ($validation->hasError('id_mapel')) ? 'is-invalid' : ''; ?>" data-live-search="true">
                                                 <option selected value="">Pilih id Mata pelajaran</option>
                                                 <?php foreach ($mapel as $ak) : ?>
@@ -62,7 +62,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Guru</label>
-                                            <input type="text" value="<?= old('nama_guru'); ?>" class="form-control <?= ($validation->hasError('nama_guru')) ? 'is-invalid' : ''; ?>" name="nama_guru" id="nama_guru" required>
+                                            <input type="text" value="<?= old('nama_guru'); ?>" class="form-control <?= ($validation->hasError('nama_guru')) ? 'is-invalid' : ''; ?>" name="nama_guru" id="nama_guru">
                                             <div class="invalid-feedback">
                                                 <?= $validation->getError('nama_guru'); ?>
                                             </div>
@@ -73,7 +73,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Alamat</label>
-                                            <textarea class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>" name="alamat" id="alamat" cols="30" rows="5" required=""><?= old('alamat'); ?></textarea>
+                                            <textarea class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>" name="alamat" id="alamat" cols="30" rows="5"><?= old('alamat'); ?></textarea>
                                             <div class="invalid-feedback">
                                                 <?= $validation->getError('alamat'); ?>
                                             </div>
@@ -84,7 +84,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nomor Telepon</label>
-                                            <input type="tel" value="<?= old('no_telp'); ?>" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control <?= ($validation->hasError('no_telp')) ? 'is-invalid' : ''; ?>" required="">
+                                            <input type="tel" value="<?= old('no_telp'); ?>" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control <?= ($validation->hasError('no_telp')) ? 'is-invalid' : ''; ?>">
                                             <div class="invalid-feedback">
                                                 <?= $validation->getError('no_telp'); ?>
                                             </div>

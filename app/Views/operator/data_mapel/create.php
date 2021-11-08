@@ -23,17 +23,29 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/savemapel" method="post">
-                                <div class="form-group">
-                                    <label>Nama Mapel</label>
-                                    <input type="text" class="form-control" name="nama_mapel" id="nama_mapel" required>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Nama Mapel</label>
+                                        <input type="text" value="<?= old('nama_mapel'); ?>" class="form-control <?= ($validation->hasError('nama_mapel')) ? 'is-invalid' : ''; ?>" name="nama_mapel" id="nama_mapel">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('nama_mapel'); ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
-                                    <label>ID Kelas</label>
-                                    <option selected value="">Pilih id Kelas</option>
-                                    <?php foreach ($kelas as $ak) : ?>
-                                        <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
-                                    <?php endforeach ?>
-                                </select>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>ID Kelas</label>
+                                        <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                            <option selected value="">Pilih id Kelas</option>
+                                            <?php foreach ($kelas as $ak) : ?>
+                                                <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('id_kelas'); ?>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button class="btn btn-success" type="submit">Tambah</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Close</button>
                             </form>

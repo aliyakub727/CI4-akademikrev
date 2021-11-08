@@ -9,10 +9,12 @@ use App\Models\GuruModel;
 use App\Models\TahunajaranModel;
 use App\Models\MapelModel;
 use App\Models\KelasModel;
+use App\Models\MasterdataModel;
 
 class Operator extends BaseController
 {
     protected $siswamodel;
+    protected $masterdata;
     protected $kelasmodel;
     protected $db, $builder;
     protected $gurumodel;
@@ -20,10 +22,12 @@ class Operator extends BaseController
     protected $user;
     protected $tahunajaranmodel;
     protected $jurusan;
+
     public function __construct()
     {
         $this->siswamodel = new SiswaModel();
         $this->user = new UserModel();
+        $this->masterdata = new MasterdataModel();
         $this->jurusan = new JurusanModel();
         $this->gurumodel = new GuruModel();
         $this->mapel =  new MapelModel();
@@ -145,7 +149,7 @@ class Operator extends BaseController
                 'rules' => 'required|is_unique[siswa.id_akun]',
                 'errors' => [
                     'required' => 'id akun Harus diisi',
-                    'is_unique' => 'Nomor Telepon Sudah terdaftar.'
+                    'is_unique' => 'id akun Sudah terdaftar.'
                 ]
             ],
         ])) {
@@ -374,33 +378,164 @@ class Operator extends BaseController
     // Save data guru
     public function saveguru()
     {
+        if (!$this->validate([
+            'id_mapel' => [
+                'rules' => 'required|is_unique[guru.id_mapel]',
+                'errors' => [
+                    'required' => 'Nama Mapel Harus diisi.',
+                    'is_unique' => 'Nama Mapel  Sudah terdaftar.'
+                ]
+            ],
+            'id_akun' => [
+                'rules' => 'required|is_unique[guru.id_akun]',
+                'errors' => [
+                    'required' => 'id akun Harus diisi',
+                    'is_unique' => 'id akun Sudah terdaftar.'
+                ]
+            ],
+            'nama_guru' => [
+                'rules' => 'required|is_unique[guru.nama_guru]',
+                'errors' => [
+                    'required' => 'Nama Guru Harus diisi',
+                    'is_unique' => 'Nama Guru Sudah terdaftar.'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat Harus diisi',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No Telepon Harus diisi',
+                ]
+            ],
+        ])) {
+
+            return redirect()->to('/operator/tambahguru')->withInput();
+        }
         $this->gurumodel->save([
+            'id_mapel' => $this->request->getVar('id_mapel'),
+            'id_akun' => $this->request->getVar('id_akun'),
+            'nama_guru' => $this->request->getVar('nama_guru'),
+            'alamat' => $this->request->getVar('alamat'),
+            'no_telp' => $this->request->getVar('no_telp')
+        ]);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('/operator/dataguru/');
+    }
+
+    // edit data guru
+    public function editguru($id_guru)
+    {
+        // session();
+        $data = [
+            'judul' => 'Form Edit Data Guru',
+            'validation' => \Config\Services::validation(),
+            'guru' => $this->gurumodel->getguru($id_guru),
+            'user' => $this->user->findAll(),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('operator/data_guru/edit', $data);
+    }
+
+    public function saveeditguru()
+    {
+        // ambil data yang lama
+        $namaguru =  $this->gurumodel->getguru($this->request->getVar('id_guru'));
+        $id_akun =  $this->gurumodel->getguru($this->request->getVar('id_guru'));
+        $id_mapel =  $this->gurumodel->getguru($this->request->getVar('id_guru'));
+
+        //cek nama  diganti atau engga
+        if ($namaguru['nama_guru'] == $this->request->getVar('nama_guru')) {
+            $rule_guru = 'required';
+        } else {
+            $rule_guru = 'required|is_unique[guru.nama_guru]';
+        }
+
+        //cek id_mapel diganti atau engga
+        if ($id_mapel['id_mapel'] == $this->request->getVar('id_mapel')) {
+            $rule_idmapel = 'required';
+        } else {
+            $rule_idmapel = 'required|is_unique[guru.id_mapel]';
+        }
+
+        //cek id akun diganti atau engga
+        if ($id_akun['id_akun'] == $this->request->getVar('id_akun')) {
+            $rule_id_akun = 'required';
+        } else {
+            $rule_id_akun = 'required|is_unique[guru.id_akun]';
+        }
+        if (!$this->validate([
+            'id_mapel' => [
+                'rules' => $rule_idmapel,
+                'errors' => [
+                    'required' => 'Nama Mapel Harus diisi.',
+                    'is_unique' => 'Nama Mapel  Sudah terdaftar.'
+                ]
+            ],
+            'id_akun' => [
+                'rules' => $rule_id_akun,
+                'errors' => [
+                    'required' => 'id akun Harus diisi',
+                    'is_unique' => 'id akun Sudah terdaftar.'
+                ]
+            ],
+            'nama_guru' => [
+                'rules' => $rule_guru,
+                'errors' => [
+                    'required' => 'Nama Guru Harus diisi',
+                    'is_unique' => 'Nama Guru Sudah terdaftar.'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat Harus diisi',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No Telepon Harus diisi',
+                ]
+            ],
+        ])) {
+
+            return redirect()->to('/operator/editguru/' . $this->request->getVar('id_guru'))->withInput();
+        }
+
+        $model = new GuruModel();
+        $id_guru = $this->request->getPost('id_guru');
+        $data = array(
             'id_akun' => $this->request->getVar('id_akun'),
             'id_mapel' => $this->request->getVar('id_mapel'),
             'nama_guru' => $this->request->getVar('nama_guru'),
             'alamat' => $this->request->getVar('alamat'),
             'no_telp' => $this->request->getVar('no_telp')
 
-        ]);
+        );
+        $model->updateGuru($data, $id_guru);
 
-        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
 
-        return redirect()->to('/guru');
+        return redirect()->to('/operator/dataguru');
     }
 
-    // edit data guru
-    public function editguru($id)
+    // delete data guru
+    public function deleteguru()
     {
-        // session();
-        $data = [
-            'judul' => 'Form Edit Data Siswa',
-            'validation' => \Config\Services::validation(),
-            'user' => $this->user->findAll(),
-            'jurusan' => $this->jurusan->getjurusan(),
-            'siswa' => $this->siswamodel->getsiswa($id),
-        ];
-        return view('operator/data_siswa/edit', $data);
+        $model = new GuruModel();
+        $id_guru = $this->request->getPost('id_guru');
+        $model->deleteguru($id_guru);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('/operator/dataguru');
     }
+
 
 
     // menampilkan data kelas
@@ -534,21 +669,21 @@ class Operator extends BaseController
             'jurusan' => [
                 'rules' => 'required|is_unique[jurusan.jurusan]',
                 'errors' => [
-                    'required' => 'Kelas Harus diisi.',
-                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                    'required' => 'Jurusan Harus diisi.',
+                    'is_unique' => 'Jurusan Sudah terdaftar.'
                 ]
             ],
             'id_kelas' => [
                 'rules' => 'required|is_unique[jurusan.id_kelas]',
                 'errors' => [
-                    'required' => 'Kelas Harus diisi.',
-                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                    'required' => 'id_kelas Harus diisi.',
+                    'is_unique' => 'id_kelas Sudah terdaftar.'
                 ]
             ],
 
         ])) {
 
-            return redirect()->to('/operator/editjurusan' . $this->request->getVar('id_jurusan'))->withInput();
+            return redirect()->to('/operator/tambahjurusan')->withInput();
         }
         $this->jurusan->save([
             'jurusan' => $this->request->getVar('jurusan'),
@@ -568,6 +703,7 @@ class Operator extends BaseController
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
             'jurusan' => $this->jurusan->getjurusan($id_jurusan),
+            'kelas' => $this->kelasmodel->getkelas(),
         ];
         return view('operator/data_jurusan/edit', $data);
     }
@@ -576,7 +712,6 @@ class Operator extends BaseController
     public function saveeditjurusan()
     {
         // ambil data yang lama
-        $nama =  $this->siswamodel->getsiswa($this->request->getVar('id'));
         $nama_jurusanlama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
         $id_kelaslama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
 
@@ -588,7 +723,7 @@ class Operator extends BaseController
         }
 
         //cek id kelas diganti atau engga
-        if ($id_kelaslama['jurusan'] == $this->request->getVar('jurusan')) {
+        if ($id_kelaslama['id_kelas'] == $this->request->getVar('id_kelas')) {
             $rule_idkelas = 'required';
         } else {
             $rule_idkelas = 'required|is_unique[jurusan.id_kelas]';
@@ -597,21 +732,21 @@ class Operator extends BaseController
             'jurusan' => [
                 'rules' => $rule_jurusan,
                 'errors' => [
-                    'required' => 'Kelas Harus diisi.',
-                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                    'required' => 'Jurusan Harus diisi.',
+                    'is_unique' => 'Jurusan Sudah terdaftar.'
                 ]
             ],
             'id_kelas' => [
                 'rules' => $rule_idkelas,
                 'errors' => [
-                    'required' => 'Kelas Harus diisi.',
-                    'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
+                    'required' => 'id_kelas Harus diisi.',
+                    'is_unique' => 'id_kelas  Sudah terdaftar.'
                 ]
             ],
 
         ])) {
 
-            return redirect()->to('/operator/editkelas' . $this->request->getVar('id_jurusan'))->withInput();
+            return redirect()->to('/operator/editjurusan' . $this->request->getVar('id_jurusan'))->withInput();
         }
         $id_jurusan = $this->request->getPost('id_jurusan');
         $data = array(
@@ -622,11 +757,11 @@ class Operator extends BaseController
 
         session()->setFlashdata('Pesan', 'Data Berhasil Di Ubah.');
 
-        return redirect()->to('oprator/datajurusan/');
+        return redirect()->to('operator/datajurusan/');
     }
 
     //detele jurusan
-    public function delete()
+    public function deletejurusan()
     {
         $id_jurusan = $this->request->getPost('id_jurusan');
         $this->jurusan->deletejurusan($id_jurusan);
@@ -658,9 +793,28 @@ class Operator extends BaseController
         return view('operator/data_mapel/create', $data);
     }
 
-    //update
+    //save mapel
     public function savemapel()
     {
+        if (!$this->validate([
+            'nama_mapel' => [
+                'rules' => 'required|is_unique[mapel.nama_mapel]',
+                'errors' => [
+                    'required' => 'Mata Pelajaran Harus diisi.',
+                    'is_unique' => 'Mata Pelajaran Sudah terdaftar.'
+                ]
+            ],
+            'id_kelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/tambahmapel')->withInput();
+        }
         $this->mapel->save([
             'nama_mapel' => $this->request->getVar('nama_mapel'),
             'id_kelas' => $this->request->getVar('id_kelas'),
@@ -672,7 +826,7 @@ class Operator extends BaseController
     public function editmapel($id_mapel)
     {
         $data = [
-            'judul' => 'Form Tambah Data Mapel',
+            'judul' => 'Form Edit Data Mapel',
             'validation' => \Config\Services::validation(),
             'mapel' => $this->mapel->getmapel($id_mapel),
             'kelas' => $this->kelasmodel->getkelas(),
@@ -681,10 +835,40 @@ class Operator extends BaseController
     }
     public function saveeditmapel()
     {
+        // ambil data yang lama
+        $nama_mapellama = $this->mapel->getmapel(($this->request->getVar('id_mapel')));
+
+        //cek nama mapel diganti atau engga
+        if ($nama_mapellama['nama_mapel'] == $this->request->getVar('nama_mapel')) {
+            $rule_mapel = 'required';
+        } else {
+            $rule_mapel = 'required|is_unique[mapel.nama_mapel]';
+        }
+
+        if (!$this->validate([
+            'nama_mapel' => [
+                'rules' => $rule_mapel,
+                'errors' => [
+                    'required' => 'Nama Mata Pelajaran Harus diisi.',
+                    'is_unique' => 'Nama Mata Pelajaran Sudah terdaftar.'
+                ]
+            ],
+            'id_kelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'ID kelas Harus diisi.',
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/editmapel' . $this->request->getVar('id_mapel'))->withInput();
+        }
         $model = new MapelModel();
         $id_mapel = $this->request->getPost('id_mapel');
         $data = array(
             'nama_mapel' => $this->request->getVar('nama_mapel'),
+            'id_kelas' => $this->request->getVar('id_kelas'),
         );
         $model->updatemapel($data, $id_mapel);
 
@@ -737,7 +921,7 @@ class Operator extends BaseController
     public function edittahunajaran($id_ajaran)
     {
         $data = [
-            'judul' => 'Form Tambah Data Mapel',
+            'judul' => 'Form Tambah Data tahun AJaran',
             'validation' => \Config\Services::validation(),
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun($id_ajaran),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -746,6 +930,43 @@ class Operator extends BaseController
     }
     public function saveedittahunajaran()
     {
+        // ambil data yang lama
+        $tahunlama = $this->tahunajaranmodel->gettahun(($this->request->getVar('id_ajaran')));
+        $id_jurusan1 = $this->tahunajaranmodel->gettahun(($this->request->getVar('id_ajaran')));
+
+        //cek tahun ajaran diganti atau engga
+        if ($tahunlama['tahun_ajaran'] == $this->request->getVar('tahun_ajaran')) {
+            $rule_ajaran = 'required';
+        } else {
+            $rule_ajaran = 'required|is_unique[tahun_ajaran.tahun_ajaran]';
+        }
+
+        //cek id jurusan diganti atau engga
+        if ($tahunlama['id_jurusan'] == $this->request->getVar('id_jurusan')) {
+            $rule_ajaran = 'required';
+        } else {
+            $rule_ajaran = 'required|is_unique[tahun_ajaran.id_jurusan]';
+        }
+        if (!$this->validate([
+            'tahun_ajaran' => [
+                'rules' => $rule_ajaran,
+                'errors' => [
+                    'required' => 'Tahun ajaran Harus diisi.',
+                    'is_unique' => 'Tahun ajaran Sudah terdaftar.'
+                ]
+            ],
+            'id_jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'ID Jurusan Harus diisi.',
+                    'is_unique' => 'ID Jurusan Sudah terdaftar.'
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/edittahunajaran' . $this->request->getVar('id_ajaran'))->withInput();
+        }
         $model = new tahunajaranModel();
         $id_ajaran = $this->request->getPost('id_ajaran');
         $data = array(
@@ -763,5 +984,86 @@ class Operator extends BaseController
         $model->deletetahun($id_ajaran);
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
         return redirect()->to('/operator/datatahunajaran');
+    }
+
+    // master data pelajaran
+    public function masterdatapelajaran()
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'masterdata' => $this->masterdata->getmasterdata(),
+            'guru' => $this->gurumodel->getguru(),
+            'jurusan' => $this->jurusan->getjurusan(),
+            'nis' => $this->siswamodel->getsiswa(),
+            'kelas' => $this->kelasmodel->getkelas()
+        ];
+        return view('operator/masterdata/masterdata', $data);
+    }
+
+    //tambah masterdata
+    public function tambahmasterdatapelajaran()
+    {
+        $data = [
+            'judul' => 'Form Tambah Data MasterData Pelajaran',
+            'masterdata' => $this->masterdata->getmasterdata(),
+            'guru' => $this->gurumodel->getguru(),
+            'jurusan' => $this->jurusan->getjurusan(),
+            'nis' => $this->siswamodel->getsiswa(),
+            'kelas' => $this->kelasmodel->getkelas(),
+            'validation' => \Config\Services::validation(),
+            'tahunajaran' => $this->tahunajaranmodel->gettahun()
+        ];
+        return view('operator/masterdata/add', $data);
+    }
+    public function savemasterdatapelajaran()
+    {
+        //validasi
+        if (!$this->validate([
+            'tahun_ajaran' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tahun Ajaran Harus diisi.',
+                ]
+            ],
+            'id' => [
+                'rules' => 'required|is_unique[masterdatapelajaran.id]',
+                'errors' => [
+                    'required' => 'Nomor induk siswa harus di isi',
+                    'is_unique' => 'Nis sudah didaftarkan'
+                ]
+            ],
+            'kelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'kelas Harus diisi.',
+                ]
+            ],
+            'jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jurusan Harus diisi.',
+                ]
+            ],
+            'nama_walikelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Wali Kelas Harus diisi.',
+                ]
+            ],
+        ])) {
+            return redirect()->to('/operator/tambahmasterdatapelajaran')->withInput();
+        }
+        $this->masterdata->save([
+            'id_ajaran' => $this->request->getVar('tahun_ajaran'),
+            'id_siswa' => $this->request->getVar('id'),
+            'nama_lengkap' => $this->request->getVar('nama_lengkap'),
+            'id_kelas' => $this->request->getVar('kelas'),
+            'id_jurusan' => $this->request->getVar('jurusan'),
+            'id_guru' => $this->request->getVar('nama_walikelas')
+        ]);
+
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('operator/masterdatapelajaran');
     }
 }

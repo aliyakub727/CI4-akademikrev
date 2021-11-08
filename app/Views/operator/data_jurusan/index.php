@@ -36,6 +36,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Jurusan</th>
+                                            <th scope="col">id kelas</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
