@@ -67,6 +67,18 @@ class Filters extends BaseConfig
                 'admin/',
                 'admin/*',
                 'admin',
+                'guru/',
+                'guru/*',
+                'guru',
+                'kepalasekolah/',
+                'kepalasekolah/*',
+                'kepalasekolah',
+                'operator/',
+                'operator/*',
+                'operator',
+                'dashboard/',
+                'dashboard/*',
+                'dashboard',
             ]
         ],
     ];

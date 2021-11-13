@@ -35,45 +35,66 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 // $routes->get('/dashboard', 'Dashboard::index');
 
-// // route admin
-// $routes->get('/acoount', 'acoount::index', ['filter' => 'role:admin']);
-// $routes->get('/acoount/index', 'acoount::index', ['filter' => 'role:admin']);
-// // $routes->get('/acoount/createakun', 'Acoount::index', ['filter' => 'role:admin']);
+// route admin
+$routes->get('/admin', 'admin::index', ['filter' => 'role:admin']);
+$routes->get('/admin/index', 'admin::index', ['filter' => 'role:admin']);
+$routes->get('/admin/*', 'admin::index', ['filter' => 'role:admin']);
+$routes->get('/admin/dataakun', 'admin::dataakun', ['filter' => 'role:admin']);
+$routes->get('/admin/dataakun/(:any)', 'admin::dataakun/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/editakun', 'admin::editakun', ['filter' => 'role:admin']);
+$routes->get('/admin/editakun/(:any)', 'admin::editakun/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/update/(:any)', 'admin::update/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/buatakun', 'admin::buatakun', ['filter' => 'role:admin']);
+$routes->get('/admin/buatakun/(:any)', 'admin::buatakun/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/deleteakun/(:num)', 'admin::deleteakun/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/landing_page', 'admin::landing_page', ['filter' => 'role:admin']);
+$routes->get('/admin/landing_page/(:any)', 'admin::landing_page/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/ubahpage/(:any)', 'admin::ubahpage/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/ubahdatapage/(:any)', 'admin::ubahdatapage/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/sliderku', 'admin::sliderku', ['filter' => 'role:admin']);
+$routes->get('/admin/sliderku/(:any)', 'admin::sliderku/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/ubahslider/(:any)', 'admin::ubahslider/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/ubahdataslider/(:any)', 'admin::ubahdataslider/$1', ['filter' => 'role:admin']);
 
-// // routes guru
+
+
+
+// routes guru
+$routes->get('/guru', 'guru::index', ['filter' => 'role:guru']);
+$routes->get('/guru/index', 'guru::index', ['filter' => 'role:guru']);
+$routes->get('/guru/index/*', 'guru::index', ['filter' => 'role:guru']);
+$routes->get('/guru/*', 'guru::index', ['filter' => 'role:guru']);
+$routes->get('/guru/tambahnilai', 'guru::create', ['filter' => 'role:guru']);
+$routes->get('/guru/tambahnilai/*', 'guru::create', ['filter' => 'role:guru']);
 
 // //route operator
+$routes->get('/operator', 'operator::index', ['filter' => 'role:operator']);
+$routes->get('/operator/index', 'operator::index', ['filter' => 'role:operator']);
+$routes->get('/operator/index/*', 'operator::index', ['filter' => 'role:operator']);
+$routes->get('/operator/*', 'operator::index', ['filter' => 'role:operator']);
 
-// //Controller siswa
-// $routes->get('/siswa', 'Siswa::index', ['filter' => 'role:operator']);
-// $routes->get('/siswa/index', 'Siswa::index', ['filter' => 'role:operator']);
-// // $routes->get('/siswa/deletesiswa/(:any)', 'Siswa::index', ['filter' => 'role:operator']);
+//siswa
+$routes->get('/operator/datasiswa', 'operator::datasiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/datasiswa/(:any)', 'operator::datasiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahsiswa', 'operator::tambahsiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahsiswa/(:any)', 'operator::tambahsiswa/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/savesiswa', 'operator::savesiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/savesiswa/(:any)', 'operator::savesiswa/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editsiswa/(:any)', 'operator::editsiswa/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditsiswa/(:any)', 'operator::saveeditsiswa/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deletesiswa', 'operator::deletesiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/deletesiswa/(:num)', 'operator::deletesiswa/$1', ['filter' => 'role:operator']);
 
-// //Controller jurusan
-// $routes->get('/jurusan', 'Jurusan::index', ['filter' => 'role:operator']);
-// $routes->get('/jurusan/index', 'Jurusan::index', ['filter' => 'role:operator']);
-// // $routes->get('/jurusan/delete/(:any)', 'Jurusan::index', ['filter' => 'role:operator']);
+//guru
+$routes->get('/operator/dataguru', 'operator::dataguru', ['filter' => 'role:operator']);
+$routes->get('/operator/dataguru/(:any)', 'operator::dataguru/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahguru', 'operator::tambahguru', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahguru/*', 'operator::tambahguru', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahguru', 'operator::tambahguru', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahguru/*', 'operator::tambahguru', ['filter' => 'role:operator']);
 
-// //Controller kelas
-// $routes->get('/kelas', 'Kelas::index', ['filter' => 'role:operator']);
-// $routes->get('/kelas/index', 'Kelas::index', ['filter' => 'role:operator']);
 
-// // $routes->get('/kelas/deletekelas/(:any)', 'Kelas::index', ['filter' => 'role:operator']);
 
-// //Controller mapel
-// $routes->get('/mapel', 'Mapel::index', ['filter' => 'role:operator']);
-// $routes->get('/mapel/index', 'Mapel::index', ['filter' => 'role:operator']);
-// // $routes->get('/mapel/delete/(:any)', 'Mapel::index', ['filter' => 'role:operator']);
-
-// //Controller guru
-// $routes->get('/guru', 'Guru::index', ['filter' => 'role:operator']);
-// $routes->get('/guru/index', 'Guru::index', ['filter' => 'role:operator']);
-// // $routes->get('/guru/deleteguru/(:any)', 'Guru::index', ['filter' => 'role:operator']);
-
-// //Controller masterdata
-// $routes->get('/masterdata', 'Masterdata::index', ['filter' => 'role:operator']);
-// $routes->get('/masterdata/index', 'Masterdata::index', ['filter' => 'role:operator']);
-// // $routes->get('/masterdata/delete/(:any)', 'Masterdata::index', ['filter' => 'role:operator']);
 
 /*
  * --------------------------------------------------------------------

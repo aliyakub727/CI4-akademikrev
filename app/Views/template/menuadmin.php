@@ -143,7 +143,7 @@
 
         <!-- Role Kepala Sekolah -->
 
-        <?php if (in_groups('kepala_sekolah')) : ?>
+        <?php if (in_groups('kepalasekolah')) : ?>
             <div class="sidebar-heading">
                 Interface
             </div>
@@ -160,7 +160,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/datasiswa">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan Data siswa</span>
                 </a>

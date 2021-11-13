@@ -9,6 +9,6 @@ class Dashboard extends BaseController
         $data = [
             'judul' => 'Akademik | Administrator',
         ];
-        return view('admin/index', $data);
+        return view('index', $data);
     }
 }
