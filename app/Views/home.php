@@ -58,7 +58,7 @@
 					<?php } elseif (in_groups('siswa') == 'siswa') { ?>
 						<a href="<?= base_url(); ?>/siswa" class="tombol">Yuk Kedashboard</a>
 					<?php } elseif (in_groups('kepalasekolah') == 'kepalasekolah') { ?>
-						<a href="<?= base_url(); ?>/kepelasekolah" class="tombol">Yuk Kedashboard</a>
+						<a href="<?= base_url(); ?>/kepalasekolah" class="tombol">Yuk Kedashboard</a>
 					<?php } elseif (in_groups('operator') == 'operator') { ?>
 						<a href="<?= base_url(); ?>/operator" class="tombol">Yuk Kedashboard</a>
 					<?php } ?>
