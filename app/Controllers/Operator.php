@@ -379,7 +379,7 @@ class Operator extends BaseController
             'no_telp' => $this->request->getVar('no_telp')
 
         ]);
-
+        
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('/guru');

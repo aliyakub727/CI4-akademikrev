@@ -78,7 +78,7 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/Guru/tambahnilai/<?=user_id();?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Input Nilai</span>
                 </a>

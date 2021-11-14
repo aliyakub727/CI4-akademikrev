@@ -6,6 +6,7 @@ use App\Models\GuruModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\KelasModel;
+use App\Models\MapelModel;
 
 class Guru extends BaseController
 {
@@ -14,6 +15,7 @@ class Guru extends BaseController
     protected $user;
     protected $jurusan;
     protected $kelas;
+    protected $mapel;
     public function __construct()
     {
         $this->nilai = new Nilai();
@@ -21,38 +23,43 @@ class Guru extends BaseController
         $this->user = new UserModel();
         $this->jurusan = new JurusanModel();
         $this->kelas = new KelasModel();
+        $this->mapel = new MapelModel();
     }
 
     public function index()
     {
        $data = [
             'judul' => 'SUZURAN | OPERATOR',
+            'kelas' => $this->kelas->getkelas(),
+            'guru'  => $this->guru->getguru(),
+            
         ];
-        return view('/guru/index', $data);
+        return view('/guru/view', $data);
     }
     //munculin data siswa
-        public function guru()
+        public function guru($id_mapel)
         {
         $data = [
-            'judul' => 'Akademik | Administrator',
-            'nilai' => $this->nilai->getnilai(),
-        ];
+            'judul' => 'SUZURAN | OPERATOR',
+            'nilai' => $this->nilai->where('id_mapel',$id_mapel)->findAll(),
+            ];
         return view('guru/index', $data);
-    }
+        }
 
     //tambah data siswa
-    public function tambahnilai()
+    public function tambahnilai($user_id)
     {
         // session();
         $data = [
-            'judul' => 'Form Tambah Data Makanan Favorit',
+            'judul' => 'SUZURAN | OPERATOR',
             'validation' => \Config\Services::validation(),
             'user' => $this->user->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'kelas' => $this->kelas->getkelas(),
+            'guru'  => $this->guru->where('id_akun',$user_id)->findAll(),
               
         ];
-        return view('guru/create', $data);
+        return view('guru/view', $data);
     }
 
     //save data siswa
@@ -92,5 +99,12 @@ class Guru extends BaseController
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('/guru/index');
+    }
+    public function search($nama_kelas){
+        $data = [
+            'judul' => 'Akademik | Administrator',
+            'nilai' => $this->nilai->getnilai2($nama_kelas),
+        ];
+        return view('guru/index', $data);
     }
 }

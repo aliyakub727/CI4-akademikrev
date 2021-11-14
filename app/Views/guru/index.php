@@ -15,6 +15,7 @@
                 </div>
                 <hr>
 
+
                 <div class="container">
                     <!-- Content Row -->
                     <div class="row">
@@ -24,6 +25,7 @@
                             <div class="alert alert-success" role="alert">
                                 <?= session()->getFlashdata('Pesan'); ?>
                             </div>
+                            
                         <?php endif; ?>
                         <table class="table table-hover" id="users-list">
                             <thead>
@@ -41,6 +43,7 @@
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
+                            
                             <tbody>
                                 <?php $i = 1; ?>
                                 <?php foreach ($nilai as $k) : ?>
@@ -75,18 +78,40 @@
 <!-- End of Main Content -->
 
 </div>
+<script  src="https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/media/js/jquery.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
 <script>
-    $('#users-list').DataTable();
+    $('#users-list').DataTable({
+     
+    });
+    $(document).ready(function() {
+    var table = $('#users-list').DataTable();
+ 
+    $("#users-list tbody th").each( function ( i ) {
+        var select = $('<select><option value=""></option></select>')
+            .appendTo( $(this).empty() )
+            .on( 'change', function () {
+                table.column( i )
+                    .search( $(this).val() )
+                    .draw();
+            } );
+ 
+        table.column( i ).data().unique().sort().each( function ( d, j ) {
+            select.append( '<option value="'+d+'">'+d+'</option>' )
+        } );
+    } );
+} );
+
     $('.nis').selectpicker('click', function() {
         const nama = $(this).data('nama');
         $('#nama_lengkap').val(nama);
     });
 
+    
 
 </script>
 <!-- End of Content Wrapper -->

@@ -10,7 +10,7 @@ class Nilai extends Model
     protected $allowedFields = ['id_akun', 'id_mapel', 'id_jurusan', 'nis', 'nama_lengkap', 'nama_kelas', 'jurusan', 'tahun_ajaran', 'nama_guru', 'tugas', 'uts', 'uas'];
 
     public function getnilai($nama_lengkap = false)
-    {
+    {   
         if ($nama_lengkap == false) {
             return $this->findAll();
         }
@@ -26,4 +26,11 @@ class Nilai extends Model
         $query = $this->db->table('nilai')->delete(array('id_nilai' => $id_nilai));
         return $query;
     }
+    public function getnilai2($nama_kelas = false)
+    {
+        $model = new Nilai();
+        $model = $model->where('nama_kelas','19IK');
+        return $this->where(['nama_kelas' => $nama_kelas])->first();
+    }
+    
 }

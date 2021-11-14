@@ -41,7 +41,7 @@
                                 <?php foreach ($kelas as $k) : ?>
                                     <tr>
                                         <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['Nama_Kelas']; ?></td>
+                                        <td><?= $k['nama_kelas']; ?></td>
                                         <td>
 
                                             <a href="#" class="btn btn-info btn-sm btn-edit" data-id="<?= $k['id_kelas'] ?>">Edit</a>
