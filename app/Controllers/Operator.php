@@ -423,7 +423,7 @@ class Operator extends BaseController
             'alamat' => $this->request->getVar('alamat'),
             'no_telp' => $this->request->getVar('no_telp')
         ]);
-        
+
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('/operator/dataguru/');
@@ -1065,5 +1065,19 @@ class Operator extends BaseController
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('operator/masterdatapelajaran');
+    }
+
+    public function editmasterdatapelajaran($id)
+    {
+        $data = [
+            'judul' => 'SUZURAN | Admin',
+            'masterdata' => $this->masterdata->getmasterdata($id),
+            'guru' => $this->gurumodel->getguru(),
+            'jurusan' => $this->jurusan->getjurusan(),
+            'nis' => $this->siswamodel->getsiswa(),
+            'kelas' => $this->kelasmodel->getkelas(),
+            'tahunajaran' => $this->tahunajaranmodel->gettahun()
+        ];
+        return view('operator/masterdata/update', $data);
     }
 }

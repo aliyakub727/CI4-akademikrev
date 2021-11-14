@@ -22,15 +22,16 @@
 
             <div class="container">
                 <!-- Content Row -->
-                <form id="form" action="<?= base_url(); ?>/Masterdata/update" method="post">
+                <form id="form" action="<?= base_url(); ?>/operator/saveeditmasterdatapelajaran" method="post">
                     <input type="hidden" name="id" id="id">
                     <div class="mb-3 row">
                         <label class="col-sm-4">Tahun Ajaran</label>
                         <div class="col-sm-8">
                             <select name="tahun_ajaran" id="tahun_ajaran" class="selectpicker form-control form-select" data-live-search="true">
-                                <option selected>Pilih Tahun Ajaran</option>
-                                <option value="2019-2020">2019-2020</option>
-                                <option value="2020-2021">2020-2021</option>
+                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['id_ajaran']; ?></option>
+                                <?php foreach ($tahunajaran as $tahunajaran) : ?>
+                                    <option value="<?= $tahunajaran['id_ajaran']; ?>"><?= $tahunajaran['tahun_ajaran']; ?></option>
+                                <?php endforeach ?>
                             </select>
                         </div>
                     </div>
@@ -61,7 +62,7 @@
                             <select class="selectpicker kelas form-control" data-live-search="true" name="kelas" id="kelas">
                                 <option readonly selected>Pilih kelas</option>
                                 <?php foreach ($kelas as $kelas) : ?>
-                                    <option value="<?= $kelas['kelas']; ?>"><?= $kelas['kelas']; ?></option>
+                                    <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>

@@ -9,24 +9,17 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Akademik</div>
+            <div class="sidebar-brand-text mx-3">Suzuran</div>
         </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-        </li>
-
-
         <!-- Divider -->
-        <hr class="sidebar-divider">
         <!-- role admin -->
         <?php if (in_groups('admin')) : ?>
+            <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/admin/landing_page">
                     <i class="fas fa-plus-circle"></i>
@@ -39,9 +32,16 @@
                     <span>Edit Sliderku</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Edit Fasilitas</span>
+                </a>
+            </li>
         <?php endif ?>
         <!-- role operator -->
         <?php if (in_groups('operator')) : ?>
+            <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Interface
             </div>
@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/operator/akun">
+                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
@@ -74,29 +74,30 @@
         <!-- role guru -->
 
         <?php if (in_groups('guru')) : ?>
+            <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/Guru/tambahnilai/<?=user_id();?>">
+                <a class="nav-link" href="<?= base_url(); ?>/Guru/tambahnilai/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Input Nilai</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-plus-circle"></i>
                     <span>Input absensi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Review Nilai</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/">
+                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
@@ -106,35 +107,36 @@
         <!-- role Siswa -->
 
         <?php if (in_groups('siswa')) : ?>
+            <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-bars"></i>
                     <span>Biodatadiri</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>jadwal Matapelajaran</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Raport Nilai</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan raport </span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/">
+                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
@@ -144,17 +146,18 @@
         <!-- Role Kepala Sekolah -->
 
         <?php if (in_groups('kepalasekolah')) : ?>
+            <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan Raport siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan absensi siswa</span>
                 </a>
@@ -166,19 +169,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan Data guru</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/#">
+                <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan Data pelajaran</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/">
+                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
@@ -218,9 +221,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan-Laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporansiswa">Data Siswa</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanguru">Data Guru</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanpelajaran">Data pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data Siswa</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data Guru</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data pelajaran</a>
                     </div>
                 </div>
             </li>
@@ -237,8 +240,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">laporan-laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/#">Nilai</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/#">Absensi</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Nilai</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Absensi</a>
                     </div>
                 </div>
             </li>

@@ -25,6 +25,12 @@ class Home extends BaseController
         ];
         return view('home', $data);
     }
+
+    public function error()
+    {
+        return view('munculerror');
+    }
+
     public function About()
     {
         $data = [
