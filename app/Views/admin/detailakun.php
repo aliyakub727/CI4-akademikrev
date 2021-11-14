@@ -30,12 +30,6 @@
                                     <div class="row  ml-4 mt-4">
                                         <div class="col-5">
                                             <div class="form-group">
-                                                <label>Fullname</label>
-                                                <input type="text" class="form-control" name="fullname" value="<?= (old('fullname')) ? old('fullname') : $users->fullname ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-5">
-                                            <div class="form-group">
                                                 <label>Username</label>
                                                 <input type="text" class="form-control" name="username" value="<?= (old('username')) ? old('username') : $users->username ?>">
                                             </div>
@@ -71,8 +65,7 @@
                     <div class="row">
                         <div class="col-12 my-5 ml-5 mr-5">
                             <?php
-                            $datauser = $users->description;
-                            if ($datauser == 'Guru') {
+                            if (in_groups('guru')) {
                             ?>
                                 <form id="form" action="<?= base_url(); ?>/Guru/updateguru" method="post">
                                     <input type="hidden" name="id_guru" value="<?= user()->id ?>">
@@ -103,7 +96,7 @@
                                     <button class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </form>
                             <?php
-                            } elseif ($datauser == 'Siswa') {
+                            } elseif (in_groups('siswa')) {
                             ?>
                                 <form id="form" action="<?= base_url(); ?>/Siswa/tambahsiswa" method="post">
                                     <input type="hidden" value="<?= user()->id; ?>" name="id" id="id">
@@ -216,8 +209,75 @@
                                     <button class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </form>
                             <?php
-                            } elseif ($datauser == "Administrator") { ?>
+                            } elseif (in_groups('admin')) { ?>
                                 <h2>admin</h2>
+                            <?php } elseif (in_groups('operator')) { ?>
+                                <form id="form" action="<?= base_url(); ?>/Siswa/tambahsiswa" method="post">
+                                    <input type="hidden" value="<?= user()->id; ?>" name="id" id="id">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Nama Lengkap</label>
+                                                <input autofocus type="text" class="form-control" name="nama_lengkap" id="nama_lengkap">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <label>Jenis Kelamin</label>
+                                                <select class="form-select form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                                    <option selected value=""></option>
+                                                    <option value="Laki-Laki">Laki-Laki</option>
+                                                    <option value="Perempuan">Perempuan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <label>Tempat Lahir</label>
+                                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <label>Tanggal Lahir</label>
+                                                <input type="text" name="tgl_lahir" id="tgl_lahir" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <label>Agama</label>
+                                                <select class="form-select form-control" name="agama" id="agama">
+                                                    <option selected value=""></option>
+                                                    <option value="Islam">Islam</option>
+                                                    <option value="Hindu">Hindu</option>
+                                                    <option value="Kristen">Kristen</option>
+                                                    <option value="Budha">Budha</option>
+                                                    <option value="Konghucu">Konghucu</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>Nomor Telepon</label>
+                                                <input type="tel" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Alamat</label>
+                                                <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success" type="submit">Update</button>
+                                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </form>
                             <?php } ?>
                         </div>
                     </div>

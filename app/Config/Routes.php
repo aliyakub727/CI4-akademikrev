@@ -78,21 +78,87 @@ $routes->get('/operator/datasiswa', 'operator::datasiswa', ['filter' => 'role:op
 $routes->get('/operator/datasiswa/(:any)', 'operator::datasiswa', ['filter' => 'role:operator']);
 $routes->get('/operator/tambahsiswa', 'operator::tambahsiswa', ['filter' => 'role:operator']);
 $routes->get('/operator/tambahsiswa/(:any)', 'operator::tambahsiswa/$1', ['filter' => 'role:operator']);
-$routes->get('/operator/savesiswa', 'operator::savesiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/savesiswa', 'operator::datasiswa', ['filter' => 'role:operator']);
 $routes->get('/operator/savesiswa/(:any)', 'operator::savesiswa/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editsiswa', 'operator::datasiswa', ['filter' => 'role:operator']);
 $routes->get('/operator/editsiswa/(:any)', 'operator::editsiswa/$1', ['filter' => 'role:operator']);
 $routes->get('/operator/saveeditsiswa/(:any)', 'operator::saveeditsiswa/$1', ['filter' => 'role:operator']);
-$routes->get('/operator/deletesiswa', 'operator::deletesiswa', ['filter' => 'role:operator']);
+$routes->get('/operator/deletesiswa', 'operator::datasiswa', ['filter' => 'role:operator']);
 $routes->get('/operator/deletesiswa/(:num)', 'operator::deletesiswa/$1', ['filter' => 'role:operator']);
 
 //guru
 $routes->get('/operator/dataguru', 'operator::dataguru', ['filter' => 'role:operator']);
 $routes->get('/operator/dataguru/(:any)', 'operator::dataguru/$1', ['filter' => 'role:operator']);
 $routes->get('/operator/tambahguru', 'operator::tambahguru', ['filter' => 'role:operator']);
-$routes->get('/operator/tambahguru/*', 'operator::tambahguru', ['filter' => 'role:operator']);
-$routes->get('/operator/tambahguru', 'operator::tambahguru', ['filter' => 'role:operator']);
-$routes->get('/operator/tambahguru/*', 'operator::tambahguru', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahguru/(:any)', 'operator::tambahguru/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveguru', 'operator::dataguru', ['filter' => 'role:operator']);
+$routes->get('/operator/saveguru/(:any)', 'operator::saveguru/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editguru', 'operator::dataguru', ['filter' => 'role:operator']);
+$routes->get('/operator/editguru/(:any)', 'operator::editguru/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditguru', 'operator::dataguru', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditguru/(:any)', 'operator::saveeditguru/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deleteguru', 'operator::dataguru', ['filter' => 'role:operator']);
+$routes->get('/operator/deleteguru/(:num)', 'operator::deleteguru/$1', ['filter' => 'role:operator']);
 
+
+//kelas
+$routes->get('/operator/datakelas', 'operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/datakelas/(:any)', 'operator::datakelas/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahkelas', 'operator::tambahkelas', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahkelas/(:any)', 'operator::tambahkelas/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/savekelas', 'operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/savekelas/(:any)', 'operator::savekelas/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editdatakelas', 'operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/editdatakelas/(:any)', 'operator::editdatakelas/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditkelas', 'operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditkelas/(:any)', 'operator::saveeditkelas/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deletekelas', 'operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/deletekelas/(:num)', 'operator::deletekelas/$1', ['filter' => 'role:operator']);
+
+
+//jurusan
+$routes->get('/operator/datajurusan', 'operator::datajurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/datajurusan/(:any)', 'operator::datajurusan/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahjurusan', 'operator::tambahjurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahjurusan/(:any)', 'operator::tambahjurusan/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/savejurusan', 'operator::datajurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/savejurusan/(:any)', 'operator::savejurusan/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editjurusan', 'operator::datajurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/editjurusan/(:any)', 'operator::editjurusan/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditjurusan', 'operator::datajurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditjurusan/(:any)', 'operator::saveeditjurusan/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deletejurusan', 'operator::datajurusan', ['filter' => 'role:operator']);
+$routes->get('/operator/deletejurusan/(:num)', 'operator::deletejurusan/$1', ['filter' => 'role:operator']);
+
+
+//jurusan
+$routes->get('/operator/datamapel', 'operator::datamapel', ['filter' => 'role:operator']);
+$routes->get('/operator/datamapel/(:any)', 'operator::datamapel/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahmapel', 'operator::tambahmapel', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahmapel/(:any)', 'operator::tambahmapel/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/savemapel', 'operator::datamapel', ['filter' => 'role:operator']);
+$routes->get('/operator/savemapel/(:any)', 'operator::savemapel/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editmapel', 'operator::datamapel', ['filter' => 'role:operator']);
+$routes->get('/operator/editmapel/(:any)', 'operator::editmapel/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditmapel', 'operator::datamapel', ['filter' => 'role:operator']);
+$routes->get('/operator/saveeditmapel/(:any)', 'operator::saveeditmapel/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deletedatamapel', 'operator::datamapel', ['filter' => 'role:operator']);
+$routes->get('/operator/deletedatamapel/(:num)', 'operator::deletedatamapel/$1', ['filter' => 'role:operator']);
+
+
+//tahun ajaran
+$routes->get('/operator/datatahunajaran', 'operator::datatahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/datatahunajaran/(:any)', 'operator::datatahunajaran/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahtahunajaran', 'operator::tambahtahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/tambahtahunajaran/(:any)', 'operator::tambahtahunajaran/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/savetahunajaran', 'operator::datatahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/savetahunajaran/(:any)', 'operator::savetahunajaran/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/edittahunajaran', 'operator::datatahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/edittahunajaran/(:any)', 'operator::edittahunajaran/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveedittahunajaran', 'operator::datatahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/saveedittahunajaran/(:any)', 'operator::saveedittahunajaran/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/deletedatatahunajaran', 'operator::datatahunajaran', ['filter' => 'role:operator']);
+$routes->get('/operator/deletedatatahunajaran/(:num)', 'operator::deletedatatahunajaran/$1', ['filter' => 'role:operator']);
 
 
 
