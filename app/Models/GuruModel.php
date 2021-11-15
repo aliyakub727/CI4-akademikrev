@@ -17,6 +17,14 @@ class GuruModel extends Model
         }
         return $this->where(['id_guru' => $id_guru])->first();
     }
+
+    public function joinguru()
+    {
+        return $this->db->table('guru')
+         ->join('mapel','mapel.id_mapel=guru.id_mapel')
+         ->get()->getResultArray();
+    }
+
     public function updateGuru($data, $id_guru)
     {
         $query = $this->db->table('guru')->update($data, array('id_guru' => $id_guru));

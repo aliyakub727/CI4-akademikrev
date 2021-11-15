@@ -33,9 +33,9 @@ font-family: 'Holtwood One SC', serif; ">Data Siswa</h1>
                             <div class="col-2">
                                 
                                 <select name="table-filter" class="form-control" id="table-filter" onclick="" style="margin-bottom:15px;">
-                                    <option value="">Filter Jurusan</option>
-                                    <?php foreach ($jurusan as $a) : ?>
-                                    <option value="<?= $a['jurusan']; ?>"><?= $a['jurusan']; ?></option>
+                                    <option value="">Filter Mata Pelajaran</option>
+                                    <?php foreach ($mapel as $a) : ?>
+                                    <option value="<?= $a['nama_mapel']; ?>"><?= $a['nama_mapel']; ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -49,21 +49,23 @@ font-family: 'Holtwood One SC', serif; ">Data Siswa</h1>
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nomer Induk Siswa</th>
-                                            <th scope="col">Nama Lengkap</th>
-                                            <th scope="col">Jenis Kelamin</th>
-                                            <th scope="col">Jurusan</th>
+                                            <th scope="col">ID Mapel</th>
+                                            <th scope="col">Nama Guru</th>
+                                            <th scope="col">Alamat</th>
+                                            <th scope="col">No Telp</th>
+                                            <th scope="col">Mapel</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $i = 1; ?>
-                                        <?php foreach ($siswa as $k) : ?>
+                                        <?php foreach ($guru as $k) : ?>
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
-                                                <td><?= $k['nis']; ?></td>
-                                                <td><?= $k['nama_lengkap']; ?></td>
-                                                <td><?= $k['jenis_kelamin']; ?></td>
-                                                <td><?= $k['jurusan']; ?></td>
+                                                <td><?= $k['id_mapel']; ?></td>
+                                                <td><?= $k['nama_guru']; ?></td>
+                                                <td><?= $k['alamat']; ?></td>
+                                                <td><?= $k['no_telp']; ?></td>
+                                                <td><?= $k['nama_mapel']; ?></td>
                                             </tr>
                                         <?php endforeach ?>
                                     </tbody>
