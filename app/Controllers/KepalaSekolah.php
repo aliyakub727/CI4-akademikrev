@@ -6,6 +6,7 @@ use App\Models\GuruModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\KelasModel;
+use App\Models\MapelModel;
 
 class KepalaSekolah extends BaseController
 {
@@ -14,6 +15,8 @@ class KepalaSekolah extends BaseController
     protected $user;
     protected $jurusan;
     protected $kelas;
+    protected $mapel;
+    
     public function __construct()
     {
         $this->siswamodel = new SiswaModel();
@@ -22,6 +25,7 @@ class KepalaSekolah extends BaseController
         $this->user = new UserModel();
         $this->jurusan = new JurusanModel();
         $this->kelas = new KelasModel();
+        $this->mapel =  new MapelModel();
     }
 
     public function index()
@@ -37,7 +41,19 @@ class KepalaSekolah extends BaseController
        $data = [
             'judul' => 'SUZURAN | KEPALA SEKOLAH',
             'siswa' => $this->siswamodel->getsiswa(),
+            'jurusan' => $this->jurusan->getjurusan(),
         ];
         return view('kepalasekolah/data_siswa/index', $data);
+    }
+
+    public function dataguru()
+    {
+        
+       $data = [
+            'judul' => 'SUZURAN | KEPALA SEKOLAH',
+            'guru' => $this->guru->joinguru(),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('kepalasekolah/data_guru/index', $data);
     }
 }
