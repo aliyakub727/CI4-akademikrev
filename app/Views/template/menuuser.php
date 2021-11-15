@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top bg-transparent">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <h4><?php echo $landing_page['']?></h4>
+                <h4><?php echo $landing_page[''] ?></h4>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
                         <?php if (logged_in()) : ?>
                             <a class="nav-link tombol" href="/logout">Logout</a>
                         <?php else : ?>
-                            <a class="nav-link tombol" href="/login">Login</a>
+                            <a class="nav-link tombol" href="<?= base_url(); ?>/akun">Login</a>
                         <?php endif; ?>
                     </li>
                 </ul>

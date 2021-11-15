@@ -39,7 +39,7 @@
                         <label class="col-sm-4">Nomer Induk Siswa (NIS) </label>
                         <div class="col-sm-8">
                             <select class="selectpicker nis form-control" data-live-search="true" name="nis" id="nis" onchange='changeValue(this.value)'>
-                                <option readonly selected>Pilih nis</option>
+                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['id_ajaran']; ?></option>
                                 <?php
                                 $jsArray = "var prdName = new Array();\n";
                                 foreach ($nis as $nis) {
@@ -53,14 +53,14 @@
                     <div class="mb-3 row">
                         <label class="col-sm-4">Nama Lengkap</label>
                         <div class="col-sm-8">
-                            <input type="text" readonly class="form-control nama_lengkap" name="nama_lengkap" id="nama_lengkap" required="">
+                            <input type="text" readonly class="form-control nama_lengkap" value="<?= (old('nama_lengkap') ? old('nama_lengkap') : $masterdata['nama_lengkap']); ?>" name="nama_lengkap" id="nama_lengkap" required="">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-4">Kelas</label>
                         <div class="col-sm-8">
                             <select class="selectpicker kelas form-control" data-live-search="true" name="kelas" id="kelas">
-                                <option readonly selected>Pilih kelas</option>
+                                <option selected value="<?= $masterdata['id_kelas']; ?>"><?= $masterdata['id_kelas']; ?></option>
                                 <?php foreach ($kelas as $kelas) : ?>
                                     <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
                                 <?php endforeach ?>
@@ -71,7 +71,7 @@
                         <label class="col-sm-4">Jurusan</label>
                         <div class="col-sm-8">
                             <select class="selectpicker jurusan form-control" data-live-search="true" name="jurusan" id="jurusan">
-                                <option readonly selected>Pilih jurusan</option>
+                                <option selected value="<?= $masterdata['id_jurusan']; ?>"><?= $masterdata['id_jurusan']; ?></option>
                                 <?php foreach ($jurusan as $jur) : ?>
                                     <option value="<?= $jur['jurusan']; ?>"><?= $jur['jurusan']; ?></option>
                                 <?php endforeach ?>
@@ -82,15 +82,14 @@
                         <label class="col-sm-4">Nama Wali Kelas</label>
                         <div class="col-sm-8">
                             <select class="selectpicker nama_walikelas form-control" data-live-search="true" name="nama_walikelas" id="nama_walikelas">
-                                <option readonly selected>Pilih nama walikelas</option>
+                                <option selected value="<?= $masterdata['id_guru']; ?>"><?= $masterdata['id_guru']; ?></option>
                                 <?php foreach ($guru as $guru) : ?>
-                                    <option value="<?= $guru['nama_guru']; ?>"><?= $guru['nama_guru']; ?></option>
+                                    <option value="<?= $guru['id_guru']; ?>"><?= $guru['nama_guru']; ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                     </div>
                     <button class="btn btn-success fa fa-check-square fa-2x" type="submit"></button>
-                    <a href="<?= base_url(); ?>/Masterdata/index" class="btn btn-danger fa fa-window-close fa-2x"></a>
                 </form>
             </div>
         </div>
