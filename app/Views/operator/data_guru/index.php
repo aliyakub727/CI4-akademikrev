@@ -48,10 +48,10 @@
                                     </thead>
                                     <tbody>
                                         <?php $i = 1; ?>
-                                        <?php foreach ($guru as $k) : ?>
+                                        <?php foreach ($inner as $k) : ?>
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
-                                                <td><?= $k['id_mapel']; ?></td>
+                                                <td><?= $k['nama_mapel']; ?></td>
                                                 <td><?= $k['nama_guru']; ?></td>
                                                 <td><?= $k['alamat']; ?></td>
                                                 <td><?= $k['no_telp']; ?></td>

@@ -13,40 +13,39 @@
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <div class="container">
+            <div class="">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-4 col-sm-4 col-md-3 col-lg-3">
                         <div class="card mb-3">
                             <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-start" alt="<?= $users->username; ?>">
                             <a href="#" class="btn btn-primary">Ganti Profile</a>
                         </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 col-sm-8 col-md-9 col-lg-9">
                         <div class="card mb-3">
-                            <div class="col-12">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="card-body" id="m-account">
-                                    <form action="<?= route_to('register') ?>" method="post">
+                                    <form action="<?= base_url() ?>/admin/update" method="post">
                                         <?= csrf_field() ?>
-                                        <div class="row  ml-4 mt-4">
-                                            <div class="col-5">
+                                        <input type="hidden" value="<?= $users->userid; ?>" name="id">
+                                        <div class="row mt-4">
+                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
                                                 <div class="form-group">
                                                     <label>Username</label>
-                                                    <input type="text" class="form-control" name="username" value="<?= (old('username')) ? old('username') : $users->username ?>">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="username" value="<?= (old('username')) ? old('username') : $users->username ?>">
+                                                        <a class="btn btn-outline-secondary" type="button" id="button-addon2">Edit</a>
+                                                    </div>
+
                                                 </div>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
                                                 <div class="form-group">
                                                     <label>Email</label>
-                                                    <input type="email" class="form-control" name="email" value="<?= (old('email')) ? old('email') : $users->email ?>">
+                                                    <input type="email" readonly class="form-control" name="email" value="<?= (old('email')) ? old('email') : $users->email ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-5">
-                                                <div class="form-group">
-                                                    <label>password</label>
-                                                    <input type="text" class="form-control" name="password_hash" value="<?= (old('password_hash')) ? old('password_hash') : $users->password_hash ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-5">
+                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
                                                 <div class="form-group">
                                                     <label>Role</label>
                                                     <input readonly type="text" class="form-control" name="description" value="<?= (old('description')) ? old('description') : $users->description ?>">

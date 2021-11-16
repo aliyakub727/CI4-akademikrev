@@ -42,15 +42,15 @@
                                     <?php foreach ($masterdata as $k) : ?>
                                         <tr>
                                             <th scope="row"><?= $i++; ?></th>
-                                            <td><?= $k['id_ajaran']; ?></td>
-                                            <td><?= $k['id_siswa']; ?></td>
+                                            <td><?= $k['tahun_ajaran']; ?></td>
+                                            <td><?= $k['nis']; ?></td>
                                             <td><?= $k['nama_lengkap']; ?></td>
-                                            <td><?= $k['id_kelas']; ?></td>
-                                            <td><?= $k['id_jurusan']; ?></td>
-                                            <td><?= $k['id_guru']; ?></td>
+                                            <td><?= $k['nama_kelas']; ?></td>
+                                            <td><?= $k['jurusan']; ?></td>
+                                            <td><?= $k['nama_guru']; ?></td>
                                             <td>
-                                                <a href="<?= base_url(); ?>/operator/editmasterdatapelajaran/<?= $k['id']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit "></a>
-                                                <a class="btn btn-danger btn-delete fa fa-trash" data-id="<?= $k['id']; ?>"></a>
+                                                <a href="<?= base_url(); ?>/operator/editmasterdatapelajaran/<?= $k['id_master']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-edit "></a>
+                                                <a class="btn btn-danger btn-delete fa fa-trash" data-id="<?= $k['id_master']; ?>"></a>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>

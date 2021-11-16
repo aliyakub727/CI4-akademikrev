@@ -23,12 +23,12 @@
             <div class="container">
                 <!-- Content Row -->
                 <form id="form" action="<?= base_url(); ?>/operator/saveeditmasterdatapelajaran" method="post">
-                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" value="id_master" name="id_master" id="id_master">
                     <div class="mb-3 row">
                         <label class="col-sm-4">Tahun Ajaran</label>
                         <div class="col-sm-8">
                             <select name="tahun_ajaran" id="tahun_ajaran" class="selectpicker form-control form-select" data-live-search="true">
-                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['id_ajaran']; ?></option>
+                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['tahun_ajaran']; ?></option>
                                 <?php foreach ($tahunajaran as $tahunajaran) : ?>
                                     <option value="<?= $tahunajaran['id_ajaran']; ?>"><?= $tahunajaran['tahun_ajaran']; ?></option>
                                 <?php endforeach ?>
@@ -39,7 +39,7 @@
                         <label class="col-sm-4">Nomer Induk Siswa (NIS) </label>
                         <div class="col-sm-8">
                             <select class="selectpicker nis form-control" data-live-search="true" name="nis" id="nis" onchange='changeValue(this.value)'>
-                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['id_ajaran']; ?></option>
+                                <option selected value="<?= $masterdata['id_ajaran']; ?>"><?= $masterdata['nis']; ?></option>
                                 <?php
                                 $jsArray = "var prdName = new Array();\n";
                                 foreach ($nis as $nis) {
@@ -60,7 +60,7 @@
                         <label class="col-sm-4">Kelas</label>
                         <div class="col-sm-8">
                             <select class="selectpicker kelas form-control" data-live-search="true" name="kelas" id="kelas">
-                                <option selected value="<?= $masterdata['id_kelas']; ?>"><?= $masterdata['id_kelas']; ?></option>
+                                <option selected value="<?= $masterdata['id_kelas']; ?>"><?= $masterdata['nama_kelas']; ?></option>
                                 <?php foreach ($kelas as $kelas) : ?>
                                     <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
                                 <?php endforeach ?>
@@ -71,7 +71,7 @@
                         <label class="col-sm-4">Jurusan</label>
                         <div class="col-sm-8">
                             <select class="selectpicker jurusan form-control" data-live-search="true" name="jurusan" id="jurusan">
-                                <option selected value="<?= $masterdata['id_jurusan']; ?>"><?= $masterdata['id_jurusan']; ?></option>
+                                <option selected value="<?= $masterdata['id_jurusan']; ?>"><?= $masterdata['jurusan']; ?></option>
                                 <?php foreach ($jurusan as $jur) : ?>
                                     <option value="<?= $jur['jurusan']; ?>"><?= $jur['jurusan']; ?></option>
                                 <?php endforeach ?>
@@ -82,7 +82,7 @@
                         <label class="col-sm-4">Nama Wali Kelas</label>
                         <div class="col-sm-8">
                             <select class="selectpicker nama_walikelas form-control" data-live-search="true" name="nama_walikelas" id="nama_walikelas">
-                                <option selected value="<?= $masterdata['id_guru']; ?>"><?= $masterdata['id_guru']; ?></option>
+                                <option selected value="<?= $masterdata['id_guru']; ?>"><?= $masterdata['nama_guru']; ?></option>
                                 <?php foreach ($guru as $guru) : ?>
                                     <option value="<?= $guru['id_guru']; ?>"><?= $guru['nama_guru']; ?></option>
                                 <?php endforeach ?>

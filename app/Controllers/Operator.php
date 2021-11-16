@@ -31,6 +31,7 @@ class Operator extends BaseController
         $this->jurusan = new JurusanModel();
         $this->gurumodel = new GuruModel();
         $this->mapel =  new MapelModel();
+        $this->db = \config\Database::connect();
         $this->tahunajaranmodel = new TahunajaranModel();
         $this->kelasmodel = new KelasModel();
     }
@@ -353,11 +354,18 @@ class Operator extends BaseController
     // nampilin data Guru
     public function dataguru()
     {
+
+        // $this->builder = $this->db->table('mapel');
+        // $this->builder->select('*');
+        // $this->builder->join('guru', 'guru.id_mapel = mapel.id_mapel');
+        // $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        // $query = $this->builder->get();
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'guru' => $this->gurumodel->getguru(),
             'user' => $this->user->findAll(),
             'mapel' => $this->mapel->getmapel(),
+            'inner' => $this->gurumodel->joinguru(),
         ];
         return view('operator/data_guru/index', $data);
     }
@@ -991,11 +999,7 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | Operator',
-            'masterdata' => $this->masterdata->getmasterdata(),
-            'guru' => $this->gurumodel->getguru(),
-            'jurusan' => $this->jurusan->getjurusan(),
-            'nis' => $this->siswamodel->getsiswa(),
-            'kelas' => $this->kelasmodel->getkelas()
+            'masterdata' => $this->masterdata->joindata(),
         ];
         return view('operator/masterdata/masterdata', $data);
     }
@@ -1005,7 +1009,6 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Form Tambah Data MasterData Pelajaran',
-            'masterdata' => $this->masterdata->getmasterdata(),
             'guru' => $this->gurumodel->getguru(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),
@@ -1067,11 +1070,11 @@ class Operator extends BaseController
         return redirect()->to('operator/masterdatapelajaran');
     }
 
-    public function editmasterdatapelajaran($id)
+    public function editmasterdatapelajaran($id_master)
     {
         $data = [
             'judul' => 'SUZURAN | Admin',
-            'masterdata' => $this->masterdata->getmasterdata($id),
+            'masterdata' => $this->masterdata->joindata1($id_master),
             'guru' => $this->gurumodel->getguru(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),

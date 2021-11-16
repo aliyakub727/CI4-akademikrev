@@ -9,12 +9,12 @@ class Email extends BaseConfig
     /**
      * @var string
      */
-    public $fromEmail = 'bangbangli61@gmail.com';
+    public $fromEmail = 'akademik@aliyakub.com';
 
     /**
      * @var string
      */
-    public $fromName = 'Sekolahan - Akademik';
+    public $fromName = 'Suzuran - Akademik';
 
     /**
      * @var string
@@ -47,21 +47,21 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'smtp.gmail.com';
+    public $SMTPHost = 'aliyakub.com';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'bangbangli61@gmail.com';
+    public $SMTPUser = 'akademik@aliyakub.com';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = 'Sumurbatu01';
+    public $SMTPPass = 'susahbanget';
 
     /**
      * SMTP Port

@@ -9,6 +9,9 @@ use App\Models\UsersModel;
 use App\Models\LandingPageModel;
 use App\Models\SliderModel;
 use App\Models\AboutModel;
+use CodeIgniter\HTTP\Request;
+use Myth\Auth\Config\Auth as AuthConfig;
+use Myth\Auth\Entities\User;
 
 class Admin extends BaseController
 {
@@ -67,7 +70,7 @@ class Admin extends BaseController
         return view('admin/editakun', $data);
     }
 
-    public function update($id)
+    public function update()
     {
 
 
@@ -92,15 +95,22 @@ class Admin extends BaseController
         // ])) {
         //     return redirect()->to('/minuman/edit/' . $this->request->getVar('id'))->withInput();
         // }
-        $password = $_POST['password_hash'];
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $this->uss->save([
-            'id' => $id,
-            'email' => $this->request->getVar('email'),
-            'username' => $this->request->getVar('username'),
-            'fullname' => $this->request->getVar('fullname'),
-            'password_hash' => $hash
-        ]);
+        $user->username         = $this->request->getPost('username');
+        $user->password         = $this->request->getPost('password');
+        $user->reset_hash         = null;
+        $user->reset_at         = date('Y-m-d H:i:s');
+        $user->reset_expires    = null;
+        $user->force_pass_reset = false;
+        $users->save($user);
+        // $this->uss->save([
+        //     'id' => $this->request->getVar('id'),
+        //     'username' => $this->request->getVar('username'),
+        //     'password_hash' => $this->request->getPost('password'),
+        //     'reset_hash'    => null,
+        //     'reset_at'         => date('Y-m-d H:i:s'),
+        //     'reset_expires'    => null,
+        //     'force_pass_reset' => false,
+        // ]);
         return redirect()->to('/acoount');
     }
     public function detail($id)
@@ -144,16 +154,18 @@ class Admin extends BaseController
         return view('admin/landing_page', $data);
     }
 
-    public function ubahpage($id = null){
+    public function ubahpage($id = null)
+    {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'landing_page' => $this->pagemodel->where('id', $id)->first(),
         ];
-        
+
         return view('admin/edit_page', $data);
     }
 
-    public function ubahdatapage(){
+    public function ubahdatapage()
+    {
         $id = $this->request->getVar('id');
         $dataGambar = $this->request->getFile('background');
         $fileName = $dataGambar->getRandomName();
@@ -177,16 +189,18 @@ class Admin extends BaseController
         return view('admin/sliderku', $data);
     }
 
-    public function ubahslider($id_slider){
+    public function ubahslider($id_slider)
+    {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'slider' => $this->sliderku->where('id_slider', $id_slider)->first(),
         ];
-        
+
         return view('admin/edit_slider', $data);
     }
 
-    public function ubahdataslider(){
+    public function ubahdataslider()
+    {
         $id_slider = $this->request->getVar('id_slider');
         $dataGambar = $this->request->getFile('gambar_slider');
         $fileName = $dataGambar->getRandomName();
@@ -195,10 +209,10 @@ class Admin extends BaseController
             'deskripsi' => $this->request->getVar('deskripsi'),
             'gambar_slider' => $fileName
         ];
-    
+
 
         $dataGambar->move('img/', $fileName);
-        $this->sliderku->update( $id_slider, $data);
+        $this->sliderku->update($id_slider, $data);
         return $this->response->redirect(site_url('admin/sliderku'));
     }
 }
