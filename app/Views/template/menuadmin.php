@@ -221,9 +221,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan-Laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data Siswa</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data Guru</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Data pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporansiswa">Data Siswa</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanguru">Data Guru</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanmapel">Data pelajaran</a>
                     </div>
                 </div>
             </li>

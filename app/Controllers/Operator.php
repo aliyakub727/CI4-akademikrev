@@ -1083,4 +1083,38 @@ class Operator extends BaseController
         ];
         return view('operator/masterdata/update', $data);
     }
+
+
+    // laporan siswa
+    public function laporansiswa()
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'siswa' => $this->siswamodel->getsiswa(),
+            'jurusan' => $this->jurusan->getjurusan(),
+        ];
+        return view('operator/laporan/laporansiswa', $data);
+    }
+
+    // Laporan Guru
+    public function laporanguru()
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'guru' => $this->gurumodel->joinguru(),
+            'mapel' => $this->mapel->getmapel()
+        ];
+        return view('operator/laporan/laporanguru', $data);
+    }
+
+    // Laporan Mapel
+    public function laporanmapel()
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'kelas' => $this->kelasmodel->getkelas(),
+            'masterdata' => $this->masterdata->joindata(),
+        ];
+        return view('operator/laporan/laporanmapel', $data);
+    }
 }
