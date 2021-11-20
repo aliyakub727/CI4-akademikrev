@@ -46,7 +46,7 @@ class Akun extends BaseController
         $data = [
             'judul' => 'SUZURAN | ACCOUNT-GURU',
             'users' => $query->getRow(),
-            'guru' => $this->gurumodel->getguru(),
+            'guru' => $this->gurumodel->detailakun($id),
             'mapel' => $this->mapel->getmapel(),
         ];
         return view('admin/detailakun', $data);

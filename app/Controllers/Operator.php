@@ -1117,4 +1117,23 @@ class Operator extends BaseController
         ];
         return view('operator/laporan/laporanmapel', $data);
     }
+
+    // profile
+    public function profile($id)
+    {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('users.id', $id);
+        $query = $this->builder->get();
+        $data = [
+            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'users' => $query->getRow(),
+            'guru' => $this->guru->detailakun($id),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('admin/detailakun', $data);
+    }
 }

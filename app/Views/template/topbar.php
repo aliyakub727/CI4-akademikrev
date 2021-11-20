@@ -160,10 +160,32 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="<?= base_url(); ?>/akun/profile/<?= user()->id; ?>">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
+                <?php if (in_groups('guru')) { ?>
+                    <a class="dropdown-item" href="<?= base_url(); ?>/guru/profile/<?= user()->id; ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                <?php } elseif (in_groups('operator')) { ?>
+                    <a class="dropdown-item" href="<?= base_url(); ?>/operator/profile/<?= user()->id; ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                <?php } elseif (in_groups('kepalasekolah')) { ?>
+                    <a class="dropdown-item" href="<?= base_url(); ?>/kepalasekolah/profile/<?= user()->id; ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                <?php } elseif (in_groups('admin')) { ?>
+                    <a class="dropdown-item" href="<?= base_url(); ?>/admin/profile/<?= user()->id; ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                <?php } elseif (in_groups('siswa')) { ?>
+                    <a class="dropdown-item" href="<?= base_url(); ?>/siswa/profile/<?= user()->id; ?>">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                <?php } ?>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings

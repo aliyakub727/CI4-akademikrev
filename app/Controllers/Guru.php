@@ -1,19 +1,21 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\Nilai;
 use App\Models\GuruModel;
 use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\KelasModel;
 use App\Models\MapelModel;
- 
+
 class Guru extends BaseController
 {
     protected $nilai;
     protected $guru;
     protected $user;
     protected $jurusan;
+    protected $db, $builder;
     protected $kelas;
     protected $mapel;
     public function __construct()
@@ -22,29 +24,30 @@ class Guru extends BaseController
         $this->guru = new GuruModel();
         $this->user = new UserModel();
         $this->jurusan = new JurusanModel();
+        $this->usermodel = new UserModel();
         $this->kelas = new KelasModel();
         $this->mapel = new MapelModel();
     }
 
     public function index()
     {
-       $data = [
+        $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'kelas' => $this->kelas->getkelas(),
             'guru'  => $this->guru->getguru(),
-            
+
         ];
         return view('/guru/view', $data);
     }
     //munculin data siswa
-        public function guru($id_mapel)
-        {
+    public function guru($id_mapel)
+    {
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
-            'nilai' => $this->nilai->where('id_mapel',$id_mapel)->findAll(),
-            ];
+            'nilai' => $this->nilai->where('id_mapel', $id_mapel)->findAll(),
+        ];
         return view('guru/index', $data);
-        }
+    }
 
     //tambah data siswa
     public function tambahnilai($user_id)
@@ -56,8 +59,8 @@ class Guru extends BaseController
             'user' => $this->user->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'kelas' => $this->kelas->getkelas(),
-            'guru'  => $this->guru->where('id_akun',$user_id)->findAll(),
-              
+            'guru'  => $this->guru->where('id_akun', $user_id)->findAll(),
+
         ];
         return view('guru/view', $data);
     }
@@ -94,7 +97,7 @@ class Guru extends BaseController
             'tugas' => $this->request->getVar('tugas'),
             'uts' => $this->request->getVar('uts'),
             'uas' => $this->request->getVar('uas')
-            
+
 
         ]);
 
@@ -102,16 +105,36 @@ class Guru extends BaseController
 
         return redirect()->to('/guru/index');
     }
-    public function savenilai(){
+    public function savenilai()
+    {
         $data = $this->request->getPost();
-        $dataNilai= $this->nilai->insertnilai($data);
+        $dataNilai = $this->nilai->insertnilai($data);
         return 'Success';
     }
-    public function search($nama_kelas){
+    public function search($nama_kelas)
+    {
         $data = [
             'judul' => 'Akademik | Administrator',
             'nilai' => $this->nilai->getnilai2($nama_kelas),
         ];
         return view('guru/index', $data);
+    }
+
+    public function profile($id)
+    {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('users.id', $id);
+        $query = $this->builder->get();
+        $data = [
+            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'users' => $query->getRow(),
+            'guru' => $this->guru->detailakun($id),
+            'mapel' => $this->mapel->getmapel(),
+        ];
+        return view('admin/detailakun', $data);
     }
 }

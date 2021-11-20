@@ -71,13 +71,13 @@
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nama Guru</label>
-                                                        <input type="text" class="form-control nama_guru" name="nama_guru" id="nama_guru" required>
+                                                        <input type="text" value="<?= (old('nama_guru')) ? old('nama_guru') : $guru['nama_guru']; ?>" class="form-control nama_guru" name="nama_guru" id="nama_guru">
                                                     </div>
                                                 </div>
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nomor Telepon</label>
-                                                        <input type="tel" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control no_telp" required="">
+                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $guru['no_telp']; ?>" pattern=" ^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control no_telp" required="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                 <div class="col-10">
                                                     <div class="form-group">
                                                         <label>Alamat</label>
-                                                        <textarea class="form-control alamat" name="alamat" id="alamat" cols="30" rows="5" required=""></textarea>
+                                                        <textarea class="form-control alamat" name="alamat" id="alamat" cols="30" rows="5" required=""><?= (old('alamat')) ? old('alamat') : $guru['alamat']; ?></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,7 +102,7 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label>Nama Lengkap</label>
-                                                        <input autofocus type="text" class="form-control <?= ($validation->hasError('nama_lengkap')) ? 'is-invalid' : ''; ?>" name="nama_lengkap" id="nama_lengkap">
+                                                        <input autofocus type="text" class="form-control <?= ($validation->hasError('nama_lengkap')) ? 'is-invalid' : ''; ?>" value="<?= (old('nama_lengkap')) ? old('nama_lengkap') : $siswa['nama_lengkap']; ?>" name="nama_lengkap" id="nama_lengkap">
                                                         <div class="invalid-feedback">
                                                             <?= $validation->getError('nama_lengkap'); ?>
                                                         </div>
@@ -111,7 +111,7 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label>Nomer Induk Siswa (NIS) </label>
-                                                        <input type="text" name="nis" id="nis" class="form-control">
+                                                        <input type="text" name="nis" id="nis" value="<?= (old('nis')) ? old('nis') : $siswa['nis']; ?>" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -121,6 +121,7 @@
                                                         <label>Jenis Kelamin</label>
                                                         <select class="form-select form-control" name="jenis_kelamin" id="jenis_kelamin">
                                                             <option selected>Pilih Jenis Kelamin</option>
+                                                            <option selected hidden value="<?= (old('jenis_kelamin')) ? old('jenis_kelamin') : $siswa['jenis_kelamin']; ?>"><?= (old('jenis_kelamin')) ? old('jenis_kelamin') : $siswa['jenis_kelamin']; ?></option>
                                                             <option value="Laki-Laki">Laki-Laki</option>
                                                             <option value="Perempuan">Perempuan</option>
                                                         </select>
@@ -129,7 +130,7 @@
                                                 <div class="col-3">
                                                     <div class="form-group">
                                                         <label>Tempat Lahir</label>
-                                                        <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control">
+                                                        <input type="text" value="<?= (old('tempat_lahir')) ? old('tempat_lahir') : $siswa['tempat_lahir']; ?>" name="tempat_lahir" id="tempat_lahir" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-3">
@@ -219,7 +220,7 @@
                                                 <div class="col-9">
                                                     <div class="form-group">
                                                         <label>Nama Lengkap</label>
-                                                        <input autofocus type="text" class="form-control" name="nama_lengkap" id="nama_lengkap">
+                                                        <input autofocus type="text" value="<?= (old('nama_lengkap')) ? old('nama_lengkap') : $admin['nama_lengkap']; ?>" class="form-control" name="nama_lengkap" id="nama_lengkap">
                                                     </div>
                                                 </div>
                                             </div>
@@ -237,7 +238,7 @@
                                                 <div class="col-3">
                                                     <div class="form-group">
                                                         <label>Tempat Lahir</label>
-                                                        <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control">
+                                                        <input type="text" value="<?= (old('tempat_lahir')) ? old('tempat_lahir') : $admin['tempat_lahir']; ?>" name="tempat_lahir" id="tempat_lahir" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-3">
@@ -264,7 +265,7 @@
                                                 <div class="col-4">
                                                     <div class="form-group">
                                                         <label>Nomor Telepon</label>
-                                                        <input type="tel" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control">
+                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $admin['no_telp']; ?>" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,7 +273,7 @@
                                                 <div class="col-9">
                                                     <div class="form-group">
                                                         <label>Alamat</label>
-                                                        <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"></textarea>
+                                                        <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"><?= (old('alamat')) ? old('alamat') : $admin['alamat']; ?></textarea>
                                                     </div>
                                                 </div>
                                             </div>
