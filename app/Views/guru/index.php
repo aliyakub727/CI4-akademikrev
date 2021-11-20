@@ -90,7 +90,6 @@
     $('#users-list').DataTable({
      
     });
-<<<<<<< Updated upstream
     $(document).on('click', '.btn-save', function() {
         var id = $(this).attr("id");
         var tugas = $("#row-tugas").val();
@@ -117,28 +116,11 @@
             },
         });        
     });
-=======
->>>>>>> Stashed changes
 
     $('.nis').selectpicker('click', function() {
         const nama = $(this).data('nama');
         $('#nama_lengkap').val(nama);
     });
-    $.ajax({
-            type: 'POST',
-            url: "",
-            data: {
-                'subtotal': subtotal,
-                'ongkir': ongkir,
-            },
-            success:function(data){
-                console.log(data);
-            },
-            error:function(data){
-                console.log("error");
-                console.log(data);
-            },
-        });
 
     
 
