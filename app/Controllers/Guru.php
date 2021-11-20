@@ -7,7 +7,7 @@ use Myth\Auth\Models\UserModel;
 use App\Models\JurusanModel;
 use App\Models\KelasModel;
 use App\Models\MapelModel;
-
+ 
 class Guru extends BaseController
 {
     protected $nilai;
@@ -62,6 +62,7 @@ class Guru extends BaseController
         return view('guru/view', $data);
     }
 
+
     //save data siswa
     public function saveguru()
     {
@@ -93,12 +94,18 @@ class Guru extends BaseController
             'tugas' => $this->request->getVar('tugas'),
             'uts' => $this->request->getVar('uts'),
             'uas' => $this->request->getVar('uas')
+            
 
         ]);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('/guru/index');
+    }
+    public function savenilai(){
+        $data = $this->request->getPost();
+        $dataNilai= $this->nilai->insertnilai($data);
+        return 'Success';
     }
     public function search($nama_kelas){
         $data = [

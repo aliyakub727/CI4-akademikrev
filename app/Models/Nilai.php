@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Nilai extends Model
 {
     protected $table = "nilai";
-    protected $allowedFields = ['id_akun', 'id_mapel', 'id_jurusan', 'nis', 'nama_lengkap', 'nama_kelas', 'jurusan', 'tahun_ajaran', 'nama_guru', 'tugas', 'uts', 'uas'];
+    protected $allowedFields = ['id_akun', 'id_mapel', 'id_jurusan', 'nis', 'nama_lengkap', 'nama_kelas', 'jurusan', 'tahun_ajaran', 'nama_guru', 'tugas', 'uts', 'uas','rata_rata'];
 
     public function getnilai($nama_lengkap = false)
     {   
@@ -31,6 +31,19 @@ class Nilai extends Model
         $model = new Nilai();
         $model = $model->where('nama_kelas','19IK');
         return $this->where(['nama_kelas' => $nama_kelas])->first();
+    }
+
+    public function insertnilai($data)
+    {  
+        $rataRata = (($data['uas']) + ($data['uts']) + ($data['tugas'])) / 3;
+        $dataNilai = [
+            'tugas' => $data['tugas'],
+            'uts' => $data['uts'],
+            'uas' => $data['uas'],
+            'rata_rata' => $rataRata
+        ];
+        $this->set($dataNilai)->where('id_nilai', $data['id'])->update();
+        return true;
     }
     
 }

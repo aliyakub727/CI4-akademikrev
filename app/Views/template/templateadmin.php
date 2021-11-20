@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <style type="text/css">
-    h1 {
-        font-family: 'Holtwood One SC', serif;
-    }
+    
 </style>
 
 <head>
