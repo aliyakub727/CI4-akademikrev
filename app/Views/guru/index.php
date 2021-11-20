@@ -39,7 +39,8 @@
                                     <th scope="col">Nama Guru</th>
                                     <th scope="col">Tugas</th>
                                     <th scope="col">UTS</th>
-                                    <th scope="col">UAS</th>  
+                                    <th scope="col">UAS</th> 
+                                    <th scope="col">Rata Rata</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -55,11 +56,12 @@
                                         <td><?= $k['jurusan']; ?></td>
                                         <td><?= $k['tahun_ajaran']; ?></td>
                                         <td><?= $k['nama_guru']; ?></td>
-                                        <td><input type="numeric" size="5" id="row-tugas" name="rowtugas"></td>
-                                        <td><input type="numeric" size="5" id="row-uts" name="rowuts"></td>
-                                        <td><input type="numeric" size="5" id="row-uas" name="rowuas"></td>
+                                        <td><input type="numeric" size="5" id="row-tugas" name="rowtugas" value="<?= $k['tugas']; ?>"></td>
+                                        <td><input type="numeric" size="5" id="row-uts" name="rowuts" value="<?= $k['uts']; ?>"></td>
+                                        <td><input type="numeric" size="5" id="row-uas" name="rowuas" value="<?= $k['uas']; ?>"></td>
+                                        <td><input type="numeric" size="5" id="row-uas" name="rowrata_rata" value="<?= $k['rata_rata']; ?>" readonly></td>
                                         <td>
-                                            <a href="<?= base_url(); ?>/guru/saveguru<?= $k['id_nilai']; ?>" style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-save "></a>
+                                            <button type="button"  style="color:#ffffff" class="btn btn-primary  btn-edit fa fa-save btn-save " id="<?= $k['id_nilai']; ?>"></button>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -88,28 +90,55 @@
     $('#users-list').DataTable({
      
     });
-    $(document).ready(function() {
-    var table = $('#users-list').DataTable();
- 
-    $("#users-list tbody th").each( function ( i ) {
-        var select = $('<select><option value=""></option></select>')
-            .appendTo( $(this).empty() )
-            .on( 'change', function () {
-                table.column( i )
-                    .search( $(this).val() )
-                    .draw();
-            } );
- 
-        table.column( i ).data().unique().sort().each( function ( d, j ) {
-            select.append( '<option value="'+d+'">'+d+'</option>' )
-        } );
-    } );
-} );
+<<<<<<< Updated upstream
+    $(document).on('click', '.btn-save', function() {
+        var id = $(this).attr("id");
+        var tugas = $("#row-tugas").val();
+        var uts = $("#row-uts").val();
+        var uas = $("#row-uas").val();
+        console.log(id,tugas,uts,uas);
+       
+        $.ajax({
+            type:'POST',
+            url:'<?= base_url("/Guru/savenilai"); ?>',
+            data:{
+                'id': id,
+                'tugas': tugas,
+                'uts': uts,
+                'uas': uas,
+            },
+            success:function(data){
+                console.log(data);
+                alert(data);
+            },
+            error:function(data){
+                console.log("error");
+                console.log(data);
+            },
+        });        
+    });
+=======
+>>>>>>> Stashed changes
 
     $('.nis').selectpicker('click', function() {
         const nama = $(this).data('nama');
         $('#nama_lengkap').val(nama);
     });
+    $.ajax({
+            type: 'POST',
+            url: "",
+            data: {
+                'subtotal': subtotal,
+                'ongkir': ongkir,
+            },
+            success:function(data){
+                console.log(data);
+            },
+            error:function(data){
+                console.log("error");
+                console.log(data);
+            },
+        });
 
     
 
