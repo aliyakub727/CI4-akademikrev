@@ -165,13 +165,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/datasiswa">
                     <i class="fas fa-book-reader"></i>
-                    <span>Laporan Data siswa</span>
+                    <span>Laporan data siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/home/error">
+                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/dataguru">
                     <i class="fas fa-book-reader"></i>
-                    <span>Laporan Data guru</span>
+                    <span>Laporan data guru</span>
                 </a>
             </li>
             <li class="nav-item">
