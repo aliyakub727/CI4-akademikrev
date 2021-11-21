@@ -46,31 +46,31 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/operator/datasiswa">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/datasiswa">
                     <i class="fas fa-plus-circle"></i>
                     <span>Data Siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/operator/dataguru">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/dataguru">
                     <i class="fas fa-plus-circle"></i>
                     <span>Guru</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/operator/masterdatapelajaran">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/masterdatapelajaran">
                     <i class="fas fa-plus-circle"></i>
                     <span>Master Data</span>
                 </a>
             </li>
             <li class="nav-item">
                 <?php if (empty($cek)) { ?>
-                    <a class="nav-link" href="<?= base_url(); ?>/operator/lengkapi/<?= user_id(); ?>">
+                    <a class="nav-link" href="<?= base_url(); ?>/Operator/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>
                     </a>
                 <?php } else { ?>
-                    <a class="nav-link" href="<?= base_url(); ?>/operator/profile/<?= user_id(); ?>">
+                    <a class="nav-link" href="<?= base_url(); ?>/Operator/profile/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>
                     </a>
@@ -104,10 +104,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
+                <?php if (empty($guru)) { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Guru/lengkapi/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Guru/profile/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } ?>
             </li>
         <?php endif; ?>
 

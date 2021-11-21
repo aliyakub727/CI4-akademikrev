@@ -94,14 +94,7 @@ class Admin extends BaseController
 
         // ])) {
         //     return redirect()->to('/minuman/edit/' . $this->request->getVar('id'))->withInput();
-        // }
-        $user->username         = $this->request->getPost('username');
-        $user->password         = $this->request->getPost('password');
-        $user->reset_hash         = null;
-        $user->reset_at         = date('Y-m-d H:i:s');
-        $user->reset_expires    = null;
-        $user->force_pass_reset = false;
-        $users->save($user);
+
         // $this->uss->save([
         //     'id' => $this->request->getVar('id'),
         //     'username' => $this->request->getVar('username'),

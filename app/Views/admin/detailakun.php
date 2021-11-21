@@ -18,7 +18,11 @@
                     <div class="col-4 col-sm-4 col-md-3 col-lg-3">
                         <div class="card mb-3">
                             <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ganti Profile</button>
+                            <?php if (in_groups('operator')) { ?>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#operator">Ganti Profile</button>
+                            <?php } elseif (in_groups('guru')) { ?>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#guru">Ganti Profile</button>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col-8 col-sm-8 col-md-9 col-lg-9">
@@ -65,19 +69,26 @@
                                     <?php
                                     if (in_groups('guru')) {
                                     ?>
-                                        <form id="form" action="<?= base_url(); ?>/Guru/updateguru" method="post">
-                                            <input type="hidden" name="id_guru" value="<?= user()->id ?>">
+                                        <form id="form" action="<?= base_url(); ?>/Guru/saveprofile" method="post">
+                                            <input type="hidden" value="<?= $guru['id_guru']; ?>" name="id_guru">
+                                            <input type="hidden" name="id" value="<?= $guru['id_akun'] ?>">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nama Guru</label>
-                                                        <input type="text" value="<?= (old('nama_guru')) ? old('nama_guru') : $guru['nama_guru']; ?>" class="form-control nama_guru" name="nama_guru" id="nama_guru">
+                                                        <input type="text" value="<?= (old('nama_guru')) ? old('nama_guru') : $guru['nama_guru'] ?>" class="form-control <?= ($validation->hasError('nama_guru')) ? 'is-invalid' : ''; ?>" name="nama_guru" id="nama_guru">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('nama_guru'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nomor Telepon</label>
-                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $guru['no_telp']; ?>" pattern=" ^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control no_telp" required="">
+                                                        <input type="tel" value="<?= (old('no_telp')) ? old('no_telp') : $guru['no_telp'] ?>" name="no_telp" id="no_telp" class="form-control <?= ($validation->hasError('no_telp')) ? 'is-invalid' : ''; ?>">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('no_telp'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,7 +96,10 @@
                                                 <div class="col-10">
                                                     <div class="form-group">
                                                         <label>Alamat</label>
-                                                        <textarea class="form-control alamat" name="alamat" id="alamat" cols="30" rows="5" required=""><?= (old('alamat')) ? old('alamat') : $guru['alamat']; ?></textarea>
+                                                        <textarea class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>" name="alamat" id="alamat" cols="30" rows="5"><?php echo (old('alamat')) ? old('alamat') : $guru['alamat'] ?></textarea>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('alamat'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -312,8 +326,8 @@
         </div>
     </div>
     <!-- End of Main Content -->
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal Operator -->
+    <div class="modal fade" id="operator" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <form action="<?php base_url() ?>/operator/gantiprofil/<?= user_id(); ?>" id="form" method="post" enctype="multipart/form-data">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -325,11 +339,42 @@
                         <div class="row">
                             <center>
                                 <div class="col-5">
-                                    <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>" id="img-preview">
-                                    <label for="userimage">Pilih Foto Profil</label>
+                                    <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>" id="img-preview-Operator">
+                                    <label for="userimage_Operator">Pilih Foto Profil</label>
                                     <input type="hidden" name="id" value="<?= user_id() ?>">
                                     <input type="hidden" name="gambarlama" value="<?= $users->user_image; ?>">
-                                    <input type="file" name="userimage" id="userimage" onchange="previewimg()">
+                                    <input type="file" name="userimage_Operator" id="userimage_Operator" onchange="previewimgO()">
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Ganti</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Operator -->
+    <div class="modal fade" id="guru" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form action="<?php base_url() ?>/Guru/gantiprofil/<?= user_id(); ?>" id="form" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Ganti Foto Profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <center>
+                                <div class="col-5">
+                                    <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>" id="img-preview-Guru">
+                                    <label for="userimage_Guru">Pilih Foto Profil</label>
+                                    <input type="hidden" name="id" value="<?= user_id() ?>">
+                                    <input type="hidden" name="gambarlama" value="<?= $users->user_image; ?>">
+                                    <input type="file" name="userimage_Guru" id="userimage_Guru" onchange="previewimgG()">
                                 </div>
                             </center>
                         </div>
@@ -347,16 +392,29 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-    function previewimg() {
-        const userimage = document.querySelector('#userimage');
-        const imgpreviw = document.querySelector('#img-preview');
+    function previewimgO() {
+        const userimageO = document.querySelector('#userimage_Operator');
+        const imgpreviwO = document.querySelector('#img-preview-Operator');
 
 
-        const fileimage = new FileReader();
-        fileimage.readAsDataURL(userimage.files[0]);
+        const fileimageO = new FileReader();
+        fileimageO.readAsDataURL(userimageO.files[0]);
 
-        fileimage.onload = function(e) {
-            imgpreviw.src = e.target.result;
+        fileimageO.onload = function(e) {
+            imgpreviwO.src = e.target.result;
+        }
+    }
+
+    function previewimgG() {
+        const userimageG = document.querySelector('#userimage_Guru');
+        const imgpreviwG = document.querySelector('#img-preview-Guru');
+
+
+        const fileimageG = new FileReader();
+        fileimageG.readAsDataURL(userimageG.files[0]);
+
+        fileimageG.onload = function(e) {
+            imgpreviwG.src = e.target.result;
         }
     }
 </script>

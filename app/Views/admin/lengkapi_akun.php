@@ -22,19 +22,26 @@
                                     <?php
                                     if (in_groups('guru')) {
                                     ?>
-                                        <form id="form" action="<?= base_url(); ?>/Guru/updateguru" method="post">
-                                            <input type="hidden" name="id_guru" value="<?= user()->id ?>">
+                                        <form id="form" action="<?= base_url(); ?>/Guru/savelengkapi" method="post">
+                                            <?= csrf_field(); ?>
+                                            <input type="hidden" name="id" value="<?= user()->id ?>">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nama Guru</label>
-                                                        <input type="text" value="<?= (old('nama_guru')) ? old('nama_guru') : $guru['nama_guru']; ?>" class="form-control nama_guru" name="nama_guru" id="nama_guru">
+                                                        <input type="text" value="<?= old('nama_guru'); ?>" class="form-control <?= ($validation->hasError('nama_guru')) ? 'is-invalid' : ''; ?>" name="nama_guru" id="nama_guru">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('nama_guru'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-5">
                                                     <div class="form-group">
                                                         <label>Nomor Telepon</label>
-                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $guru['no_telp']; ?>" pattern=" ^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control no_telp" required="">
+                                                        <input type="tel" value="<?= old('no_telp'); ?>" name="no_telp" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control <?= ($validation->hasError('no_telp')) ? 'is-invalid' : ''; ?>">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('no_telp'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -42,7 +49,10 @@
                                                 <div class="col-10">
                                                     <div class="form-group">
                                                         <label>Alamat</label>
-                                                        <textarea class="form-control alamat" name="alamat" id="alamat" cols="30" rows="5" required=""><?= (old('alamat')) ? old('alamat') : $guru['alamat']; ?></textarea>
+                                                        <textarea class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>" name="alamat" id="alamat" cols="30" rows="5"><?= old('alamat'); ?></textarea>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('alamat'); ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
