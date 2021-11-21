@@ -38,6 +38,19 @@
                     <span>Edit Fasilitas</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <?php if (empty($admin)) { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Admin/lengkapi/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Admin/profile/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } ?>
+            </li>
         <?php endif ?>
         <!-- role operator -->
         <?php if (in_groups('operator')) : ?>
@@ -150,10 +163,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
+                <?php if (empty($siswa)) { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Siswa/lengkapi/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Siswa/profile/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } ?>
             </li>
         <?php endif; ?>
 

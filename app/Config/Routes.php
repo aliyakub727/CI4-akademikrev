@@ -56,6 +56,11 @@ $routes->get('/admin/sliderku', 'Admin::sliderku', ['filter' => 'role:admin']);
 $routes->get('/admin/sliderku/(:any)', 'Admin::sliderku/$1', ['filter' => 'role:admin']);
 $routes->get('/admin/ubahslider/(:any)', 'Admin::ubahslider/$1', ['filter' => 'role:admin']);
 $routes->get('/admin/ubahdataslider/(:any)', 'Admin::ubahdataslider/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/profile/(:any)', 'Admin::profile/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/saveprofile/(:any)', 'Admin::saveprofile/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/lengkapi/(:any)', 'Admin::lengkapi/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/savelengkapi/(:any)', 'Admin::savelengkapi/$1', ['filter' => 'role:admin']);
+$routes->get('/admin/gantiprofile/(:any)', 'Admin::gantiprofile/$1', ['filter' => 'role:admin']);
 
 
 

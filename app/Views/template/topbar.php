@@ -161,30 +161,65 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <?php if (in_groups('guru')) { ?>
-                    <a class="dropdown-item" href="<?= base_url(); ?>/guru/profile/<?= user()->id; ?>">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                    </a>
+                    <?php if (empty($guru)) { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Guru/lengkapi/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } else { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Guru/profile/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } ?>
                 <?php } elseif (in_groups('operator')) { ?>
-                    <a class="dropdown-item" href="<?= base_url(); ?>/operator/profile/<?= user()->id; ?>">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                    </a>
+                    <?php if (empty($cek)) { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Operator/lengkapi/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } else { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Operator/profile/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } ?>
                 <?php } elseif (in_groups('kepalasekolah')) { ?>
-                    <a class="dropdown-item" href="<?= base_url(); ?>/kepalasekolah/profile/<?= user()->id; ?>">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                    </a>
+                    <?php if (empty($kepsek)) { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Kepalasekolah/lengkapi/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } else { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Kepalasekolah/profile/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } ?>
                 <?php } elseif (in_groups('admin')) { ?>
-                    <a class="dropdown-item" href="<?= base_url(); ?>/admin/profile/<?= user()->id; ?>">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                    </a>
+                    <?php if (empty($admin)) { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Admin/lengkapi/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } else { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Admin/profile/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } ?>
                 <?php } elseif (in_groups('siswa')) { ?>
-                    <a class="dropdown-item" href="<?= base_url(); ?>/siswa/profile/<?= user()->id; ?>">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                    </a>
+                    <?php if (empty($siswa)) { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Siswa/lengkapi/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } else { ?>
+                        <a class="dropdown-item" href="<?= base_url(); ?>/Siswa/profile/<?= user_id(); ?>">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>My Profile</span>
+                        </a>
+                    <?php } ?>
                 <?php } ?>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
