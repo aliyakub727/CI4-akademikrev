@@ -64,10 +64,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
+                <?php if (empty($cek)) { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/operator/lengkapi/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/operator/profile/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } ?>
             </li>
         <?php endif; ?>
 

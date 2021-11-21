@@ -10,6 +10,7 @@ use App\Models\TahunajaranModel;
 use App\Models\MapelModel;
 use App\Models\KelasModel;
 use App\Models\MasterdataModel;
+use App\Models\OperatorModel;
 
 class Operator extends BaseController
 {
@@ -22,6 +23,7 @@ class Operator extends BaseController
     protected $user;
     protected $tahunajaranmodel;
     protected $jurusan;
+    protected $operator;
 
     public function __construct()
     {
@@ -34,11 +36,13 @@ class Operator extends BaseController
         $this->db = \config\Database::connect();
         $this->tahunajaranmodel = new TahunajaranModel();
         $this->kelasmodel = new KelasModel();
+        $this->operator = new OperatorModel();
     }
 
     public function index()
     {
         $data = [
+            'cek' => $this->operator->findAll(),
             'judul' => 'SUZURAN | OPERATOR',
         ];
         return view('index', $data);
@@ -1131,9 +1135,55 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | ACCOUNT-GURU',
             'users' => $query->getRow(),
-            'guru' => $this->guru->detailakun($id),
+            'guru' => $this->gurumodel->detailakun($id),
             'mapel' => $this->mapel->getmapel(),
+            'operator' => $this->operator->detailakun($id),
         ];
         return view('admin/detailakun', $data);
+    }
+
+    public function lengkapi($id)
+    {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('users.id', $id);
+        $query = $this->builder->get();
+        $data = [
+            'users' => $query->getRow(),
+            'judul' => 'SUZURAN | ACCOUNT-GURU',
+        ];
+        return view('admin/lengkapi_akun', $data);
+    }
+
+    public function gantiprofil($id)
+    {
+        $filegambar = $this->request->getFile('userimage');
+
+        //cek gambar
+        $gambarlama = $this->request->getVar('gambarlama');
+        if ($gambarlama == 'default.svg') {
+            $namagambar = $filegambar->getRandomName();
+            //pindahkan gambar
+            $filegambar->move('img/fotoprofil/', $namagambar);
+        } elseif ($filegambar != $gambarlama) {
+            $namagambar = $filegambar->getRandomName();
+            //pindahkan gambar
+            $filegambar->move('img/fotoprofil/', $namagambar);
+            //hapus file lama
+            unlink('img/fotoprofil/' . $this->request->getVar('gambarlama'));
+        } else {
+
+            $namagambar = $this->request->getVar('gambarlama');
+        }
+
+        $this->user->save([
+            'id' => $id,
+            'user_image' => $namagambar
+        ]);
+
+        return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
     }
 }

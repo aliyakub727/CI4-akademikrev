@@ -15,50 +15,7 @@
             <!-- Page Heading -->
             <div class="">
                 <div class="row">
-                    <div class="col-4 col-sm-4 col-md-3 col-lg-3">
-                        <div class="card mb-3">
-                            <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ganti Profile</button>
-                        </div>
-                    </div>
                     <div class="col-8 col-sm-8 col-md-9 col-lg-9">
-                        <div class="card mb-3">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="card-body" id="m-account">
-                                    <form action="<?= base_url() ?>/admin/update" method="post">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" value="<?= $users->userid; ?>" name="id">
-                                        <div class="row mt-4">
-                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Username</label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" name="username" value="<?= (old('username')) ? old('username') : $users->username ?>">
-                                                        <a class="btn btn-outline-secondary" type="button" id="button-addon2">Edit</a>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <input type="email" readonly class="form-control" name="email" value="<?= (old('email')) ? old('email') : $users->email ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-9 col-md-6 col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Role</label>
-                                                    <input readonly type="text" class="form-control" name="description" value="<?= (old('description')) ? old('description') : $users->description ?>">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 ml-4 mt-1 mb-5">
-                                            <button type="submit" class="btn btn-primary btn-block">Simpan</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         <div class="card mb-3">
                             <div class="row">
                                 <div class="col-12 my-5 ml-5 mr-5">
@@ -220,7 +177,7 @@
                                                 <div class="col-9">
                                                     <div class="form-group">
                                                         <label>Nama Lengkap</label>
-                                                        <input autofocus type="text" value="<?= (old('nama_lengkap')) ? old('nama_lengkap') : $operator['nama_lengkap']; ?>" class="form-control" name="nama_lengkap" id="nama_lengkap">
+                                                        <input autofocus type="text" value="<?= old('nama_lengkap') ?>" class="form-control" name="nama_lengkap" id="nama_lengkap">
                                                     </div>
                                                 </div>
                                             </div>
@@ -238,7 +195,7 @@
                                                 <div class="col-3">
                                                     <div class="form-group">
                                                         <label>Tempat Lahir</label>
-                                                        <input type="text" value="<?= (old('tempat_lahir')) ? old('tempat_lahir') : $operator['tempat_lahir']; ?>" name="tempat_lahir" id="tempat_lahir" class="form-control">
+                                                        <input type="text" value="<?= old('tempat_lahir') ?>" name="tempat_lahir" id="tempat_lahir" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-3">
@@ -265,7 +222,7 @@
                                                 <div class="col-4">
                                                     <div class="form-group">
                                                         <label>Nomor Telepon</label>
-                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $operator['No_Telp']; ?>" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control">
+                                                        <input type="tel" name="no_telp" value="<?= old('no_telp') ?>" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -273,7 +230,7 @@
                                                 <div class="col-9">
                                                     <div class="form-group">
                                                         <label>Alamat</label>
-                                                        <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"><?= (old('alamat')) ? old('alamat') : $operator['Alamat']; ?></textarea>
+                                                        <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"><?= old('alamat') ?></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -289,53 +246,12 @@
         </div>
     </div>
     <!-- End of Main Content -->
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <form action="<?php base_url() ?>/operator/gantiprofil/<?= user_id(); ?>" id="form" method="post" enctype="multipart/form-data">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Ganti Foto Profil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <center>
-                                <div class="col-5">
-                                    <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>" id="img-preview">
-                                    <label for="userimage">Pilih Foto Profil</label>
-                                    <input type="hidden" name="id" value="<?= user_id() ?>">
-                                    <input type="hidden" name="gambarlama" value="<?= $users->user_image; ?>">
-                                    <input type="file" name="userimage" id="userimage" onchange="previewimg()">
-                                </div>
-                            </center>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Ganti</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    function previewimg() {
-        const userimage = document.querySelector('#userimage');
-        const imgpreviw = document.querySelector('#img-preview');
 
-
-        const fileimage = new FileReader();
-        fileimage.readAsDataURL(userimage.files[0]);
-
-        fileimage.onload = function(e) {
-            imgpreviw.src = e.target.result;
-        }
-    }
-</script>
 <!-- End of Content Wrapper -->
 <?= $this->endsection(); ?>
