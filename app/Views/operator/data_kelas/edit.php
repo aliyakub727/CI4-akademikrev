@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/operator/saveeditkelas" method="post">
+                        <?= csrf_field(); ?>
                         <input type="hidden" value="<?= $kelas['id_kelas']; ?>" name="id_kelas" id="id_kelas">
                         <div class="card">
                             <div class="card-header">

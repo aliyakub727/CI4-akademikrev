@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/operator/savekelas" method="post">
+                        <?= csrf_field(); ?>
                         <div class="card">
                             <div class="card-header">
                                 Data Kelas

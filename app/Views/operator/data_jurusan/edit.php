@@ -24,6 +24,7 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/saveeditjurusan" method="post">
+                                <?= csrf_field(); ?>
                                 <input type="hidden" value="<?= $jurusan['id_jurusan']; ?>" name="id_jurusan">
                                 <div class="col-6">
                                     <div class="form-group">

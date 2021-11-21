@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/operator/saveeditsiswa" method="post">
+                        <?= csrf_field(); ?>
                         <input type="hidden" value="<?= $siswa['id']; ?>" name="id">
                         <div class="card mt-3">
                             <div class="card-header">

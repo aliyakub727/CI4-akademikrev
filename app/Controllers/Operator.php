@@ -1138,6 +1138,7 @@ class Operator extends BaseController
             'guru' => $this->gurumodel->detailakun($id),
             'mapel' => $this->mapel->getmapel(),
             'operator' => $this->operator->detailakun($id),
+            'validation' => \Config\Services::validation(),
         ];
         return view('admin/detailakun', $data);
     }
@@ -1154,8 +1155,150 @@ class Operator extends BaseController
         $data = [
             'users' => $query->getRow(),
             'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'validation' => \Config\Services::validation(),
         ];
         return view('admin/lengkapi_akun', $data);
+    }
+
+    //save lengkapi
+    public function saveoperator()
+    {
+        if (!$this->validate([
+            'nama_lengkap' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama Harus diisi.',
+                ]
+            ],
+            'jenis_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis Kelamin Harus diisi.',
+                ]
+            ],
+            'tempat_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'tempat lahir Harus diisi.',
+                ]
+            ],
+            'tgl_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tanggal Lahir Harus diisi.',
+                ]
+            ],
+            'agama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Agama Harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required|is_unique[operator.No_Telp]',
+                'errors' => [
+                    'is_unique' => 'Nomor Sudah Terdaftar',
+                    'required' => 'Jenis Kelamin Harus diisi.',
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat Harus diisi.',
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/lengkapi/' . $this->request->getVar('id'))->withInput();
+        }
+        $this->operator->save([
+            'id_akun'   => $this->request->getVar('id'),
+            'nama_lengkap' => $this->request->getVar('nama_lengkap'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+            'Alamat'        => $this->request->getVar('alamat'),
+            'No_Telp'       => $this->request->getVar('no_telp'),
+            'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
+            'tempat_lahir'  => $this->request->getVar('tempat_lahir'),
+            'agama'     => $this->request->getVar('agama')
+
+        ]);
+        return redirect()->to('operator/profile/' . $this->request->getVar('id'));
+    }
+
+    //update
+    public function editoperator()
+    {
+        $nplama = $this->operator->getoperator(($this->request->getVar('id_operator')));
+
+        //cek tahun ajaran diganti atau engga
+        if ($nplama['No_Telp'] == $this->request->getVar('no_telp')) {
+            $rule_asw = 'required';
+        } else {
+            $rule_asw = 'required|is_unique[operator.No_Telp]';
+        }
+        if (!$this->validate([
+            'nama_lengkap' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama Harus diisi.',
+                ]
+            ],
+            'jenis_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis Kelamin Harus diisi.',
+                ]
+            ],
+            'tempat_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'tempat lahir Harus diisi.',
+                ]
+            ],
+            'tgl_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tanggal Lahir Harus diisi.',
+                ]
+            ],
+            'agama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Agama Harus diisi.',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => $rule_asw,
+                'errors' => [
+                    'is_unique' => 'Nomor Sudah Terdaftar',
+                    'required' => 'Jenis Kelamin Harus diisi.',
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat Harus diisi.',
+                ]
+            ],
+
+        ])) {
+
+            return redirect()->to('/operator/profile/' . $this->request->getVar('id'))->withInput();
+        }
+        $this->operator->save([
+            'id_operator' => $this->request->getVar('id_operator'),
+            'id_akun'   => $this->request->getVar('id'),
+            'nama_lengkap' => $this->request->getVar('nama_lengkap'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+            'Alamat'        => $this->request->getVar('alamat'),
+            'No_Telp'       => $this->request->getVar('no_telp'),
+            'tgl_lahir'     => $this->request->getVar('tgl_lahir'),
+            'tempat_lahir'  => $this->request->getVar('tempat_lahir'),
+            'agama'     => $this->request->getVar('agama')
+
+        ]);
+        return redirect()->to('operator/profile/' . $this->request->getVar('id'));
     }
 
     public function gantiprofil($id)

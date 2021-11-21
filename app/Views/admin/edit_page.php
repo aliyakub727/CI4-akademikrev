@@ -17,6 +17,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/admin/ubahdatapage" method="post" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
                         <input type="hidden" value="<?php echo $landing_page['id']; ?>" required>
                         <div class="form-group">
                             <label>Title</label>

@@ -23,6 +23,7 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/savejurusan" method="post">
+                                <?= csrf_field(); ?>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Nama Jurusan</label>

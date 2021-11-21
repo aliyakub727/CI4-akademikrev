@@ -24,6 +24,7 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/saveedittahunajaran" method="post">
+                                <?= csrf_field(); ?>
                                 <input type="hidden" value="<?= $tahun_ajaran['id_ajaran']; ?>" name="id_ajaran">
                                 <div class="form-group">
                                     <label>Tahun Ajaran</label>

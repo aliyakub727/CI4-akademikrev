@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/operator/saveeditguru" method="post">
+                        <?= csrf_field(); ?>
                         <input type="hidden" value="<?= $guru['id_guru']; ?>" name="id_guru">
                         <div class="card mt-3">
                             <div class="card-header">

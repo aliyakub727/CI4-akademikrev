@@ -23,6 +23,7 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/savetahunajaran" method="post">
+                                <?= csrf_field(); ?>
                                 <div class="form-group">
                                     <label>Tahun Ajaran</label>
                                     <input type="text" class="form-control" name="tahun_ajaran" id="tahun_ajaran" required>

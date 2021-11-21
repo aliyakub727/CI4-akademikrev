@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/operator/saveguru" method="post">
+                        <?= csrf_field(); ?>
                         <div class="card mt-3">
                             <div class="card-header">
                                 Hubungkan Akun

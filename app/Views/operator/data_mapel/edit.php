@@ -24,6 +24,7 @@
                         </div>
                         <div class="card-body">
                             <form id="form" action="<?= base_url(); ?>/operator/saveeditmapel" method="post">
+                                <?= csrf_field(); ?>
                                 <input type="hidden" value="<?= $mapel['id_mapel']; ?>" name="id_mapel">
                                 <div class="form-group">
                                     <label>Nama Mapel</label>

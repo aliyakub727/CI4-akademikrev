@@ -17,6 +17,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/admin/ubahdataslider" method="post" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
                         <input type="hidden" value="<?php echo $slider['id_slider']; ?>" name="id_slider" required>
                         <div class="form-group">
                             <label>Title</label>

@@ -10,7 +10,7 @@ class OperatorModel extends Model
     protected $primaryKey = "id_operator";
     protected $allowedFields = ['id_akun', 'nama_lengkap', 'jenis_kelamin', 'Alamat', 'No_Telp', 'tgl_lahir', 'tempat_lahir', 'agama'];
 
-    public function getguru($id_operator = false)
+    public function getoperator($id_operator = false)
     {
         if ($id_operator == false) {
             return $this->findAll();
