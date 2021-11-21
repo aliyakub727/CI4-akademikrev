@@ -195,10 +195,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/akun/profile/<?= user_id(); ?>">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
+                <?php if (empty($kepsek)) { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Kepalasekolah/lengkapi/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } else { ?>
+                    <a class="nav-link" href="<?= base_url(); ?>/Kepalasekolah/profile/<?= user_id(); ?>">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                <?php } ?>
             </li>
         <?php endif; ?>
 

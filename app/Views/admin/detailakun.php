@@ -22,6 +22,8 @@
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#operator">Ganti Profile</button>
                             <?php } elseif (in_groups('guru')) { ?>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#guru">Ganti Profile</button>
+                            <?php } elseif (in_groups('kepalasekolah')) { ?>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kepsek">Ganti Profile</button>
                             <?php } ?>
                         </div>
                     </div>
@@ -316,6 +318,95 @@
                                             </div>
                                             <button class="btn btn-success" type="submit">Simpan</button>
                                         </form>
+                                    <?php } elseif (in_groups('kepalasekolah')) { ?>
+                                        <form id="form" action="<?= base_url(); ?>/Kepalasekolah/saveprofile" method="post">
+                                            <?= csrf_field(); ?>
+                                            <input type="hidden" value="<?= $kepsek['id_kepala_sk'] ?>" name="id_kepsek">
+                                            <input type="hidden" value="<?= user()->id; ?>" name="id" id="id">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <div class="form-group">
+                                                        <label>Nama Lengkap</label>
+                                                        <input autofocus type="text" value="<?= (old('nama_lengkap')) ? old('nama_lengkap') : $kepsek['nama_lengkap']; ?>" class="form-control <?= ($validation->hasError('nama_lengkap')) ? 'is-invalid' : ''; ?>" name="nama_lengkap" id="nama_lengkap">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('nama_lengkap'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Jenis Kelamin</label>
+                                                        <select class="form-select form-control <?= ($validation->hasError('jenis_kelamin')) ? 'is-invalid' : ''; ?>" name="jenis_kelamin" id="jenis_kelamin">
+                                                            <option value="<?= (old('jenis_kelamin')) ? old('jenis_kelamin') : $kepsek['jenis_kelamin'] ?>" selected hidden><?= (old('jenis_kelamin')) ? old('jenis_kelamin') : $kepsek['jenis_kelamin'] ?></option>
+                                                            <option value="Laki-Laki">Laki-Laki</option>
+                                                            <option value="Perempuan">Perempuan</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('jenis_kelamin'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tempat Lahir</label>
+                                                        <input type="text" value="<?= (old('tempat_lahir')) ? old('tempat_lahir') : $kepsek['tempat_lahir']; ?>" name="tempat_lahir" id="tempat_lahir" class="form-control <?= ($validation->hasError('tempat_lahir')) ? 'is-invalid' : ''; ?>">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('tempat_lahir'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Lahir</label>
+                                                        <input type="text" value="<?= (old('tgl_lahir')) ? old('tgl_lahir') : $kepsek['tgl_lahir']; ?>" name="tgl_lahir" id="tgl_lahir" class="form-control <?= ($validation->hasError('tgl_lahir')) ? 'is-invalid' : ''; ?>">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('tgl_lahir'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Agama</label>
+                                                        <select class="form-select form-control <?= ($validation->hasError('agama')) ? 'is-invalid' : ''; ?>" name="agama" id="agama">
+                                                            <option value="<?= (old('agama')) ? old('agama') : $kepsek['agama'] ?>" selected hidden><?= (old('agama')) ? old('agama') : $kepsek['agama'] ?></option>
+                                                            <option value="Islam">Islam</option>
+                                                            <option value="Hindu">Hindu</option>
+                                                            <option value="Kristen">Kristen</option>
+                                                            <option value="Budha">Budha</option>
+                                                            <option value="Konghucu">Konghucu</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('agama'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>Nomor Telepon</label>
+                                                        <input type="tel" name="no_telp" value="<?= (old('no_telp')) ? old('no_telp') : $kepsek['no_telp']; ?>" pattern="^\d{12}$" title="12 numeric characters only" id="no_telp" class="form-control <?= ($validation->hasError('no_telp')) ? 'is-invalid' : ''; ?>">
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('no_telp'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <div class="form-group">
+                                                        <label>Alamat</label>
+                                                        <textarea class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>" name="alamat" id="alamat" cols="30" rows="5"><?= (old('alamat')) ? old('alamat') : $kepsek['alamat']; ?></textarea>
+                                                        <div class="invalid-feedback">
+                                                            <?= $validation->getError('alamat'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-success" type="submit">Simpan</button>
+                                        </form>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -387,6 +478,37 @@
             </div>
         </form>
     </div>
+
+    <!-- Modal Kepalasekolah -->
+    <div class="modal fade" id="kepsek" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form action="<?php base_url() ?>/Kepalasekolah/gantiprofil/<?= user_id(); ?>" id="form" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Ganti Foto Profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <center>
+                                <div class="col-5">
+                                    <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-circle" alt="<?= $users->username; ?>" id="img-preview-Kepsek">
+                                    <label for="userimage_Kepsek">Pilih Foto Profil</label>
+                                    <input type="hidden" name="id" value="<?= user_id() ?>">
+                                    <input type="hidden" name="gambarlama" value="<?= $users->user_image; ?>">
+                                    <input type="file" name="userimage_Kepsek" id="userimage_Kepsek" onchange="previewimgK()">
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Ganti</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -415,6 +537,19 @@
 
         fileimageG.onload = function(e) {
             imgpreviwG.src = e.target.result;
+        }
+    }
+
+    function previewimgK() {
+        const userimageK = document.querySelector('#userimage_Kepsek');
+        const imgpreviwK = document.querySelector('#img-preview-Kepsek');
+
+
+        const fileimageK = new FileReader();
+        fileimageK.readAsDataURL(userimageK.files[0]);
+
+        fileimageK.onload = function(e) {
+            imgpreviwK.src = e.target.result;
         }
     }
 </script>
