@@ -52,6 +52,7 @@ class Admin extends BaseController
         $query = $this->builder->get();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'users' => $query->getResultArray()
         ];
         return view('admin/listdata', $data);
@@ -66,6 +67,7 @@ class Admin extends BaseController
         $query = $this->builder->get();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'users' => $query->getRow()
         ];
         return view('admin/editakun', $data);
@@ -116,6 +118,7 @@ class Admin extends BaseController
         $query = $this->builder->get();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'users' => $query->getRow()
         ];
         return view('admin/detailakun', $data);
@@ -126,6 +129,7 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'users' => $this->innerjoin->getguru(),
+            'admin' => $this->admin->getadmin(),
             'guru' => $this->gurumodel->getguru()
 
         ];
@@ -144,6 +148,7 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'landing_page' =>  $this->pagemodel->getPage(),
+            'admin' => $this->admin->getadmin(),
         ];
         return view('admin/landing_page', $data);
     }
@@ -152,6 +157,7 @@ class Admin extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'landing_page' => $this->pagemodel->where('id', $id)->first(),
         ];
 
@@ -178,6 +184,7 @@ class Admin extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'slider' => $this->sliderku->getslider(),
         ];
         return view('admin/sliderku', $data);
@@ -187,6 +194,7 @@ class Admin extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
             'slider' => $this->sliderku->where('id_slider', $id_slider)->first(),
         ];
 

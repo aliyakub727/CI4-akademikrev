@@ -53,6 +53,7 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
+            'cek' => $this->operator->findAll(),
             'siswa' => $this->siswamodel->getsiswa(),
         ];
         return view('operator/data_siswa/index', $data);
@@ -64,6 +65,7 @@ class Operator extends BaseController
         // session();
         $data = [
             'judul' => 'Form Tambah Data Siswa',
+            'cek' => $this->operator->findAll(),
             'validation' => \Config\Services::validation(),
             'user' => $this->user->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -190,6 +192,7 @@ class Operator extends BaseController
         // session();
         $data = [
             'judul' => 'Form Edit Data Siswa',
+            'cek' => $this->operator->findAll(),
             'validation' => \Config\Services::validation(),
             'user' => $this->user->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -367,6 +370,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'guru' => $this->gurumodel->getguru(),
+            'cek' => $this->operator->findAll(),
             'user' => $this->user->findAll(),
             'mapel' => $this->mapel->getmapel(),
             'inner' => $this->gurumodel->joinguru(),
@@ -381,6 +385,7 @@ class Operator extends BaseController
             'judul' => 'Form Tambah Data Guru',
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru(),
+            'cek' => $this->operator->findAll(),
             'user' => $this->user->findAll(),
             'mapel' => $this->mapel->getmapel(),
         ];
@@ -450,6 +455,7 @@ class Operator extends BaseController
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru($id_guru),
             'user' => $this->user->findAll(),
+            'cek' => $this->operator->findAll(),
             'mapel' => $this->mapel->getmapel(),
         ];
         return view('operator/data_guru/edit', $data);
@@ -555,9 +561,37 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Akademik | Operator',
-            'kelas' => $this->kelasmodel->getkelas()
+            'kelas' => $this->kelasmodel->getkelas(),
+            'cek' => $this->operator->findAll(),
         ];
         return view('operator/data_kelas/index', $data);
+    }
+
+    public function uploadkelas()
+    {
+        if ($this->request->getMethod() == "post") {
+            $file = $this->request->getFile("file");
+            $file_name = $file->getTempName();
+            $kls = array();
+            $csv_data = array_map('str_getcsv', file($file_name));
+            if (count($csv_data) > 0) {
+                $index = 0;
+                foreach ($csv_data as $data) {
+                    if ($index > 0) {
+                        $kls[] = array(
+                            "nama_kelas" => $data[1],
+                        );
+                    }
+                    $index++;
+                }
+                $builder = $this->db->table('kelas');
+                $builder->insertBatch($kls);
+                $session = session();
+                $session->setFlashdata("success", "data csv berhasil diupload");
+                return redirect()->to('/Operator/datakelas');
+            }
+        }
+        return redirect()->to('/Operator/datakelas');
     }
 
     // tambah kelas
@@ -566,6 +600,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Tambah Data Kelas',
             'validation' => \Config\Services::validation(),
+            'cek' => $this->operator->findAll(),
         ];
         return view('operator/data_kelas/create', $data);
     }
@@ -601,6 +636,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Edit Data Kelas',
             'validation' => \Config\Services::validation(),
+            'cek' => $this->operator->findAll(),
             'kelas' => $this->kelasmodel->getkelas($id_kelas),
         ];
         return view('operator/data_kelas/edit', $data);
@@ -657,6 +693,7 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Akademik | Operator',
+            'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan()
         ];
         return view('operator/data_jurusan/index', $data);
@@ -668,6 +705,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
+            'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
@@ -715,6 +753,7 @@ class Operator extends BaseController
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
             'jurusan' => $this->jurusan->getjurusan($id_jurusan),
+            'cek' => $this->operator->findAll(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
         return view('operator/data_jurusan/edit', $data);
@@ -788,6 +827,7 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Akademik | Administrator',
+            'cek' => $this->operator->findAll(),
             'mapel' => $this->mapel->orderBy('nama_mapel', 'DESC')->findAll()
         ];
         return view('operator/data_mapel/index', $data);
@@ -799,6 +839,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Tambah Data Mapel',
             'validation' => \Config\Services::validation(),
+            'cek' => $this->operator->findAll(),
             'mapel' => $this->mapel->getmapel(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
@@ -841,6 +882,7 @@ class Operator extends BaseController
             'judul' => 'Form Edit Data Mapel',
             'validation' => \Config\Services::validation(),
             'mapel' => $this->mapel->getmapel($id_mapel),
+            'cek' => $this->operator->findAll(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
         return view('operator/data_mapel/edit', $data);
@@ -902,7 +944,8 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Akademik | Administrator',
-            'tahun_ajaran' => $this->tahunajaranmodel->gettahun()
+            'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
+            'cek' => $this->operator->findAll(),
         ];
         return view('operator/data_tahunajaran/index', $data);
     }
@@ -912,6 +955,7 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'Form Tambah Data Mapel',
+            'cek' => $this->operator->findAll(),
             'validation' => \Config\Services::validation(),
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -935,6 +979,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Tambah Data tahun AJaran',
             'validation' => \Config\Services::validation(),
+            'cek' => $this->operator->findAll(),
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun($id_ajaran),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
@@ -1004,6 +1049,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | Operator',
             'masterdata' => $this->masterdata->joindata(),
+            'cek' => $this->operator->findAll(),
         ];
         return view('operator/masterdata/masterdata', $data);
     }
@@ -1014,6 +1060,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'Form Tambah Data MasterData Pelajaran',
             'guru' => $this->gurumodel->getguru(),
+            'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),
             'kelas' => $this->kelasmodel->getkelas(),
@@ -1080,6 +1127,7 @@ class Operator extends BaseController
             'judul' => 'SUZURAN | Admin',
             'masterdata' => $this->masterdata->joindata1($id_master),
             'guru' => $this->gurumodel->getguru(),
+            'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),
             'kelas' => $this->kelasmodel->getkelas(),
@@ -1095,6 +1143,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | Operator',
             'siswa' => $this->siswamodel->getsiswa(),
+            'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
         return view('operator/laporan/laporansiswa', $data);
@@ -1106,6 +1155,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | Operator',
             'guru' => $this->gurumodel->joinguru(),
+            'cek' => $this->operator->findAll(),
             'mapel' => $this->mapel->getmapel()
         ];
         return view('operator/laporan/laporanguru', $data);
@@ -1117,6 +1167,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | Operator',
             'kelas' => $this->kelasmodel->getkelas(),
+            'cek' => $this->operator->findAll(),
             'masterdata' => $this->masterdata->joindata(),
         ];
         return view('operator/laporan/laporanmapel', $data);
@@ -1133,7 +1184,7 @@ class Operator extends BaseController
         $this->builder->where('users.id', $id);
         $query = $this->builder->get();
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | OPERATOR',
             'users' => $query->getRow(),
             'guru' => $this->gurumodel->detailakun($id),
             'mapel' => $this->mapel->getmapel(),
@@ -1154,7 +1205,7 @@ class Operator extends BaseController
         $query = $this->builder->get();
         $data = [
             'users' => $query->getRow(),
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | OPERATOR',
             'validation' => \Config\Services::validation(),
         ];
         return view('admin/lengkapi_akun', $data);

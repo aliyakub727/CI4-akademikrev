@@ -242,6 +242,7 @@ class KepalaSekolah extends BaseController
         $data = [
             'judul' => 'SUZURAN | KEPALA SEKOLAH',
             'siswa' => $this->siswamodel->getsiswa(),
+            'kepsek' => $this->kepsek->getkepsek(),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
         return view('kepalasekolah/data_siswa/index', $data);
@@ -253,6 +254,7 @@ class KepalaSekolah extends BaseController
         $data = [
             'judul' => 'SUZURAN | KEPALA SEKOLAH',
             'guru' => $this->guru->joinguru(),
+            'kepsek' => $this->kepsek->getkepsek(),
             'mapel' => $this->mapel->getmapel(),
         ];
         return view('kepalasekolah/data_guru/index', $data);

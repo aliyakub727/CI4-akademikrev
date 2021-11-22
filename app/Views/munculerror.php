@@ -59,9 +59,28 @@
                 </div>
             </div>
 
-            <a href="<?= base_url(); ?>/akun" class="flex-c-m s1-txt2 size3 how-btn">
-                Back to Website
-            </a>
+            <?php if (in_groups('admin')) { ?>
+                <a href="<?= base_url(); ?>/Admin" class="flex-c-m s1-txt2 size3 how-btn">
+                    Back to Website
+                </a>
+            <?php } elseif (in_groups('operator')) { ?>
+                <a href="<?= base_url(); ?>/Operator" class="flex-c-m s1-txt2 size3 how-btn">
+                    Back to Website
+                </a>
+            <?php } elseif (in_groups('siswa')) { ?>
+                <a href="<?= base_url(); ?>/Siswa" class="flex-c-m s1-txt2 size3 how-btn">
+                    Back to Website
+                </a>
+            <?php } elseif (in_groups('guru')) { ?>
+                <a href="<?= base_url(); ?>/Guru" class="flex-c-m s1-txt2 size3 how-btn">
+                    Back to Website
+                </a>
+            <?php } elseif (in_groups('kepalasekolah')) { ?>
+                <a href="<?= base_url(); ?>/Kepalasekolah" class="flex-c-m s1-txt2 size3 how-btn">
+                    Back to Website
+                </a>
+            <?php } ?>
+
         </div>
 
         <span class="s1-txt3 txt-center">

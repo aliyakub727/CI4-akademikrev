@@ -24,6 +24,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
+                                <form method="post" action="<?php echo site_url('Operator/uploadkelas') ?>" enctype="multipart/form-data">
+                                    <p>Cari file .csv - <input type="file" name="file" required /></p>
+                                    <p><button type="submit" class="btn btn-sm btn-success">Upload</button></p>
+                                </form>
                                 <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahkelas">Tambah
                                     Kelas</a>
                                 <?php if (session()->getFlashdata('Pesan')) : ?>
@@ -91,10 +95,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+
 <script>
-    $('#users-list').DataTable();
+    var table = $('#users-list').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+
+    });
+    // $('#users-list').DataTable();
 
     $(document).ready(function() {
         $('.btn-delete').on('click', function() {

@@ -27,7 +27,7 @@
                                 <?= session()->getFlashdata('Pesan'); ?>
                             </div>
                         <?php endif; ?>
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="data-list">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -61,4 +61,13 @@
 </div>
 <!-- End of Main Content -->
 <!-- End of Content Wrapper -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script>
+    $('#data-list').DataTable();
+</script>
 <?= $this->endsection(); ?>
