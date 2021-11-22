@@ -588,10 +588,10 @@ class Operator extends BaseController
                 $builder->insertBatch($kls);
                 $session = session();
                 $session->setFlashdata("success", "data csv berhasil diupload");
-                return redirect()->to('/Operator/datakelas');
+                return redirect()->to('/operator/datakelas');
             }
         }
-        return redirect()->to('/Operator/datakelas');
+        return redirect()->to('/operator/datakelas');
     }
 
     // tambah kelas

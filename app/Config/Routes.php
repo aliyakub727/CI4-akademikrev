@@ -71,13 +71,23 @@ $routes->get('/guru/index', 'Guru::index', ['filter' => 'role:guru']);
 $routes->get('/guru/index/*', 'Guru::index', ['filter' => 'role:guru']);
 $routes->get('/guru/*', 'Guru::index', ['filter' => 'role:guru']);
 $routes->get('/guru/tambahnilai', 'Guru::create', ['filter' => 'role:guru']);
-$routes->get('/guru/tambahnilai/*', 'Guru::create', ['filter' => 'role:guru']);
+$routes->get('/guru/profile/(:any)', 'Guru::profile/$1', ['filter' => 'role:guru']);
+$routes->get('/guru/saveprofile/(:any)', 'Guru::saveprofile/$1', ['filter' => 'role:guru']);
+$routes->get('/guru/lengkapi/(:any)', 'Guru::lengkapi/$1', ['filter' => 'role:guru']);
+$routes->get('/guru/savelengkapi/(:any)', 'Guru::savelengkapi/$1', ['filter' => 'role:guru']);
+$routes->get('/guru/gantiprofile/(:any)', 'Guru::gantiprofile/$1', ['filter' => 'role:guru']);
+$routes->get('/guru/tambahnilai/(:any)', 'Guru::tambahnilai/$1', ['filter' => 'role:guru']);
 
 // //route operator
 $routes->get('/operator', 'Operator::index', ['filter' => 'role:operator']);
 $routes->get('/operator/index', 'Operator::index', ['filter' => 'role:operator']);
 $routes->get('/operator/index/*', 'Operator::index', ['filter' => 'role:operator']);
 $routes->get('/operator/*', 'Operator::index', ['filter' => 'role:operator']);
+$routes->get('/operator/profile/(:any)', 'Operator::profile/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/editoperator/(:any)', 'Operator::editoperator/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/lengkapi/(:any)', 'Operator::lengkapi/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/saveoperator/(:any)', 'Operator::saveoperator/$1', ['filter' => 'role:operator']);
+$routes->get('/operator/gantiprofile/(:any)', 'Operator::gantiprofile/$1', ['filter' => 'role:operator']);
 
 //siswa
 $routes->get('/operator/datasiswa', 'Operator::datasiswa', ['filter' => 'role:operator']);
@@ -109,6 +119,7 @@ $routes->get('/operator/deleteguru/(:num)', 'Operator::deleteguru/$1', ['filter'
 
 //kelas
 $routes->get('/operator/datakelas', 'Operator::datakelas', ['filter' => 'role:operator']);
+$routes->get('/operator/uploadkelas', 'Operator::uploadkelas', ['filter' => 'role:operator']);
 $routes->get('/operator/datakelas/(:any)', 'Operator::datakelas/$1', ['filter' => 'role:operator']);
 $routes->get('/operator/tambahkelas', 'Operator::tambahkelas', ['filter' => 'role:operator']);
 $routes->get('/operator/tambahkelas/(:any)', 'Operator::tambahkelas/$1', ['filter' => 'role:operator']);

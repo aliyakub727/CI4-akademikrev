@@ -118,7 +118,7 @@ class KepalaSekolah extends BaseController
 
         ])) {
 
-            return redirect()->to('/Kepalasekolah/lengkapi/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/kepalasekolah/lengkapi/' . $this->request->getVar('id'))->withInput();
         }
         $this->kepsek->save([
             'id_akun'   => $this->request->getVar('id'),
@@ -131,7 +131,7 @@ class KepalaSekolah extends BaseController
             'agama'     => $this->request->getVar('agama')
 
         ]);
-        return redirect()->to('Kepalasekolah/profile/' . $this->request->getVar('id'));
+        return redirect()->to('kepalasekolah/profile/' . $this->request->getVar('id'));
     }
 
     public function saveprofile()
@@ -191,7 +191,7 @@ class KepalaSekolah extends BaseController
 
         ])) {
 
-            return redirect()->to('/Kepalasekolah/profile/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/kepalasekolah/profile/' . $this->request->getVar('id'))->withInput();
         }
         $this->kepsek->save([
             'id_kepala_sk' => $this->request->getVar('id_kepsek'),
@@ -205,7 +205,7 @@ class KepalaSekolah extends BaseController
             'agama'     => $this->request->getVar('agama')
 
         ]);
-        return redirect()->to('Kepalasekolah/profile/' . $this->request->getVar('id'));
+        return redirect()->to('kepalasekolah/profile/' . $this->request->getVar('id'));
     }
 
     public function gantiprofil($id)
@@ -234,7 +234,7 @@ class KepalaSekolah extends BaseController
             'user_image' => $namagambar
         ]);
 
-        return redirect()->to('/Operator/profile/' . $this->request->getVar('id'));
+        return redirect()->to('/kepalasekolah/profile/' . $this->request->getVar('id'));
     }
 
     public function datasiswa()

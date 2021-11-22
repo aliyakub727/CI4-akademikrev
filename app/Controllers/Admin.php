@@ -140,7 +140,7 @@ class Admin extends BaseController
     {
         $this->uss->delete($id);
         session()->setFlashdata('Pesan', 'Data Berhasil Dihapus.');
-        return redirect()->to('/acoount');
+        return redirect()->to('/akun');
     }
 
     public function landing_page()
@@ -229,21 +229,21 @@ class Admin extends BaseController
         $this->builder->where('users.id', $id);
         $query = $this->builder->get();
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | ADMIN',
             'users' => $query->getRow(),
             'admin' => $this->admin->detailakun($id),
             'validation' => \Config\Services::validation(),
         ];
-        return view('Admin/detailakun', $data);
+        return view('admin/detailakun', $data);
     }
 
     public function lengkapi($id)
     {
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | ADMIN',
             'validation' => \Config\Services::validation(),
         ];
-        return view('Admin/lengkapi_akun', $data);
+        return view('admin/lengkapi_akun', $data);
     }
 
     public function savelengkapi()
@@ -295,7 +295,7 @@ class Admin extends BaseController
 
         ])) {
 
-            return redirect()->to('/Admin/lengkapi/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/admin/lengkapi/' . $this->request->getVar('id'))->withInput();
         }
         $this->admin->save([
             'id_akun'   => $this->request->getVar('id'),
@@ -308,7 +308,7 @@ class Admin extends BaseController
             'agama'     => $this->request->getVar('agama')
 
         ]);
-        return redirect()->to('Admin/profile/' . $this->request->getVar('id'));
+        return redirect()->to('admin/profile/' . $this->request->getVar('id'));
     }
 
     public function saveprofile()
@@ -368,7 +368,7 @@ class Admin extends BaseController
 
         ])) {
 
-            return redirect()->to('/Admin/profile/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/admin/profile/' . $this->request->getVar('id'))->withInput();
         }
         $this->admin->save([
             'id_admin' => $this->request->getVar('id_admin'),
@@ -382,7 +382,7 @@ class Admin extends BaseController
             'agama'     => $this->request->getVar('agama')
 
         ]);
-        return redirect()->to('Admin/profile/' . $this->request->getVar('id'));
+        return redirect()->to('admin/profile/' . $this->request->getVar('id'));
     }
 
     public function gantiprofil($id)
@@ -411,6 +411,6 @@ class Admin extends BaseController
             'user_image' => $namagambar
         ]);
 
-        return redirect()->to('/Operator/profile/' . $this->request->getVar('id'));
+        return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
     }
 }

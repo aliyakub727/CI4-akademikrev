@@ -118,7 +118,7 @@ class Guru extends BaseController
             ],
         ])) {
 
-            return redirect()->to('/Guru/lengkapi/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/guru/lengkapi/' . $this->request->getVar('id'))->withInput();
         }
         $this->guru->save([
             'id_akun' => $this->request->getVar('id'),
@@ -127,7 +127,7 @@ class Guru extends BaseController
             'no_telp' => $this->request->getVar('no_telp')
         ]);
 
-        return redirect()->to('/Guru/Profile/' . $this->request->getVar('id'));
+        return redirect()->to('/guru/Profile/' . $this->request->getVar('id'));
     }
 
     public function saveprofile()
@@ -162,7 +162,7 @@ class Guru extends BaseController
             ],
         ])) {
 
-            return redirect()->to('/Guru/profile/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/guru/profile/' . $this->request->getVar('id'))->withInput();
         }
         $this->guru->save([
             'id_guru' => $this->request->getVar('id_guru'),
@@ -172,7 +172,7 @@ class Guru extends BaseController
             'no_telp' => $this->request->getVar('no_telp')
         ]);
 
-        return redirect()->to('/Guru/Profile/' . $this->request->getVar('id'));
+        return redirect()->to('/guru/Profile/' . $this->request->getVar('id'));
     }
 
     public function gantiprofil($id)
@@ -201,7 +201,7 @@ class Guru extends BaseController
             'user_image' => $namagambar
         ]);
 
-        return redirect()->to('/Operator/profile/' . $this->request->getVar('id'));
+        return redirect()->to('/guru/profile/' . $this->request->getVar('id'));
     }
 
 
