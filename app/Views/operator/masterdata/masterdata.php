@@ -60,7 +60,6 @@
                     </div>
                 </div>
 
-
                 <!-- Delete -->
 
                 <form action="/operator/deletemasterdatapelajaran" method="post">
@@ -68,14 +67,14 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Data</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Siswa</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
 
-                                    <h4>Are you sure want to delete this Data?</h4>
+                                    <h4>Are you sure want to delete this Data Siswa?</h4>
 
                                 </div>
                                 <div class="modal-footer">
@@ -108,29 +107,6 @@
 
 
     $(document).ready(function() {
-        $('.btn-edit').on('click', function() {
-
-            // get data from button edit
-            const id = $(this).data('id');
-            const tahun_ajaran = $(this).data('tahun_ajaran');
-            const nis = $(this).data('nis');
-            const nama_lengkap = $(this).data('nama_lengkap');
-            const kelas = $(this).data('kelas');
-            const jurusan = $(this).data('jurusan');
-            const nama_walikelas = $(this).data('nama_walikelas');
-
-            // Set data to Form Edit
-            $('.id').val(id);
-            $('.tahun_ajaran').val(tahun_ajaran);
-            $('.nis').val(nis);
-            $('.nama_lengkap').val(nama_lengkap);
-            $('.kelas').val(kelas);
-            $('.jurusan').val(jurusan);
-            $('.nama_walikelas').val(nama_walikelas);
-
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
 
         $('.btn-delete').on('click', function() {
 

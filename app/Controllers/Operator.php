@@ -39,21 +39,21 @@ class Operator extends BaseController
         $this->operator = new OperatorModel();
     }
 
-    public function index()
+    public function index($user_id)
     {
         $data = [
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'judul' => 'SUZURAN | OPERATOR',
         ];
         return view('index', $data);
     }
 
     //munculin data siswa
-    public function datasiswa()
+    public function datasiswa($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'siswa' => $this->siswamodel->getsiswa(),
         ];
         return view('operator/data_siswa/index', $data);
@@ -359,7 +359,7 @@ class Operator extends BaseController
     }
 
     // nampilin data Guru
-    public function dataguru()
+    public function dataguru($user_id)
     {
 
         // $this->builder = $this->db->table('mapel');
@@ -370,7 +370,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'guru' => $this->gurumodel->getguru(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'user' => $this->user->findAll(),
             'mapel' => $this->mapel->getmapel(),
             'inner' => $this->gurumodel->joinguru(),
@@ -557,12 +557,12 @@ class Operator extends BaseController
 
 
     // menampilkan data kelas
-    public function datakelas()
+    public function datakelas($user_id)
     {
         $data = [
             'judul' => 'Akademik | Operator',
             'kelas' => $this->kelasmodel->getkelas(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/data_kelas/index', $data);
     }
@@ -589,6 +589,43 @@ class Operator extends BaseController
                 $session = session();
                 $session->setFlashdata("success", "data csv berhasil diupload");
                 return redirect()->to('/operator/datakelas');
+            }
+        }
+        return redirect()->to('/operator/datakelas');
+    }
+    public function uploadsiswa()
+    {
+        if ($this->request->getMethod() == "post") {
+            $file = $this->request->getFile("file");
+            $file_name = $file->getTempName();
+            $siswa = array();
+            $csv_data = array_map('str_getcsv', file($file_name));
+            if (count($csv_data) > 0) {
+                $index = 0;
+                foreach ($csv_data as $data) {
+                    if ($index > 0) {
+                        $siswa[] = array(
+                            "id_akun" => $data[1],
+                            "nis" => $data[2],
+                            "nama_lengkap" => $data[3],
+                            "alamat" => $data[4],
+                            "tgl_lahir" => $data[5],
+                            "tempat_lahir" => $data[6],
+                            "agama" => $data[7],
+                            "nama_orang_tua" => $data[8],
+                            "alamat_ortu" => $data[9],
+                            "no_telp_ortu" => $data[10],
+                            "jurusan" => $data[11],
+                            "jenis_kelamin" => $data[12],
+                        );
+                    }
+                    $index++;
+                }
+                $builder = $this->db->table('siswa');
+                $builder->insertBatch($siswa);
+                $session = session();
+                $session->setFlashdata("success", "data csv berhasil diupload");
+                return redirect()->to('/operator/datasiswa');
             }
         }
         return redirect()->to('/operator/datakelas');
@@ -689,11 +726,11 @@ class Operator extends BaseController
     }
 
     // menampilkan data jurusan
-    public function datajurusan()
+    public function datajurusan($user_id)
     {
         $data = [
             'judul' => 'Akademik | Operator',
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'jurusan' => $this->jurusan->getjurusan()
         ];
         return view('operator/data_jurusan/index', $data);
@@ -823,11 +860,11 @@ class Operator extends BaseController
 
     //MAPEL
 
-    public function datamapel()
+    public function datamapel($user_id)
     {
         $data = [
             'judul' => 'Akademik | Administrator',
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'mapel' => $this->mapel->orderBy('nama_mapel', 'DESC')->findAll()
         ];
         return view('operator/data_mapel/index', $data);
@@ -1044,12 +1081,12 @@ class Operator extends BaseController
     }
 
     // master data pelajaran
-    public function masterdatapelajaran()
+    public function masterdatapelajaran($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | Operator',
             'masterdata' => $this->masterdata->joindata(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/masterdata/masterdata', $data);
     }
@@ -1202,36 +1239,36 @@ class Operator extends BaseController
     }
 
     // laporan siswa
-    public function laporansiswa()
+    public function laporansiswa($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | Operator',
             'siswa' => $this->siswamodel->getsiswa(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
         return view('operator/laporan/laporansiswa', $data);
     }
 
     // Laporan Guru
-    public function laporanguru()
+    public function laporanguru($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | Operator',
             'guru' => $this->gurumodel->joinguru(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'mapel' => $this->mapel->getmapel()
         ];
         return view('operator/laporan/laporanguru', $data);
     }
 
     // Laporan Mapel
-    public function laporanmapel()
+    public function laporanmapel($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | Operator',
             'kelas' => $this->kelasmodel->getkelas(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'masterdata' => $this->masterdata->joindata(),
         ];
         return view('operator/laporan/laporanmapel', $data);

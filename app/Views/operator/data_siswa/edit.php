@@ -29,10 +29,14 @@
                                     <div class="form-group">
                                         <label>ID Akun</label>
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?>" data-live-search="true">
-                                            <option value="<?= (old('id_akun')) ? old('id_akun') : $siswa['id_akun'] ?>" selected hidden><?= (old('id_akun')) ? old('id_akun') : $siswa['id_akun'] ?></option>
-                                            <!-- <option selected value="">Pilih Akun Siswa</option> -->
                                             <?php foreach ($user as $as) : ?>
-                                                <option value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <?php
+                                                if ($siswa['id_akun'] == $as->id) {
+                                                    $idakun1 = 'selected';
+                                                } else {
+                                                    $idakun1 = '';
+                                                } ?>
+                                                <option <?= $idakun1 ?> value="<?= $as->id; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">

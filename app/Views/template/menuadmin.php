@@ -73,11 +73,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/Operator/masterdatapelajaran/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
-                    <span>Master Data</span>
+                    <span>Set Kelas</span>
                 </a>
             </li>
             <li class="nav-item">
-                <?php if (empty($cek['id_operator'])) { ?>
+                <?php if (empty($cek)) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Operator/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>

@@ -50,6 +50,7 @@ font-family: 'Holtwood One SC', serif; ">Master Pelajaran</h1>
                                     foreach ($nis as $nis) {
                                         echo '<option name="nis"  value="' . $nis['id'] . '">' . $nis['nis'] . '</option>';
                                         $jsArray .= "prdName['" . $nis['id'] . "'] = {nama_lengkap:'" . addslashes($nis['nama_lengkap']) . "'};\n";
+                                        $jsArray .= "prdName['" . $nis['jurusan'] . "'] = {nama_lengkap:'" . addslashes($nis['jurusan']) . "'};\n";
                                     }
                                     ?>
                                 </select>
@@ -84,7 +85,13 @@ font-family: 'Holtwood One SC', serif; ">Master Pelajaran</h1>
                                 <select class="selectpicker jurusan form-control <?= ($validation->hasError('jurusan')) ? 'is-invalid' : ''; ?>" data-live-search="true" name="jurusan" id="jurusan">
                                     <option value="" selected>Pilih jurusan</option>
                                     <?php foreach ($jurusan as $jur) : ?>
-                                        <option value="<?= $jur['id_jurusan']; ?>"><?= $jur['jurusan']; ?></option>
+                                        <?php
+                                        if ($nis['jurusan'] == $jur['jurusan']) {
+                                            $jurusan1 = 'selected';
+                                        } else {
+                                            $jurusan1 = '';
+                                        } ?>
+                                        <option <?= $jurusan1 ?> value="<?= $jur['id_jurusan']; ?>"><?= $jur['jurusan']; ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <div class="invalid-feedback">
@@ -121,6 +128,8 @@ font-family: 'Holtwood One SC', serif; ">Master Pelajaran</h1>
 
 <script type="text/javascript">
     <?php echo $jsArray; ?>
+    const nis = getElementById('id');
+    $('#jurusan').val(nis);
 
     function changeValue(id) {
         document.getElementById('nama_lengkap').value = prdName[id].nama_lengkap;

@@ -31,8 +31,13 @@
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?> " data-live-search="true">
                                             <option selected value="">Pilih Akun</option>
                                             <?php foreach ($user as $as) : ?>
-                                                <option selected hidden value="<?= (old('id_akun')) ? old('id_akun') : $as->id ?>"><?= (old('id_akun')) ? old('id_akun') : $as->username ?></option>
-                                                <option value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <?php
+                                                if ($guru['id_akun'] == $as->id) {
+                                                    $idakun1 = 'selected';
+                                                } else {
+                                                    $idakun1 = '';
+                                                } ?>
+                                                <option <?= $idakun1 ?> value="<?= $as->id; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">
@@ -54,8 +59,13 @@
                                             <select name="id_mapel" id="id_mapel" class="selectpicker form-control form-select <?= ($validation->hasError('id_mapel')) ? 'is-invalid' : ''; ?>" data-live-search="true">
                                                 <option selected value="">Pilih id Mata pelajaran</option>
                                                 <?php foreach ($mapel as $ak) : ?>
-                                                    <option selected hidden value="<?= (old('id_mapel')) ? old('id_mapel') : $ak['id_mapel'] ?>"><?= (old('id_mapel')) ? old('id_mapel') : $ak['nama_mapel'] ?></option>
-                                                    <option value="<?= $ak['id_mapel']; ?>"><?= $ak['nama_mapel']; ?></option>
+                                                    <?php
+                                                    if ($guru['id_mapel'] == $ak['id_mapel']) {
+                                                        $idmapel1 = 'selected';
+                                                    } else {
+                                                        $idmapel1 = '';
+                                                    } ?>
+                                                    <option <?= $idmapel1 ?> value="<?= $ak['id_mapel']; ?>"><?= $ak['nama_mapel']; ?></option>
                                                 <?php endforeach ?>
                                             </select>
                                             <div class="invalid-feedback">
