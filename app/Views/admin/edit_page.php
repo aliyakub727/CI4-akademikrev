@@ -18,7 +18,8 @@
                 <div class="container">
                     <form id="form" action="<?= base_url(); ?>/admin/ubahdatapage" method="post" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
-                        <input type="hidden" value="<?php echo $landing_page['id']; ?>" required>
+                        <input type="hidden" value="<?php echo $landing_page['background']; ?>" name="gambarlama">
+                        <input type="hidden" name="id" value="<?php echo $landing_page['id']; ?>" required>
                         <div class="form-group">
                             <label>Title</label>
                             <input type="text" class="form-control" name="title" id="title" value="<?php echo $landing_page['title']; ?>" required>
@@ -33,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label>Background</label>
-                            <input type="file" class="form-control" name="background" id="background" value="<?php echo $landing_page['background']; ?>" required>
+                            <input type="file" class="form-control" name="background" id="background">
                         </div>
                         <button class="btn btn-success" type="submit">Ubah Data</button>
                         <button class="btn btn-danger" data-dismiss="modal">Close</button>

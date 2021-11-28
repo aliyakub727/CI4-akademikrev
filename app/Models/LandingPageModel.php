@@ -8,14 +8,13 @@ class LandingPageModel extends Model
 {
     protected $primaryKey = "id";
     protected $table = "landing_page";
-    protected $allowedFields = ['title','judul','isi','background'];
+    protected $allowedFields = ['title', 'judul', 'isi', 'background'];
 
-    public function getPage($title = false)
+    public function getPage($id = false)
     {
-        if ($title == false) {
+        if ($id == false) {
             return $this->findAll();
         }
         return $this->where(['id' => $id])->first();
     }
-
 }

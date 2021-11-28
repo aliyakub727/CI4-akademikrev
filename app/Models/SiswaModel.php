@@ -16,6 +16,12 @@ class SiswaModel extends Model
         }
         return $this->where(['id' => $id])->first();
     }
+
+    public function detailakun($id)
+    {
+        return $this->where(['id_akun' => $id])->first();
+    }
+
     public function updateSiswa($data, $id)
     {
         $query = $this->db->table('siswa')->update($data, array('id' => $id));

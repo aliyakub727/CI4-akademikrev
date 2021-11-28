@@ -60,7 +60,7 @@ class Admin extends BaseController
 
     public function editakun($id)
     {
-        $this->builder->select('users.id as userid, username, email, fullname, user_image, name, description, password_hash');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
         $this->builder->where('users.id', $id);
@@ -73,42 +73,6 @@ class Admin extends BaseController
         return view('admin/editakun', $data);
     }
 
-    public function update()
-    {
-
-
-        // if (!$this->validate([
-        //     // 'judul' => 'required|is_unique[komik.judul]'
-        //     'inama_minuman' => [
-        //         'rules' => $rule_nama,
-        //         'errors' => [
-        //             'required' => 'Nama minuman Harus diisi.',
-        //             'is_unique' => 'Nama minuman Sudah terdaftar.'
-        //         ]
-        //     ],
-        //     'ipict_minuman' => [
-        //         'rules' => 'max_size[ipict_minuman,1024]|is_image[ipict_minuman]|mime_in[ipict_minuman,image/jpg,image/jpeg,image/png]',
-        //         'errors' => [
-        //             'max_size' => 'Ukuran terlalu besar',
-        //             'is_image' => 'Yang anda pilih bukan gambar',
-        //             'mime_in' => 'Yang anda pilih bukan gambar'
-        //         ]
-        //     ]
-
-        // ])) {
-        //     return redirect()->to('/minuman/edit/' . $this->request->getVar('id'))->withInput();
-
-        // $this->uss->save([
-        //     'id' => $this->request->getVar('id'),
-        //     'username' => $this->request->getVar('username'),
-        //     'password_hash' => $this->request->getPost('password'),
-        //     'reset_hash'    => null,
-        //     'reset_at'         => date('Y-m-d H:i:s'),
-        //     'reset_expires'    => null,
-        //     'force_pass_reset' => false,
-        // ]);
-        return redirect()->to('/acoount');
-    }
     public function detail($id)
     {
         $this->builder->select('users.id as userid, username, email, fullname, user_image, name, description, password_hash');
@@ -136,19 +100,39 @@ class Admin extends BaseController
         return view('admin/createakun', $data);
     }
 
-    public function deleteakun($id)
+    public function deleteakun()
     {
-        $this->uss->delete($id);
+        $id = $this->request->getVar('userid');
+        $name = $this->request->getVar('name');
+        if ($id->getError() == 4) {
+            if ($name == 'admin') {
+                $this->admin->detele($id);
+                $this->uss->delete($id);
+            }
+        } else {
+            $this->uss->delete($id);
+        }
         session()->setFlashdata('Pesan', 'Data Berhasil Dihapus.');
-        return redirect()->to('/akun');
+        return redirect()->to('/admin/dataakun');
     }
 
-    public function landing_page()
+    public function updateakun()
+    {
+        $id = $this->request->getPost('id');
+        $data = [
+            'password' => $this->request->getPost('password_hash'),
+            'username' => $this->request->getPost('username'),
+            'email'    => $this->request->getPost('email'),
+        ];
+        $this->uss->update($id, $data);
+        return redirect()->to('/admin/dataakun');
+    }
+    public function landing_page($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'landing_page' =>  $this->pagemodel->getPage(),
-            'admin' => $this->admin->getadmin(),
+            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/landing_page', $data);
     }
@@ -168,23 +152,34 @@ class Admin extends BaseController
     {
         $id = $this->request->getVar('id');
         $dataGambar = $this->request->getFile('background');
-        $fileName = $dataGambar->getRandomName();
+        $gambarlama = $this->request->getVar('gambarlama');
+        if ($dataGambar->getError() == 4) {
+            $dataGambar = $this->request->getVar('gambarlama');
+            $namagambar = $this->request->getVar('gambarlama');
+        } elseif ($dataGambar == $gambarlama) {
+            $namagambar = $this->request->getVar('gambarlama');
+        } else {
+            $namagambar = $dataGambar->getRandomName();
+            //pindahkan gambar
+            $dataGambar->move('img/landingpage/', $namagambar);
+            //hapus file lama
+            unlink('img/landingpage/' . $this->request->getVar('gambarlama'));
+        }
         $data = [
             'title' => $this->request->getVar('title'),
             'judul' => $this->request->getVar('judul'),
             'isi' => $this->request->getVar('isi'),
-            'background' => $fileName
+            'background' => $namagambar
         ];
-        $dataGambar->move('img/', $fileName);
         $this->pagemodel->update($id, $data);
         return $this->response->redirect(site_url('admin/landing_page'));
     }
 
-    public function sliderku()
+    public function sliderku($user_id)
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
-            'admin' => $this->admin->getadmin(),
+            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
             'slider' => $this->sliderku->getslider(),
         ];
         return view('admin/sliderku', $data);
@@ -205,15 +200,26 @@ class Admin extends BaseController
     {
         $id_slider = $this->request->getVar('id_slider');
         $dataGambar = $this->request->getFile('gambar_slider');
-        $fileName = $dataGambar->getRandomName();
+        $gambarlama = $this->request->getVar('gambarlama');
+
+        if ($dataGambar->getError() == 4) {
+            $dataGambar = $this->request->getVar('gambarlama');
+            $namagambar = $this->request->getVar('gambarlama');
+        } elseif ($dataGambar == $gambarlama) {
+            $namagambar = $this->request->getVar('gambarlama');
+        } else {
+            $namagambar = $dataGambar->getRandomName();
+            //pindahkan gambar
+            $dataGambar->move('img/slider/', $namagambar);
+            //hapus file lama
+            unlink('img/slider/' . $this->request->getVar('gambarlama'));
+        }
         $data = [
             'title' => $this->request->getVar('title'),
             'deskripsi' => $this->request->getVar('deskripsi'),
-            'gambar_slider' => $fileName
+            'gambar_slider' => $namagambar
         ];
 
-
-        $dataGambar->move('img/', $fileName);
         $this->sliderku->update($id_slider, $data);
         return $this->response->redirect(site_url('admin/sliderku'));
     }
@@ -221,6 +227,7 @@ class Admin extends BaseController
     // profile
     public function profile($id)
     {
+
         $db      = \Config\Database::connect();
         $this->builder = $db->table('users');
         $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
@@ -234,10 +241,11 @@ class Admin extends BaseController
             'admin' => $this->admin->detailakun($id),
             'validation' => \Config\Services::validation(),
         ];
+
         return view('admin/detailakun', $data);
     }
 
-    public function lengkapi($id)
+    public function lengkapi()
     {
         $data = [
             'judul' => 'SUZURAN | ADMIN',
@@ -387,7 +395,7 @@ class Admin extends BaseController
 
     public function gantiprofil($id)
     {
-        $filegambar = $this->request->getFile('userimage');
+        $filegambar = $this->request->getFile('userimage_Admin');
 
         //cek gambar
         $gambarlama = $this->request->getVar('gambarlama');
@@ -406,11 +414,86 @@ class Admin extends BaseController
             $namagambar = $this->request->getVar('gambarlama');
         }
 
-        $this->user->save([
+        $this->usermodel->save([
             'id' => $id,
             'user_image' => $namagambar
         ]);
 
-        return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
+        return redirect()->to('/admin/profile/' . $this->request->getVar('id'));
+    }
+
+    public function fasilitas($user_id)
+    {
+        $data = [
+            'judul' => 'SUZURAN | ADMIN',
+            'fasilitas' =>  $this->about->getfasilitas(),
+            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
+        ];
+        return view('admin/fasilitas', $data);
+    }
+
+    public function ubahfasilitas($id)
+    {
+        $data = [
+            'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
+            'fasilitas' => $this->about->where('id', $id)->first(),
+        ];
+
+        return view('admin/edit_fasilitas', $data);
+    }
+
+    public function ubahdatafasilitas()
+    {
+        $id = $this->request->getVar('id');
+        $dataGambar = $this->request->getFile('gambar');
+        $gambarlama = $this->request->getVar('gambarlama');
+
+        if ($dataGambar->getError() == 4) {
+            $dataGambar = $this->request->getVar('gambarlama');
+            $namagambar = $this->request->getVar('gambarlama');
+        } elseif ($dataGambar == $gambarlama) {
+            $namagambar = $this->request->getVar('gambarlama');
+        } else {
+            $namagambar = $dataGambar->getRandomName();
+            //pindahkan gambar
+            $dataGambar->move('img/fasilitas/', $namagambar);
+            //hapus file lama
+            unlink('img/fasilitas/' . $this->request->getVar('gambarlama'));
+        }
+        $data = [
+            'fasilitas' => $this->request->getVar('fasilitas'),
+            'deskripsi' => $this->request->getVar('deskripsi'),
+            'gambar' => $namagambar
+        ];
+
+        $this->about->update($id, $data);
+        return $this->response->redirect(site_url('admin/fasilitas'));
+    }
+
+    public function tambahfasilitas()
+    {
+        $data = [
+            'judul' => 'SUZURAN | ADMIN',
+            'admin' => $this->admin->getadmin(),
+        ];
+
+        return view('admin/tambahfasilitas', $data);
+    }
+
+    public function savefasilitas()
+    {
+        $dataGambar = $this->request->getFile('gambar');
+        $namagambar = $dataGambar->getRandomName();
+
+        $data = [
+            'fasilitas' => $this->request->getVar('fasilitas'),
+            'deskripsi' => $this->request->getVar('deskripsi'),
+            'gambar' => $namagambar
+        ];
+
+        $dataGambar->move('img/fasilitas/', $namagambar);
+        $this->about->insert($data);
+        return $this->response->redirect(site_url('admin/fasilitas'));
     }
 }

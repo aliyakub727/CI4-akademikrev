@@ -21,19 +21,19 @@
         <?php if (in_groups('admin')) : ?>
             <hr class="sidebar-divider">
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/admin/landing_page">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/landing_page/<?= user_id() ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Edit Landingpage</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/admin/sliderku">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/sliderku/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Edit Sliderku</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/home/error">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/fasilitas/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Edit Fasilitas</span>
                 </a>
@@ -59,25 +59,25 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/Operator/datasiswa">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/datasiswa/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Data Siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/Operator/dataguru">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/dataguru/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Guru</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/Operator/masterdatapelajaran">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/masterdatapelajaran/<?= user_id(); ?>">
                     <i class="fas fa-plus-circle"></i>
                     <span>Master Data</span>
                 </a>
             </li>
             <li class="nav-item">
-                <?php if (empty($cek)) { ?>
+                <?php if (empty($cek['id_operator'])) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Operator/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>
@@ -144,26 +144,26 @@
                     <span>Biodatadiri</span>
                 </a>
             </li>
-            <li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>jadwal Matapelajaran</span>
                 </a>
             </li>
-            <li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Raport Nilai</span>
                 </a>
             </li>
-            <li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url(); ?>/home/error">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan raport </span>
                 </a>
             </li>
             <li class="nav-item">
-                <?php if (empty($siswa)) { ?>
+                <?php if (empty($siswa['siswa'])) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Siswa/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>
@@ -197,13 +197,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/datasiswa">
+                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/datasiswa/<?= user_id(); ?>">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan data siswa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/dataguru">
+                <a class="nav-link" href="<?= base_url(); ?>/kepalasekolah/dataguru/<?= user_id(); ?>">
                     <i class="fas fa-book-reader"></i>
                     <span>Laporan data guru</span>
                 </a>
@@ -247,10 +247,10 @@
                 <div id="collapseone" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Data Ditambahkan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datamapel">Mata Pelajaran</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datajurusan">Jurusan</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datatahunajaran">tahun ajaran</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datakelas">Kelas</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datamapel/<?= user_id(); ?>">Mata Pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datajurusan/<?= user_id(); ?>">Jurusan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datatahunajaran/<?= user_id(); ?>">tahun ajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/datakelas/<?= user_id(); ?>">Kelas</a>
                     </div>
                 </div>
             </li>
@@ -262,9 +262,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Laporan-Laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporansiswa">Data Siswa</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanguru">Data Guru</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanmapel">Data pelajaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporansiswa/<?= user_id(); ?>">Data Siswa</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanguru/<?= user_id(); ?>">Data Guru</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/operator/laporanmapel/<?= user_id(); ?>">Data pelajaran</a>
                     </div>
                 </div>
             </li>
@@ -290,7 +290,7 @@
 
         <?php if (in_groups('admin')) : ?>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/admin/dataakun/">
+                <a class="nav-link" href="<?= base_url(); ?>/admin/dataakun/<?= user_id(); ?>">
                     <i class="fas fa-cog"></i>
                     <span>Kelola Akun</span>
                 </a>

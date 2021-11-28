@@ -1125,17 +1125,81 @@ class Operator extends BaseController
     {
         $data = [
             'judul' => 'SUZURAN | Admin',
-            'masterdata' => $this->masterdata->joindata1($id_master),
+            'masterdata' => $this->masterdata->getmasterdata($id_master),
             'guru' => $this->gurumodel->getguru(),
             'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),
             'kelas' => $this->kelasmodel->getkelas(),
-            'tahunajaran' => $this->tahunajaranmodel->gettahun()
+            'tahunajaran' => $this->tahunajaranmodel->gettahun(),
+            'validation' => \Config\Services::validation(),
         ];
         return view('operator/masterdata/update', $data);
     }
 
+    public function saveeditmasterdatapelajaran()
+    {
+        $id_master = $this->request->getVar('id_master');
+        $nis = $this->masterdata->getmasterdata($id_master);
+        //cek tahun ajaran diganti atau engga
+        if ($nis['id_siswa'] == $this->request->getVar('id')) {
+            $rulenis = 'required';
+        } else {
+            $rulenis = 'required|is_unique[masterdatapelajaran.id]';
+        }
+        //validasi
+        if (!$this->validate([
+            'tahun_ajaran' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tahun Ajaran Harus diisi.',
+                ]
+            ],
+            'id' => [
+                'rules' => $rulenis,
+                'errors' => [
+                    'required' => 'Nomor induk siswa harus di isi',
+                    'is_unique' => 'Nis sudah didaftarkan'
+                ]
+            ],
+            'kelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'kelas Harus diisi.',
+                ]
+            ],
+            'jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jurusan Harus diisi.',
+                ]
+            ],
+            'nama_walikelas' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Wali Kelas Harus diisi.',
+                ]
+            ],
+        ])) {
+            return redirect()->to('/operator/editmasterdatapelajaran/' . $id_master)->withInput();
+        }
+
+
+        $model = new MasterdataModel();
+        $idam = $this->request->getPost('id_master');
+        $data = [
+            'id_ajaran' => $this->request->getVar('tahun_ajaran'),
+            'id_siswa' => $this->request->getVar('id'),
+            'nama_lengkap' => $this->request->getVar('nama_lengkap'),
+            'id_kelas' => $this->request->getVar('kelas'),
+            'id_jurusan' => $this->request->getVar('jurusan'),
+            'id_guru' => $this->request->getVar('nama_walikelas'),
+        ];
+        $model->update_data($data, $idam);
+        session()->setFlashdata('Pesan', 'Data Berhasil Diupdate.');
+
+        return redirect()->to('operator/masterdatapelajaran');
+    }
 
     // laporan siswa
     public function laporansiswa()

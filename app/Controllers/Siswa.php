@@ -7,7 +7,7 @@ use App\Models\UsersModel;
 use App\Models\SiswaModel;
 
 
-class Admin extends BaseController
+class Siswa extends BaseController
 {
     protected $usermodel;
     protected $db, $builder;
@@ -43,7 +43,7 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ACCOUNT-GURU',
             'users' => $query->getRow(),
-            'admin' => $this->admin->detailakun($id),
+            'siswa' => $this->siswa->detailakun($id),
             'validation' => \Config\Services::validation(),
         ];
         return view('Admin/detailakun', $data);

@@ -47,7 +47,7 @@
                                         <td><?= $k['name']; ?></td>
                                         <td>
                                             <a href="<?= base_url(); ?>/admin/editakun/<?= $k['userid']; ?>" class="btn btn-info btn-sm btn-edit">Edit</a>
-                                            <a href="<?= base_url(); ?>/admin/deleteakun/<?= $k['userid']; ?>" class="btn btn-danger btn-sm btn-delete">Delete</a>
+                                            <a data-user="<?= $k['userid'] ?>" data-name="<?= $k['name'] ?>" class="btn btn-danger btn-sm btn-delete">Delete</a>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -61,6 +61,31 @@
 </div>
 <!-- End of Main Content -->
 <!-- End of Content Wrapper -->
+<form action="/admin/deleteakun" method="post">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Akun</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <h4>Are you sure want to delete ?</h4>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="userid" class="userid">
+                    <input type="hidden" name="name" class="name">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -69,5 +94,17 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
     $('#data-list').DataTable();
+    $(document).ready(function() {
+        $('.btn-delete').on('click', function() {
+            // get data from button edit
+            const userid = $(this).data('userid');
+            const name = $(this).data('name');
+            // Set data to Form Edit
+            $('.userid').val(userid);
+            $('.name').val(name);
+            // Call Modal Edit
+            $('#deleteModal').modal('show');
+        });
+    });
 </script>
 <?= $this->endsection(); ?>

@@ -7,14 +7,13 @@ use CodeIgniter\Model;
 class AboutModel extends Model
 {
     protected $table = "about_us";
-    protected $allowedFields = ['fasilitas','deskripsi','gambar'];
+    protected $allowedFields = ['fasilitas', 'deskripsi', 'gambar'];
 
-    public function getslider($id = false)
+    public function getfasilitas($id = false)
     {
         if ($id == false) {
             return $this->findAll();
         }
         return $this->where(['id' => $id])->first();
     }
-
 }

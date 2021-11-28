@@ -29,7 +29,7 @@ font-family: 'Holtwood One SC', serif; ">Master Pelajaran</h1>
                         <div class="mb-3 row">
                             <label class="col-sm-4">Tahun Ajaran</label>
                             <div class="col-sm-5">
-                                <select name="tahun_ajaran" id="tahun_ajaran" class="selectpicker form-control form-select <?= ($validation->hasError('tahun_ajaran')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                <select name="tahun_ajaran" id="tahun_ajaran" class="tahun_ajaran selectpicker form-control form-select <?= ($validation->hasError('tahun_ajaran')) ? 'is-invalid' : ''; ?>" data-live-search="true">
                                     <option selected value="">Pilih Tahun ajaran</option>
                                     <?php foreach ($tahunajaran as $tahunajaran) : ?>
                                         <option value="<?= $tahunajaran['id_ajaran']; ?>"><?= $tahunajaran['tahun_ajaran']; ?></option>

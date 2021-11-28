@@ -19,24 +19,12 @@
             <?php d($users) ?>
             <div class="container mb-3">
                 <div class="row g-0">
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="<?= base_url(); ?>/img/fotoprofil/<?= $users->user_image; ?>" class="img-fluid rounded-start" alt="<?= $users->username; ?>">
-                            <a href="" class="btn btn-primary">Ganti Gambar</a>
-                        </div>
-                    </div>
                     <div class="col-md-9">
                         <div class="card" id="m-account">
-                            <form action="/acoount/update/<?= $users->userid; ?>" method="post">
+                            <form action="<?= base_url() ?>/admin/updateakun/<?= $users->userid; ?>" method="post">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="id" value="<?= $users->userid; ?>">
                                 <div class="row  ml-4 mt-4">
-                                    <div class="col-5">
-                                        <div class="form-group">
-                                            <label>Fullname</label>
-                                            <input type="text" class="form-control" name="fullname" value="<?= (old('fullname')) ? old('fullname') : $users->fullname ?>">
-                                        </div>
-                                    </div>
                                     <div class="col-5">
                                         <div class="form-group">
                                             <label>Username</label>

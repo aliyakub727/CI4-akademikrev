@@ -11,12 +11,12 @@ class MasterdataModel extends Model
     protected $primarykey = "id_master";
     protected $allowedFields = ['id_ajaran', 'id_siswa', 'nama_lengkap', 'id_kelas', 'id_jurusan', 'id_guru'];
 
-    public function getmasterdata($id = false)
+    public function getmasterdata($id_master = false)
     {
-        if ($id == false) {
+        if ($id_master == false) {
             return $this->findAll();
         }
-        return $this->where(['id_master' => $id])->first();
+        return $this->where(['id_master' => $id_master])->first();
     }
     public function joindata()
     {
@@ -40,9 +40,9 @@ class MasterdataModel extends Model
             ->get()->getResultArray();
     }
 
-    public function update_data($data, $id)
+    public function update_data($data, $id_master)
     {
-        $query = $this->db->table('masterdatapelajaran')->update($data, array('id_master' => $id));
+        $query = $this->db->table('masterdatapelajaran')->update($data, array('id_master' => $id_master));
         return $query;
     }
     public function delete_data($id)

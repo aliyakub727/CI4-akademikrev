@@ -19,6 +19,7 @@
                     <form id="form" action="<?= base_url(); ?>/admin/ubahdataslider" method="post" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <input type="hidden" value="<?php echo $slider['id_slider']; ?>" name="id_slider" required>
+                        <input type="hidden" value="<?= $slider['gambar_slider'] ?>" name="gambarlama">
                         <div class="form-group">
                             <label>Title</label>
                             <input type="text" class="form-control" name="title" id="title" value="<?php echo $slider['title']; ?>" required>
@@ -29,7 +30,7 @@
                         </div>
                         <div class="form-group">
                             <label>Gambar Slider</label>
-                            <input type="file" class="form-control" name="gambar_slider" id="gambar_slider" value="<?php echo $slider['gambar_slider']; ?>" required>
+                            <input type="file" class="form-control" name="gambar_slider" id="gambar_slider" value="<?php echo $slider['gambar_slider']; ?>">
                         </div>
                         <button class="btn btn-success" type="submit">Ubah Data</button>
                         <button class="btn btn-danger" data-dismiss="modal">Close</button>

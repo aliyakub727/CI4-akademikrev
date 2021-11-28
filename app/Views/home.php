@@ -5,7 +5,7 @@
 <?php foreach ($landing_page as $k) : ?>
 	<style>
 		body {
-			background-image: url(<?= base_url() . "/img/" . $k['background']; ?>);
+			background-image: url(<?= base_url() . "/img/landingpage/" . $k['background']; ?>);
 			background-position: top;
 			background-repeat: no-repeat;
 			background-size: 100vmax;
