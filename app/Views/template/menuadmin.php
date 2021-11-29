@@ -77,6 +77,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="<?= base_url(); ?>/Operator/datajadwal/<?= user_id(); ?>">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Set Jadwal</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <?php if (empty($cek)) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Operator/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>

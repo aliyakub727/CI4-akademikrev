@@ -11,6 +11,7 @@ use App\Models\MapelModel;
 use App\Models\KelasModel;
 use App\Models\MasterdataModel;
 use App\Models\OperatorModel;
+use App\Models\JadwalModel;
 
 class Operator extends BaseController
 {
@@ -24,10 +25,12 @@ class Operator extends BaseController
     protected $tahunajaranmodel;
     protected $jurusan;
     protected $operator;
+    protected $jadwal;
 
     public function __construct()
     {
         $this->siswamodel = new SiswaModel();
+        $this->jadwal = new JadwalModel();
         $this->user = new UserModel();
         $this->masterdata = new MasterdataModel();
         $this->jurusan = new JurusanModel();
@@ -1480,5 +1483,39 @@ class Operator extends BaseController
         ]);
 
         return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
+    }
+
+    public function datajadwal($user_id)
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'jadwal' => $this->jadwal->joinjadwal()
+        ];
+        return view('operator/jadwal/index', $data);
+    }
+
+    public function tambahjadwal()
+    {
+        $data = [
+            'judul' => 'SUZURAN | Operator',
+            'jurusan' => $this->jurusan->getjurusan(),
+            'jadwal' => $this->jadwal->joinjadwal(),
+            'kelas' => $this->kelasmodel->findAll(),
+            'mapel' => $this->mapel->findAll()
+        ];
+        return view('operator/jadwal/add', $data);
+    }
+    public function getdataprov()
+    {
+        $searchTerm = $this->input->post('searchTerm');
+        $response   = $this->jadwal->getprov($searchTerm);
+        echo json_encode($response);
+    }
+    public function getdatakab($id_kelas)
+    {
+        $searchTerm = $this->input->post('searchTerm');
+        $response   = $this->jadwal->getkab($id_kelas, $searchTerm);
+        echo json_encode($response);
     }
 }

@@ -23,7 +23,7 @@ class Home extends BaseController
     public function index()
     {
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN',
             'landing_page' =>  $this->pagemodel->getPage(),
         ];
         return view('home', $data);
@@ -37,7 +37,7 @@ class Home extends BaseController
     public function About()
     {
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN',
             'landing_page' =>  $this->pagemodel->getPage(),
             'slider1' => $this->sliderku->getslider('1'),
             'slider2' => $this->sliderku->getslider('2'),
