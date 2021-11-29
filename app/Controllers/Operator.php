@@ -42,18 +42,21 @@ class Operator extends BaseController
         $this->operator = new OperatorModel();
     }
 
-    public function index($user_id)
+    public function index()
     {
+        $user_id = user_id();
         $data = [
-            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'cek' => $this->operator->findAll(),
             'judul' => 'SUZURAN | OPERATOR',
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('index', $data);
     }
 
     //munculin data siswa
-    public function datasiswa($user_id)
+    public function datasiswa()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
@@ -65,12 +68,20 @@ class Operator extends BaseController
     //tambah data siswa
     public function tambahsiswa()
     {
+        $siswa = 'siswa';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $siswa);
+        $query = $this->builder->get();
         // session();
         $data = [
             'judul' => 'Form Tambah Data Siswa',
             'cek' => $this->operator->findAll(),
             'validation' => \Config\Services::validation(),
-            'user' => $this->user->findAll(),
+            'user' => $query->getResult(),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
         return view('operator/data_siswa/create', $data);
@@ -185,19 +196,26 @@ class Operator extends BaseController
         ]);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
-
-        return redirect()->to('/operator/datasiswa');
+        return redirect()->to('operator/datasiswa/');
     }
 
     // edit data siswa
     public function editsiswa($id)
     {
+        $siswa = 'siswa';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $siswa);
+        $query = $this->builder->get();
         // session();
         $data = [
             'judul' => 'Form Edit Data Siswa',
             'cek' => $this->operator->findAll(),
             'validation' => \Config\Services::validation(),
-            'user' => $this->user->findAll(),
+            'user' => $query->getResult(),
             'jurusan' => $this->jurusan->getjurusan(),
             'siswa' => $this->siswamodel->getsiswa($id),
         ];
@@ -358,18 +376,13 @@ class Operator extends BaseController
         $id = $this->request->getPost('id');
         $model->deleteSiswa($id);
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
-        return redirect()->to('/operator/datasiswa');
+        return redirect()->to('operator/datasiswa');
     }
 
     // nampilin data Guru
-    public function dataguru($user_id)
+    public function dataguru()
     {
-
-        // $this->builder = $this->db->table('mapel');
-        // $this->builder->select('*');
-        // $this->builder->join('guru', 'guru.id_mapel = mapel.id_mapel');
-        // $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
-        // $query = $this->builder->get();
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | OPERATOR',
             'guru' => $this->gurumodel->getguru(),
@@ -384,12 +397,20 @@ class Operator extends BaseController
     // tambah data guru
     public function tambahguru()
     {
+        $guru = 'guru';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $guru);
+        $query = $this->builder->get();
         $data = [
             'judul' => 'Form Tambah Data Guru',
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru(),
             'cek' => $this->operator->findAll(),
-            'user' => $this->user->findAll(),
+            'user' => $query->getResult(),
             'mapel' => $this->mapel->getmapel(),
         ];
         return view('operator/data_guru/create', $data);
@@ -453,11 +474,19 @@ class Operator extends BaseController
     public function editguru($id_guru)
     {
         // session();
+        $guru = 'guru';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $guru);
+        $query = $this->builder->get();
         $data = [
             'judul' => 'Form Edit Data Guru',
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru($id_guru),
-            'user' => $this->user->findAll(),
+            'user' => $query->getResult(),
             'cek' => $this->operator->findAll(),
             'mapel' => $this->mapel->getmapel(),
         ];
@@ -560,8 +589,9 @@ class Operator extends BaseController
 
 
     // menampilkan data kelas
-    public function datakelas($user_id)
+    public function datakelas()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Operator',
             'kelas' => $this->kelasmodel->getkelas(),
@@ -729,8 +759,9 @@ class Operator extends BaseController
     }
 
     // menampilkan data jurusan
-    public function datajurusan($user_id)
+    public function datajurusan()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Operator',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
@@ -863,8 +894,9 @@ class Operator extends BaseController
 
     //MAPEL
 
-    public function datamapel($user_id)
+    public function datamapel()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
@@ -982,10 +1014,11 @@ class Operator extends BaseController
     // data tahun ajaran
     public function datatahunajaran()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/data_tahunajaran/index', $data);
     }
@@ -1084,8 +1117,9 @@ class Operator extends BaseController
     }
 
     // master data pelajaran
-    public function masterdatapelajaran($user_id)
+    public function masterdatapelajaran()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'masterdata' => $this->masterdata->joindata(),
@@ -1102,7 +1136,7 @@ class Operator extends BaseController
             'guru' => $this->gurumodel->getguru(),
             'cek' => $this->operator->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
-            'nis' => $this->siswamodel->getsiswa(),
+            'nis' => $this->siswamodel->findAll(),
             'kelas' => $this->kelasmodel->getkelas(),
             'validation' => \Config\Services::validation(),
             'tahunajaran' => $this->tahunajaranmodel->gettahun()
@@ -1155,7 +1189,6 @@ class Operator extends BaseController
             'id_jurusan' => $this->request->getVar('jurusan'),
             'id_guru' => $this->request->getVar('nama_walikelas')
         ]);
-
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('operator/masterdatapelajaran');
@@ -1242,8 +1275,9 @@ class Operator extends BaseController
     }
 
     // laporan siswa
-    public function laporansiswa($user_id)
+    public function laporansiswa()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'siswa' => $this->siswamodel->getsiswa(),
@@ -1254,8 +1288,9 @@ class Operator extends BaseController
     }
 
     // Laporan Guru
-    public function laporanguru($user_id)
+    public function laporanguru()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'guru' => $this->gurumodel->joinguru(),
@@ -1266,8 +1301,9 @@ class Operator extends BaseController
     }
 
     // Laporan Mapel
-    public function laporanmapel($user_id)
+    public function laporanmapel()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'kelas' => $this->kelasmodel->getkelas(),

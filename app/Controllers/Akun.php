@@ -41,13 +41,14 @@ class Akun extends BaseController
 
     public function index()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
-            'cek'   => $this->operatormodel->findAll(),
-            'siswa' => $this->siswamodel->getsiswa(),
-            'admin' => $this->adminmodel->getadmin(),
-            'guru'  => $this->gurumodel->getguru(),
-            'kepsek' => $this->kepsekmodel->getkepsek(),
+            'cek'   => $this->operatormodel->where('id_akun', $user_id)->findAll(),
+            'siswa' => $this->siswamodel->where('id_akun', $user_id)->findAll(),
+            'admin' => $this->adminmodel->where('id_akun', $user_id)->findAll(),
+            'guru'  => $this->gurumodel->where('id_akun', $user_id)->findAll(),
+            'kepsek' => $this->kepsekmodel->where('id_akun', $user_id)->findAll(),
         ];
         return view('index', $data);
     }

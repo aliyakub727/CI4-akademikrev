@@ -37,15 +37,18 @@ class Admin extends BaseController
 
     public function index()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN|ADMIN',
             'admin' => $this->admin->getadmin(),
+            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('index', $data);
     }
 
     public function dataakun()
     {
+        $user_id = user_id();
         $this->builder->select('users.id as userid, username, email, name');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
@@ -53,7 +56,8 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
-            'users' => $query->getResultArray()
+            'users' => $query->getResultArray(),
+            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/listdata', $data);
     }
@@ -127,8 +131,9 @@ class Admin extends BaseController
         $this->uss->update($id, $data);
         return redirect()->to('/admin/dataakun');
     }
-    public function landing_page($user_id)
+    public function landing_page()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'landing_page' =>  $this->pagemodel->getPage(),
@@ -175,8 +180,9 @@ class Admin extends BaseController
         return $this->response->redirect(site_url('admin/landing_page'));
     }
 
-    public function sliderku($user_id)
+    public function sliderku()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
@@ -422,8 +428,9 @@ class Admin extends BaseController
         return redirect()->to('/admin/profile/' . $this->request->getVar('id'));
     }
 
-    public function fasilitas($user_id)
+    public function fasilitas()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'fasilitas' =>  $this->about->getfasilitas(),

@@ -31,12 +31,12 @@
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?>" data-live-search="true">
                                             <?php foreach ($user as $as) : ?>
                                                 <?php
-                                                if ($siswa['id_akun'] == $as->id) {
+                                                if ($siswa['id_akun'] == $as->userid) {
                                                     $idakun1 = 'selected';
                                                 } else {
                                                     $idakun1 = '';
                                                 } ?>
-                                                <option <?= $idakun1 ?> value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <option <?= $idakun1 ?> value="<?= $as->userid; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">

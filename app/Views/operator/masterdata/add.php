@@ -50,7 +50,6 @@ font-family: 'Holtwood One SC', serif; ">Master Pelajaran</h1>
                                     foreach ($nis as $nis) {
                                         echo '<option name="nis"  value="' . $nis['id'] . '">' . $nis['nis'] . '</option>';
                                         $jsArray .= "prdName['" . $nis['id'] . "'] = {nama_lengkap:'" . addslashes($nis['nama_lengkap']) . "'};\n";
-                                        $jsArray .= "prdName['" . $nis['jurusan'] . "'] = {nama_lengkap:'" . addslashes($nis['jurusan']) . "'};\n";
                                     }
                                     ?>
                                 </select>

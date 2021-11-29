@@ -32,12 +32,12 @@
                                             <option selected value="">Pilih Akun</option>
                                             <?php foreach ($user as $as) : ?>
                                                 <?php
-                                                if ($guru['id_akun'] == $as->id) {
+                                                if ($guru['id_akun'] == $as->userid) {
                                                     $idakun1 = 'selected';
                                                 } else {
                                                     $idakun1 = '';
                                                 } ?>
-                                                <option <?= $idakun1 ?> value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <option <?= $idakun1 ?> value="<?= $as->userid; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">

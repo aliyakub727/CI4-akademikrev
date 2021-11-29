@@ -30,7 +30,7 @@
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?> " data-live-search="true">
                                             <option selected value="">Pilih Akun</option>
                                             <?php foreach ($user as $as) : ?>
-                                                <option value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <option value="<?= $as->userid; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">

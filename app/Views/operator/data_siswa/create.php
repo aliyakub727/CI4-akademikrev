@@ -26,11 +26,12 @@
                             <div class="card-body">
                                 <div class="col-6">
                                     <div class="form-group">
+                                        <input type="hidden" name="idid" value="<?= user_id() ?>">
                                         <label>ID Akun</label>
                                         <select name="id_akun" id="id_akun" class="selectpicker form-control form-select <?= ($validation->hasError('id_akun')) ? 'is-invalid' : ''; ?> " data-live-search="true">
                                             <option selected value="">Pilih Akun Siswa</option>
                                             <?php foreach ($user as $as) : ?>
-                                                <option value="<?= $as->id; ?>"><?= $as->username; ?></option>
+                                                <option value="<?= $as->userid; ?>"><?= $as->username; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">
