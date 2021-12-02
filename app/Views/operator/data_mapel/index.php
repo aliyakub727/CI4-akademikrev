@@ -48,7 +48,7 @@
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
                                                 <td><?= $k['nama_mapel']; ?></td>
-                                                <td><?= $k['id_kelas']; ?></td>
+                                                <td><?= $k['nama_kelas']; ?></td>
                                                 <td>
                                                     <a href="<?= base_url(); ?>/operator/editmapel/<?= $k['id_mapel']; ?>" style="color:#ffffff" class="btn btn-primary  fa fa-edit"></a>
                                                     <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" data-id_mapel="<?= $k['id_mapel']; ?>" class="btn btn-danger btn-delete fa fa-trash "></a>

@@ -63,7 +63,7 @@
 							<a href="<?= base_url(); ?>/operator" class="tombol">Yuk Kedashboard</a>
 						<?php } ?>
 					<?php else : ?>
-						<a href="<?= base_url(); ?>/akun" class="tombol">Get Started</a>
+						<a href="<?= base_url(); ?>/login" class="tombol">Get Started</a>
 					<?php endif; ?>
 				<?php endforeach ?>
 				</div>

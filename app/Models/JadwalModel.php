@@ -18,6 +18,38 @@ class JadwalModel extends Model
         return $this->where(['id_jadwal' => $id_jadwal])->first();
     }
 
+    public function getidkelas($user_id)
+    {
+        return $this->table('users')
+            ->select('users.id as userid, siswa.id as siswaid, id_kelas')
+            ->join('siswa', 'siswa.id_akun = users.id')
+            ->join('masterdatapelajaran', 'masterdatapelajaran.id_siswa = siswa.id')
+            ->where('users.id', $user_id)
+            ->get()->getResultArray();
+    }
+    public function munculinjadwal()
+    {
+        return $this->table('kelas')
+            ->select('id_jadwal, jadwal.id_mapel as id_mapel_jadwal, jadwal.id_guru as id_guru_jadwal, jadwal.nama_mapel as nama_mapel_jadwal, mapel.id_mapel as id_mapel_mapel, mapel.id_kelas as id_kelas_mapel, mapel.nama_mapel as nama_mapel_mapel kelas.id_kelas, kelas.nama_kelas as nama_kelas_kelas')
+            ->join('mapel', 'mapel.id_kelas=kelas.id_kelas')
+            ->join('jadwal', 'jadwal.id_mapel=mapel.id_mapel')
+            ->get()->getResultArray();
+    }
+    public function kelas()
+    {
+        return $this->table('kelas')
+            ->select('id_kelas, nama_kelas')
+            ->order_by('id_kelas', 'ASC')
+            ->get()->result();
+    }
+
+    public function mapel($id_kelas)
+    {
+        return $this->db->table('mapel')
+            ->db->where('id_kelas', $id_kelas)
+            ->db->get()->result();
+    }
+
     public function joinjadwal()
     {
         return $this->db->table('jadwal')

@@ -33,10 +33,13 @@
                                 <label>Kelas</label>
                                 <select name="kelas" id="kelas" class="selectpicker form-control select2 form-select " data-live-search="true">
                                     <option selected value="">---</option>
+                                    <?php foreach ($kelas as $kelas) : ?>
+                                        <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
+                                    <?php endforeach ?>
                                 </select>
                                 <label>Mapel</label>
-                                <select name="id_jurusan" id="id_jurusan" class="selectpicker form-control form-select " data-live-search="true">
-                                    <option selected value="">---</option>
+                                <select name="mapel" id="mapel" class="selectpicker form-control form-select " data-live-search="true">
+
 
                                 </select>
                                 <button class="btn btn-success" type="submit">Tambah</button>
@@ -54,26 +57,57 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-<script type="text/javascript">
-    // Provinsi
-    $(document).ready(function() {
-        $("#kelas").select2({
-            ajax: {
-                url: '<?= base_url() ?>operator/getdataprov',
-                type: "post",
-                dataType: 'json',
-                delay: 200,
-                data: function(params) {
-                    return {
-                        searchTerm: params.term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: response
-                    };
-                },
-                cache: true
+<script>
+    $("#kelas").change(function() {
+
+        // variabel dari nilai combo box kelas
+        var id_kelas = $("#kelas").val();
+
+        // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+        $.ajax({
+            url: "<?php echo base_url(); ?>/Operator/getkelas",
+            method: "POST",
+            data: {
+                id_kelas: id_kelas
+            },
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                var i;
+
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value=' + data[i].id_mapel + '>' + data[i].nama_mapel + '</option>';
+                }
+                $('#mapel').html(html);
+
+            }
+        });
+    });
+
+    $("#merk").change(function() {
+
+        // variabel dari nilai combo box kendaraan
+        var id_merk = $("#merk").val();
+
+        // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+        $.ajax({
+            url: "<?php echo base_url(); ?>/kendaraan/get_tipe",
+            method: "POST",
+            data: {
+                id_merk: id_merk
+            },
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                var i;
+
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value=' + data[i].id_tipe_kendaraan + '>' + data[i].tipe_kendaraan + '</option>';
+                }
+                $('#tipe').html(html);
+
             }
         });
     });

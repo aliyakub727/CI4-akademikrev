@@ -36,7 +36,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Jurusan</th>
-                                            <th scope="col">id kelas</th>
+                                            <th scope="col">Nama Kelas</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,7 +46,7 @@
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
                                                 <td><?= $k['jurusan']; ?></td>
-                                                <td><?= $k['id_kelas']; ?></td>
+                                                <td><?= $k['nama_kelas']; ?></td>
                                                 <td>
                                                     <a href="<?= base_url(); ?>/operator/editjurusan/<?= $k['id_jurusan']; ?>" style="color:#ffffff" class="btn btn-primary  fa fa-edit "></a>
                                                     <a href=" #" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jurusan="<?= $k['id_jurusan'] ?>"></a>

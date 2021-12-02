@@ -145,13 +145,7 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/home/error">
-                    <i class="fas fa-bars"></i>
-                    <span>Biodatadiri</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/home/error">
+                <a class="nav-link" href="<?= base_url(); ?>/Siswa/jadwal/<?= $idkelas->id_kelas ?>">
                     <i class="fas fa-book-reader"></i>
                     <span>jadwal Matapelajaran</span>
                 </a>
@@ -169,7 +163,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <?php if (empty($siswa['siswa'])) { ?>
+                <?php if (empty($siswa)) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Siswa/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>

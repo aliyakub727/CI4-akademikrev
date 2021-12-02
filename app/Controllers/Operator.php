@@ -761,11 +761,15 @@ class Operator extends BaseController
     // menampilkan data jurusan
     public function datajurusan()
     {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('jurusan');
+        $this->builder->join('kelas', 'kelas.id_kelas=jurusan.id_kelas');
+        $query = $this->builder->get();
         $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Operator',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
-            'jurusan' => $this->jurusan->getjurusan()
+            'jurusan' => $query->getResultArray()
         ];
         return view('operator/data_jurusan/index', $data);
     }
@@ -896,11 +900,15 @@ class Operator extends BaseController
 
     public function datamapel()
     {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('mapel');
+        $this->builder->join('kelas', 'kelas.id_kelas=mapel.id_kelas');
+        $query = $this->builder->get();
         $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
-            'mapel' => $this->mapel->orderBy('nama_mapel', 'DESC')->findAll()
+            'mapel' => $query->getResultArray()
         ];
         return view('operator/data_mapel/index', $data);
     }
@@ -1014,10 +1022,14 @@ class Operator extends BaseController
     // data tahun ajaran
     public function datatahunajaran()
     {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('tahun_ajaran');
+        $this->builder->join('jurusan', 'jurusan.id_jurusan=tahun_ajaran.id_jurusan');
+        $query = $this->builder->get();
         $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
-            'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
+            'tahun_ajaran' => $query->getResultArray(),
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/data_tahunajaran/index', $data);
@@ -1536,7 +1548,7 @@ class Operator extends BaseController
         $data = [
             'judul' => 'SUZURAN | Operator',
             'jurusan' => $this->jurusan->getjurusan(),
-            'jadwal' => $this->jadwal->joinjadwal(),
+            'jadwal' => $this->jadwal->find(),
             'kelas' => $this->kelasmodel->findAll(),
             'mapel' => $this->mapel->findAll()
         ];
@@ -1553,5 +1565,12 @@ class Operator extends BaseController
         $searchTerm = $this->input->post('searchTerm');
         $response   = $this->jadwal->getkab($id_kelas, $searchTerm);
         echo json_encode($response);
+    }
+
+    function getkelas()
+    {
+        $id_kelas = $this->input->post('id_kelas');
+        $data = $this->jadwal->mapel($id_kelas);
+        echo json_encode($data);
     }
 }

@@ -5,16 +5,19 @@ namespace App\Controllers;
 use Myth\Auth\Models\UserModel;
 use App\Models\UsersModel;
 use App\Models\SiswaModel;
-
+use Myth\Auth\Commands\Publish;
+use App\Models\JadwalModel;
 
 class Siswa extends BaseController
 {
     protected $usermodel;
     protected $db, $builder;
     protected $siswa;
+    protected $jadwal;
     public function __construct()
     {
         $this->uss = new UsersModel();
+        $this->jadwal = new JadwalModel();
         $this->siswa = new SiswaModel();
         $this->usermodel = new UserModel();
         $this->db = \config\Database::connect();
@@ -23,9 +26,18 @@ class Siswa extends BaseController
 
     public function index()
     {
+        $user_id = user_id();
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, siswa.id as siswaid, id_kelas');
+        $this->builder->join('siswa', 'siswa.id_akun = users.id');
+        $this->builder->join('masterdatapelajaran', 'masterdatapelajaran.id_siswa = siswa.id');
+        $this->builder->where('users.id', $user_id);
+        $query = $this->builder->get();
         $data = [
-            'judul' => 'SUZURAN|ADMIN',
-            'siswa' => $this->siswa->getsiswa(),
+            'judul' => 'SUZURAN | SISWA',
+            'siswa' => $this->siswa->where('id_akun', $user_id)->findAll(),
+            'idkelas' => $query->getRow()
         ];
         return view('index', $data);
     }
@@ -40,20 +52,38 @@ class Siswa extends BaseController
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
         $this->builder->where('users.id', $id);
         $query = $this->builder->get();
+
+        $ac      = \Config\Database::connect();
+        $this->builder = $ac->table('users');
+        $this->builder->select('users.id as userid, siswa.id as siswaid, id_kelas');
+        $this->builder->join('siswa', 'siswa.id_akun = users.id');
+        $this->builder->join('masterdatapelajaran', 'masterdatapelajaran.id_siswa = siswa.id');
+        $this->builder->where('users.id', $id);
+        $test = $this->builder->get();
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | SISWA',
             'users' => $query->getRow(),
             'siswa' => $this->siswa->detailakun($id),
             'validation' => \Config\Services::validation(),
+            'idkelas' => $test->getRow()
         ];
         return view('Admin/detailakun', $data);
     }
 
-    public function lengkapi($id)
+    public function lengkapi()
     {
+        $user_id = user_id();
+        $ac      = \Config\Database::connect();
+        $this->builder = $ac->table('users');
+        $this->builder->select('users.id as userid, siswa.id as siswaid, id_kelas');
+        $this->builder->join('siswa', 'siswa.id_akun = users.id');
+        $this->builder->join('masterdatapelajaran', 'masterdatapelajaran.id_siswa = siswa.id');
+        $this->builder->where('users.id', $user_id);
+        $test = $this->builder->get();
         $data = [
-            'judul' => 'SUZURAN | ACCOUNT-GURU',
+            'judul' => 'SUZURAN | SISWA',
             'validation' => \Config\Services::validation(),
+            'idkelas' => $test->getRow()
         ];
         return view('Admin/lengkapi_akun', $data);
     }
@@ -224,5 +254,33 @@ class Siswa extends BaseController
         ]);
 
         return redirect()->to('/Operator/profile/' . $this->request->getVar('id'));
+    }
+
+    public function jadwal($id_kelas)
+    {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('kelas');
+        // $this->builder->select('id_jadwal, jadwal.id_mapel as id_mapel_jadwal, jadwal.id_guru as id_guru_jadwal, jadwal.nama_mapel as nama_mapel_jadwal, mapel.id_mapel as id_mapel_mapel, mapel.id_kelas as id_kelas_mapel, mapel.nama_mapel as nama_mapel_mapel, kelas.id_kelas, kelas.nama_kelas as nama_kelas_kelas');
+        $this->builder->join('mapel', 'mapel.id_kelas=kelas.id_kelas');
+        $this->builder->join('guru', 'guru.id_mapel=mapel.id_mapel');
+        $this->builder->join('jadwal', 'jadwal.id_mapel=mapel.id_mapel');
+        $this->builder->where('kelas.id_kelas', $id_kelas);
+        $query = $this->builder->get();
+        $user_id = user_id();
+
+        $ac      = \Config\Database::connect();
+        $this->builder = $ac->table('users');
+        $this->builder->select('users.id as userid, siswa.id as siswaid, id_kelas');
+        $this->builder->join('siswa', 'siswa.id_akun = users.id');
+        $this->builder->join('masterdatapelajaran', 'masterdatapelajaran.id_siswa = siswa.id');
+        $this->builder->where('users.id', $user_id);
+        $test = $this->builder->get();
+        $data = [
+            'judul' => 'SUZURAN | SISWA',
+            'siswa' => $this->siswa->where('id_akun', $user_id)->findAll(),
+            'jadwal' => $query->getResultArray(),
+            'idkelas' => $test->getRow()
+        ];
+        return view('siswa/jadwal', $data);
     }
 }

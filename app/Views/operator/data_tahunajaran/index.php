@@ -31,7 +31,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ID JURUSAN</th>
+                                    <th scope="col">Jurusan</th>
                                     <th scope="col">TAHUN AJARAN</th>
                                     <th scope="col">AKSI</th>
                                 </tr>
@@ -41,7 +41,7 @@
                                 <?php foreach ($tahun_ajaran as $k) : ?>
                                     <tr>
                                         <th scope="row"><?= $i++; ?></th>
-                                        <td><?= $k['id_jurusan']; ?></td>
+                                        <td><?= $k['jurusan']; ?></td>
                                         <td><?= $k['tahun_ajaran']; ?></td>
                                         <td>
                                             <a href="<?= base_url(); ?>/operator/edittahunajaran/<?= $k['id_ajaran']; ?>" style="color:#ffffff" class="btn btn-primary fa fa-edit"></a>
