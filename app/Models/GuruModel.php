@@ -24,6 +24,13 @@ class GuruModel extends Model
             ->join('mapel', 'mapel.id_mapel=guru.id_mapel')
             ->get()->getResultArray();
     }
+    public function getmapel($id_mapel = false)
+    {
+        if ($id_mapel == false) {
+            return $this->findAll();
+        }
+        return $this->where(['id_mapel' => $id_mapel])->first();
+    }
 
     public function detailakun($id)
     {

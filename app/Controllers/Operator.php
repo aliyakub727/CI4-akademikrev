@@ -12,6 +12,10 @@ use App\Models\KelasModel;
 use App\Models\MasterdataModel;
 use App\Models\OperatorModel;
 use App\Models\JadwalModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 class Operator extends BaseController
 {
@@ -77,9 +81,10 @@ class Operator extends BaseController
         $this->builder->where('auth_groups.name', $siswa);
         $query = $this->builder->get();
         // session();
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data Siswa',
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'validation' => \Config\Services::validation(),
             'user' => $query->getResult(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -211,9 +216,10 @@ class Operator extends BaseController
         $this->builder->where('auth_groups.name', $siswa);
         $query = $this->builder->get();
         // session();
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Edit Data Siswa',
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'validation' => \Config\Services::validation(),
             'user' => $query->getResult(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -379,6 +385,140 @@ class Operator extends BaseController
         return redirect()->to('operator/datasiswa');
     }
 
+    public function exportsiswaxlxs()
+    {
+        $siswa = $this->siswamodel->findAll();
+
+        $as = 'siswa';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $as);
+        $query = $this->builder->get();
+        $user = $query->getResultArray();
+
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID AKUN')
+            ->setCellValue('B1', 'NOMER INDUK SISWA')
+            ->setCellValue('C1', 'NAMA LENGKAP')
+            ->setCellValue('D1', 'ALAMAT')
+            ->setCellValue('E1', 'NOMER TELPON')
+            ->setCellValue('F1', 'TANGGAL LAHIR')
+            ->setCellValue('G1', 'TEMPAT LAHIR')
+            ->setCellValue('H1', 'AGAMA')
+            ->setCellValue('I1', 'NAMA ORANGTUA')
+            ->setCellValue('J1', 'ALAMAT ORANGTUA')
+            ->setCellValue('K1', 'NOMER TELP ORANGTUA')
+            ->setCellValue('L1', 'JURUSAN')
+            ->setCellValue('M1', 'JENIS_KELAMIN')
+            ->setCellValue('O1', 'ID AKUN TERDAFTAR')
+            ->setCellValue('P1', 'USERNAME TERDAFTAR')
+            ->setCellValue('Q1', 'EMAIL TERDAFTAR');
+
+        $column = 2;
+
+        foreach ($siswa as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['id_akun'])
+                ->setCellValue('B' . $column, $as['nis'])
+                ->setCellValue('C' . $column, $as['nama_lengkap'])
+                ->setCellValue('D' . $column, $as['alamat'])
+                ->setCellValue('E' . $column, $as['no_telp'])
+                ->setCellValue('F' . $column, $as['tgl_lahir'])
+                ->setCellValue('G' . $column, $as['tempat_lahir'])
+                ->setCellValue('H' . $column, $as['agama'])
+                ->setCellValue('I' . $column, $as['nama_orang_tua'])
+                ->setCellValue('J' . $column, $as['alamat_ortu'])
+                ->setCellValue('K' . $column, $as['no_telp_ortu'])
+                ->setCellValue('L' . $column, $as['jurusan'])
+                ->setCellValue('M' . $column, $as['jenis_kelamin']);
+            $column++;
+        }
+
+        foreach ($user as $us) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('O' . $column, $us['userid'])
+                ->setCellValue('P' . $column, $us['username'])
+                ->setCellValue('Q' . $column, $us['email']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Siswa';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadsiswa()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $id_akun = $row[0];
+            $nis = $row[1];
+            $nama_lengkap = $row[2];
+            $alamat = $row[3];
+            $no_telp = $row[4];
+            $tgl_lahir = $row[5];
+            $tempat_lahir = $row[6];
+            $agama = $row[7];
+            $nama_orang_tua = $row[8];
+            $alamat_ortu = $row[9];
+            $no_telp_ortu = $row[10];
+            $jurusan = $row[11];
+            $jenis_kelamin = $row[12];
+
+            $db = \Config\Database::connect();
+
+            $cekNis = $db->table('siswa')->getWhere(['nis' => $nis])->getResult();
+            // $cekid_akun = $db->table('siswa')->getWhere(['id_akun' => $id_akun])->getResult();
+            if (count($cekNis) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import NIS ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'id_akun'       => $id_akun,
+                    'nis'           => $nis,
+                    'nama_lengkap'  => $nama_lengkap,
+                    'alamat'        => $alamat,
+                    'no_telp'       => $no_telp,
+                    'tgl_lahir'     => $tgl_lahir,
+                    'tempat_lahir'  => $tempat_lahir,
+                    'agama'         => $agama,
+                    'nama_orang_tua' => $nama_orang_tua,
+                    'alamat_ortu'   => $alamat_ortu,
+                    'no_telp_ortu'  => $no_telp_ortu,
+                    'jurusan'       => $jurusan,
+                    'jenis_kelamin' => $jenis_kelamin
+                ];
+
+                $db->table('siswa')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/datasiswa');
+    }
+
     // nampilin data Guru
     public function dataguru()
     {
@@ -397,6 +537,7 @@ class Operator extends BaseController
     // tambah data guru
     public function tambahguru()
     {
+        $user_id = user_id();
         $guru = 'guru';
         $db      = \Config\Database::connect();
         $this->builder = $db->table('users');
@@ -409,7 +550,7 @@ class Operator extends BaseController
             'judul' => 'Form Tambah Data Guru',
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'user' => $query->getResult(),
             'mapel' => $this->mapel->getmapel(),
         ];
@@ -474,6 +615,7 @@ class Operator extends BaseController
     public function editguru($id_guru)
     {
         // session();
+        $user_id = user_id();
         $guru = 'guru';
         $db      = \Config\Database::connect();
         $this->builder = $db->table('users');
@@ -487,7 +629,7 @@ class Operator extends BaseController
             'validation' => \Config\Services::validation(),
             'guru' => $this->gurumodel->getguru($id_guru),
             'user' => $query->getResult(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'mapel' => $this->mapel->getmapel(),
         ];
         return view('operator/data_guru/edit', $data);
@@ -586,91 +728,225 @@ class Operator extends BaseController
         return redirect()->to('/operator/dataguru');
     }
 
+    public function exportguruxlxs()
+    {
+        $guru = $this->gurumodel->findAll();
+        $mapel = $this->mapel->findAll();
+        $as = 'guru';
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('users');
+        $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->where('auth_groups.name', $as);
+        $query = $this->builder->get();
+        $user = $query->getResultArray();
 
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID MAPEL')
+            ->setCellValue('B1', 'ID AKUN')
+            ->setCellValue('C1', 'NAMA GURU')
+            ->setCellValue('D1', 'ALAMAT')
+            ->setCellValue('E1', 'NOMER TELPON')
+            ->setCellValue('G1', 'ID MAPEL TERDAFTAR')
+            ->setCellValue('H1', 'NAMA MAPEL TERDAFTAR')
+            ->setCellValue('J1', 'ID AKUN TERDAFTAR')
+            ->setCellValue('K1', 'USERNAME TERDAFTAR')
+            ->setCellValue('L1', 'EMAIL TERDAFTAR');
+
+        $column = 2;
+
+        foreach ($guru as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['id_mapel'])
+                ->setCellValue('B' . $column, $as['id_akun'])
+                ->setCellValue('C' . $column, $as['nama_guru'])
+                ->setCellValue('D' . $column, $as['alamat'])
+                ->setCellValue('E' . $column, $as['no_telp']);
+            $column++;
+        }
+        $column = 2;
+        foreach ($mapel as $map) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('G' . $column, $map['id_mapel'])
+                ->setCellValue('H' . $column, $map['nama_mapel']);
+            $column++;
+        }
+        $column = 2;
+        foreach ($user as $us) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('J' . $column, $us['userid'])
+                ->setCellValue('K' . $column, $us['username'])
+                ->setCellValue('L' . $column, $us['email']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Guru';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadguru()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $id_mapel = $row[0];
+            $id_akun = $row[1];
+            $nama_guru = $row[2];
+            $alamat = $row[3];
+            $no_telp = $row[4];
+
+            $db = \Config\Database::connect();
+
+            $cekmapel = $db->table('guru')->getWhere(['id_mapel' => $id_mapel])->getResult();
+            $cekid_akun = $db->table('guru')->getWhere(['id_akun' => $id_akun])->getResult();
+            if (count($cekmapel) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import ID Mapel ada yang sama');
+            } elseif (count($cekid_akun) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import ID Akun ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'id_mapel'      => $id_mapel,
+                    'id_akun'       => $id_akun,
+                    'nama_guru'     => $nama_guru,
+                    'alamat'        => $alamat,
+                    'no_telp'       => $no_telp,
+                ];
+
+                $db->table('guru')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/dataguru');
+    }
 
     // menampilkan data kelas
     public function datakelas()
     {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('jurusan');
+        $this->builder->join('kelas', 'kelas.id_jurusan = jurusan.id_jurusan');
+        $query = $this->builder->get();
         $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Operator',
-            'kelas' => $this->kelasmodel->getkelas(),
+            'kelas' => $query->getResultArray(),
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/data_kelas/index', $data);
     }
 
+
+    public function exportkelasxlxs()
+    {
+        $kelas = $this->kelasmodel->findAll();
+        $jurusan = $this->jurusan->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'NAMA KELAS')
+            ->setCellValue('B1', 'ID JURUSAN')
+            ->setCellValue('D1', 'ID JURUSAN TERDAFTAR')
+            ->setCellValue('E1', 'JURUSAN TERDAFTAR');
+
+        $column = 2;
+
+        foreach ($kelas as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['nama_kelas'])
+                ->setCellValue('B' . $column, $as['id_jurusan']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($jurusan as $jur) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('D' . $column, $jur['id_jurusan'])
+                ->setCellValue('E' . $column, $jur['jurusan']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Kelas';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
     public function uploadkelas()
     {
-        if ($this->request->getMethod() == "post") {
-            $file = $this->request->getFile("file");
-            $file_name = $file->getTempName();
-            $kls = array();
-            $csv_data = array_map('str_getcsv', file($file_name));
-            if (count($csv_data) > 0) {
-                $index = 0;
-                foreach ($csv_data as $data) {
-                    if ($index > 0) {
-                        $kls[] = array(
-                            "nama_kelas" => $data[1],
-                        );
-                    }
-                    $index++;
-                }
-                $builder = $this->db->table('kelas');
-                $builder->insertBatch($kls);
-                $session = session();
-                $session->setFlashdata("success", "data csv berhasil diupload");
-                return redirect()->to('/operator/datakelas');
-            }
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         }
-        return redirect()->to('/operator/datakelas');
-    }
-    public function uploadsiswa()
-    {
-        if ($this->request->getMethod() == "post") {
-            $file = $this->request->getFile("file");
-            $file_name = $file->getTempName();
-            $siswa = array();
-            $csv_data = array_map('str_getcsv', file($file_name));
-            if (count($csv_data) > 0) {
-                $index = 0;
-                foreach ($csv_data as $data) {
-                    if ($index > 0) {
-                        $siswa[] = array(
-                            "id_akun" => $data[1],
-                            "nis" => $data[2],
-                            "nama_lengkap" => $data[3],
-                            "alamat" => $data[4],
-                            "tgl_lahir" => $data[5],
-                            "tempat_lahir" => $data[6],
-                            "agama" => $data[7],
-                            "nama_orang_tua" => $data[8],
-                            "alamat_ortu" => $data[9],
-                            "no_telp_ortu" => $data[10],
-                            "jurusan" => $data[11],
-                            "jenis_kelamin" => $data[12],
-                        );
-                    }
-                    $index++;
-                }
-                $builder = $this->db->table('siswa');
-                $builder->insertBatch($siswa);
-                $session = session();
-                $session->setFlashdata("success", "data csv berhasil diupload");
-                return redirect()->to('/operator/datasiswa');
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $nama_kelas = $row[0];
+            $id_jurusan = $row[1];
+
+            $db = \Config\Database::connect();
+
+            $ceknama_kelas = $db->table('kelas')->getWhere(['nama_kelas' => $nama_kelas])->getResult();
+            if (count($ceknama_kelas) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import ID Mapel ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'nama_kelas'      => $nama_kelas,
+                    'id_jurusan'      => $id_jurusan,
+                ];
+
+                $db->table('kelas')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
             }
         }
         return redirect()->to('/operator/datakelas');
     }
 
+
     // tambah kelas
     public function tambahkelas()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data Kelas',
             'validation' => \Config\Services::validation(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'jurusan' => $this->jurusan->findAll()
         ];
         return view('operator/data_kelas/create', $data);
     }
@@ -686,6 +962,12 @@ class Operator extends BaseController
                     'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
                 ]
             ],
+            'jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                ]
+            ],
 
         ])) {
 
@@ -693,6 +975,7 @@ class Operator extends BaseController
         }
         $this->kelasmodel->save([
             'nama_kelas' => $this->request->getVar('nama_kelas'),
+            'id_jurusan' => $this->request->getVar('jurusan')
         ]);
 
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
@@ -703,11 +986,13 @@ class Operator extends BaseController
     // edit data kelas
     public function editdatakelas($id_kelas)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Edit Data Kelas',
             'validation' => \Config\Services::validation(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'kelas' => $this->kelasmodel->getkelas($id_kelas),
+            'jurusan' => $this->jurusan->findAll(),
         ];
         return view('operator/data_kelas/edit', $data);
     }
@@ -732,6 +1017,12 @@ class Operator extends BaseController
                     'is_unique' => 'Kelas Lengkap Sudah terdaftar.'
                 ]
             ],
+            'jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kelas Harus diisi.',
+                ]
+            ],
 
         ])) {
 
@@ -742,6 +1033,7 @@ class Operator extends BaseController
         $id_kelas = $this->request->getPost('id');
         $data = array(
             'nama_kelas' => $this->request->getVar('nama_kelas'),
+            'id_jurusan' => $this->request->getVar('jurusan'),
         );
         $model->updateKelas($data, $id_kelas);
 
@@ -763,7 +1055,7 @@ class Operator extends BaseController
     {
         $db      = \Config\Database::connect();
         $this->builder = $db->table('jurusan');
-        $this->builder->join('kelas', 'kelas.id_kelas=jurusan.id_kelas');
+        $this->builder->join('tahun_ajaran', 'tahun_ajaran.id_ajaran=jurusan.id_ajaran');
         $query = $this->builder->get();
         $user_id = user_id();
         $data = [
@@ -777,12 +1069,12 @@ class Operator extends BaseController
     // tambah jurusan
     public function tambahjurusan()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
-            'cek' => $this->operator->findAll(),
-            'jurusan' => $this->jurusan->getjurusan(),
-            'kelas' => $this->kelasmodel->getkelas(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'tahunajaran' => $this->tahunajaranmodel->findAll(),
         ];
         return view('operator/data_jurusan/create', $data);
     }
@@ -798,11 +1090,10 @@ class Operator extends BaseController
                     'is_unique' => 'Jurusan Sudah terdaftar.'
                 ]
             ],
-            'id_kelas' => [
-                'rules' => 'required|is_unique[jurusan.id_kelas]',
+            'tahun_ajaran' => [
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'id_kelas Harus diisi.',
-                    'is_unique' => 'id_kelas Sudah terdaftar.'
+                    'required' => 'Tahun Ajaran Harus diisi.'
                 ]
             ],
 
@@ -812,7 +1103,7 @@ class Operator extends BaseController
         }
         $this->jurusan->save([
             'jurusan' => $this->request->getVar('jurusan'),
-            'id_kelas' => $this->request->getVar('id_kelas'),
+            'id_ajaran' => $this->request->getVar('tahun_ajaran'),
 
         ]);
 
@@ -824,12 +1115,13 @@ class Operator extends BaseController
     // edit jurusan
     public function editjurusan($id_jurusan)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data jurusan',
             'validation' => \Config\Services::validation(),
             'jurusan' => $this->jurusan->getjurusan($id_jurusan),
-            'cek' => $this->operator->findAll(),
-            'kelas' => $this->kelasmodel->getkelas(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'tahunajaran' => $this->tahunajaranmodel->findAll(),
         ];
         return view('operator/data_jurusan/edit', $data);
     }
@@ -839,7 +1131,6 @@ class Operator extends BaseController
     {
         // ambil data yang lama
         $nama_jurusanlama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
-        $id_kelaslama = $this->jurusan->getjurusan(($this->request->getVar('id_jurusan')));
 
         //cek nama jurusan diganti atau engga
         if ($nama_jurusanlama['jurusan'] == $this->request->getVar('jurusan')) {
@@ -848,12 +1139,6 @@ class Operator extends BaseController
             $rule_jurusan = 'required|is_unique[jurusan.jurusan]';
         }
 
-        //cek id kelas diganti atau engga
-        if ($id_kelaslama['id_kelas'] == $this->request->getVar('id_kelas')) {
-            $rule_idkelas = 'required';
-        } else {
-            $rule_idkelas = 'required|is_unique[jurusan.id_kelas]';
-        }
         if (!$this->validate([
             'jurusan' => [
                 'rules' => $rule_jurusan,
@@ -862,11 +1147,10 @@ class Operator extends BaseController
                     'is_unique' => 'Jurusan Sudah terdaftar.'
                 ]
             ],
-            'id_kelas' => [
-                'rules' => $rule_idkelas,
+            'tahun_ajaran' => [
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'id_kelas Harus diisi.',
-                    'is_unique' => 'id_kelas  Sudah terdaftar.'
+                    'required' => 'Tahun Ajaran Harus diisi.',
                 ]
             ],
 
@@ -877,7 +1161,7 @@ class Operator extends BaseController
         $id_jurusan = $this->request->getPost('id_jurusan');
         $data = array(
             'jurusan' => $this->request->getPost('jurusan'),
-            'id_kelas' => $this->request->getPost('id_kelas')
+            'id_ajaran' => $this->request->getPost('tahun_ajaran')
         );
         $this->jurusan->updatejurusan($data, $id_jurusan);
 
@@ -894,7 +1178,85 @@ class Operator extends BaseController
         session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
         return redirect()->to('operator/data_jurusan/');
     }
-    // menampilkan data matapelajaran
+
+    public function exportjurusanxlxs()
+    {
+        $tahun_ajaran = $this->tahunajaranmodel->findAll();
+        $jurusan = $this->jurusan->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'JURUSAN')
+            ->setCellValue('B1', 'ID AJARAN')
+            ->setCellValue('D1', 'ID AJARAN TERDAFTAR')
+            ->setCellValue('E1', 'TAHUN AJARAN TERDAFTAR');
+
+        $column = 2;
+
+        foreach ($jurusan as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['jurusan'])
+                ->setCellValue('B' . $column, $as['id_ajaran']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($tahun_ajaran as $jar) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('D' . $column, $jar['id_ajaran'])
+                ->setCellValue('E' . $column, $jar['tahun_ajaran']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Jurusan';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadjurusan()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $jurusan = $row[0];
+            $id_ajaran = $row[1];
+
+            $db = \Config\Database::connect();
+
+            $cekjurusan = $db->table('jurusan')->getWhere(['jurusan' => $jurusan])->getResult();
+            if (count($cekjurusan) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Jurusan ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'jurusan'        => $jurusan,
+                    'id_ajaran'      => $id_ajaran,
+                ];
+
+                $db->table('jurusan')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/datajurusan');
+    }
 
     //MAPEL
 
@@ -913,13 +1275,92 @@ class Operator extends BaseController
         return view('operator/data_mapel/index', $data);
     }
 
+    public function exportmapelxlxs()
+    {
+        $mapel = $this->mapel->findAll();
+        $kelas = $this->kelasmodel->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'NAMA MAPEL')
+            ->setCellValue('B1', 'ID KELAS')
+            ->setCellValue('D1', 'ID KELAS TERDAFTAR')
+            ->setCellValue('E1', 'NAMA KELAS TERDAFTAR');
+
+        $column = 2;
+
+        foreach ($mapel as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['nama_mapel'])
+                ->setCellValue('B' . $column, $as['id_kelas']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($kelas as $jar) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('D' . $column, $jar['id_kelas'])
+                ->setCellValue('E' . $column, $jar['nama_kelas']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Kelas';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadmapel()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $nama_mapel = $row[0];
+            $id_kelas = $row[1];
+
+            $db = \Config\Database::connect();
+
+            $cekmapel = $db->table('mapel')->getWhere(['nama_mapel' => $nama_mapel])->getResult();
+            if (count($cekmapel) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Nama Mapel ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'nama_mapel'        => $nama_mapel,
+                    'id_kelas'          => $id_kelas
+                ];
+
+                $db->table('mapel')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/datamapel');
+    }
     // tambah mapel
     public function tambahmapel()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data Mapel',
             'validation' => \Config\Services::validation(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'mapel' => $this->mapel->getmapel(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
@@ -958,11 +1399,12 @@ class Operator extends BaseController
     }
     public function editmapel($id_mapel)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Edit Data Mapel',
             'validation' => \Config\Services::validation(),
             'mapel' => $this->mapel->getmapel($id_mapel),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'kelas' => $this->kelasmodel->getkelas(),
         ];
         return view('operator/data_mapel/edit', $data);
@@ -1022,25 +1464,85 @@ class Operator extends BaseController
     // data tahun ajaran
     public function datatahunajaran()
     {
-        $db      = \Config\Database::connect();
-        $this->builder = $db->table('tahun_ajaran');
-        $this->builder->join('jurusan', 'jurusan.id_jurusan=tahun_ajaran.id_jurusan');
-        $query = $this->builder->get();
         $user_id = user_id();
         $data = [
             'judul' => 'Akademik | Administrator',
-            'tahun_ajaran' => $query->getResultArray(),
+            'tahun_ajaran' => $this->tahunajaranmodel->findAll(),
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
         ];
         return view('operator/data_tahunajaran/index', $data);
     }
 
-    // tambah mapel
+    public function exportajaranxlxs()
+    {
+        $tahun = $this->tahunajaranmodel->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'TAHUN AJARAN');
+
+        $column = 2;
+
+        foreach ($tahun as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['tahun_ajaran']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-TahunAjaran';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadajaran()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $tahun = $row[0];
+
+            $db = \Config\Database::connect();
+
+            $cektahun = $db->table('tahun_ajaran')->getWhere(['tahun_ajaran' => $tahun])->getResult();
+            if (count($cektahun) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Tahun Ajaran ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'tahun_ajaran'        => $tahun,
+                ];
+
+                $db->table('tahun_ajaran')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/datatahunajaran');
+    }
+
+    // tambah
     public function tambahtahunajaran()
     {
+        $user_id = user_id();
         $data = [
-            'judul' => 'Form Tambah Data Mapel',
-            'cek' => $this->operator->findAll(),
+            'judul' => 'Form Tambah Data Tahun Ajaran',
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'validation' => \Config\Services::validation(),
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun(),
             'jurusan' => $this->jurusan->getjurusan(),
@@ -1061,10 +1563,11 @@ class Operator extends BaseController
     }
     public function edittahunajaran($id_ajaran)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data tahun AJaran',
             'validation' => \Config\Services::validation(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'tahun_ajaran' => $this->tahunajaranmodel->gettahun($id_ajaran),
             'jurusan' => $this->jurusan->getjurusan(),
         ];
@@ -1140,13 +1643,157 @@ class Operator extends BaseController
         return view('operator/masterdata/masterdata', $data);
     }
 
+    public function exportmasterxlxs()
+    {
+        $tahun = $this->tahunajaranmodel->findAll();
+        $siswa = $this->siswamodel->findAll();
+        $jurusan = $this->jurusan->findAll();
+        $guru = $this->gurumodel->findAll();
+        $kelas = $this->kelasmodel->findAll();
+        $master = $this->masterdata->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID AJARAN')
+            ->setCellValue('B1', 'ID SISWA')
+            ->setCellValue('C1', 'NAMA SISWA')
+            ->setCellValue('D1', 'ID KELAS')
+            ->setCellValue('E1', 'ID JURUSAN')
+            ->setCellValue('F1', 'ID GURU')
+            ->setCellValue('H1', 'ID AJARAN TERDAFTAR')
+            ->setCellValue('I1', 'TAHUN AJARAN TERDAFTAR')
+            ->setCellValue('K1', 'ID SISWA TERDAFTAR')
+            ->setCellValue('L1', 'NAMA SISWA TERDAFTAR')
+            ->setCellValue('N1', 'ID KELAS TERDAFTAR')
+            ->setCellValue('O1', 'NAMA KELAS TERDAFTAR')
+            ->setCellValue('Q1', 'ID JURUSAN TERDAFTAR')
+            ->setCellValue('R1', 'JURUSAN TERDAFTAR')
+            ->setCellValue('T1', 'ID GURU TERDAFTAR')
+            ->setCellValue('U1', 'NAMA GURU TERDAFTAR');
+
+
+        $column = 2;
+
+        foreach ($master as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $as['id_ajaran'])
+                ->setCellValue('B' . $column, $as['id_siswa'])
+                ->setCellValue('C' . $column, $as['nama_lengkap'])
+                ->setCellValue('D' . $column, $as['id_kelas'])
+                ->setCellValue('E' . $column, $as['id_jurusan'])
+                ->setCellValue('F' . $column, $as['id_guru']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($tahun as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('H' . $column, $as['id_ajaran'])
+                ->setCellValue('I' . $column, $as['tahun_ajaran']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($siswa as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('K' . $column, $as['id'])
+                ->setCellValue('L' . $column, $as['nama_lengkap']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($kelas as $jar) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('N' . $column, $jar['id_kelas'])
+                ->setCellValue('O' . $column, $jar['nama_kelas']);
+            $column++;
+        }
+        $column = 2;
+
+        foreach ($jurusan as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('Q' . $column, $as['id_jurusan'])
+                ->setCellValue('R' . $column, $as['jurusan']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($guru as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('T' . $column, $as['id_guru'])
+                ->setCellValue('U' . $column, $as['nama_guru']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Kelas';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadmaster()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $id_ajaran = $row[0];
+            $id_siswa = $row[1];
+            $namasiswa = $row[2];
+            $id_kelas = $row[3];
+            $id_jurusan = $row[4];
+            $id_guru = $row[5];
+
+            $db = \Config\Database::connect();
+
+            $ceksiswa = $db->table('masterdatapelajaran')->getWhere(['id_siswa' => $id_siswa])->getResult();
+            if (count($ceksiswa) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Siswa ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'id_ajaran'        => $id_ajaran,
+                    'id_siswa'        => $id_siswa,
+                    'nama_lengkap'        => $namasiswa,
+                    'id_kelas'          => $id_kelas,
+                    'id_jurusan'          => $id_jurusan,
+                    'id_guru'          => $id_guru,
+                ];
+
+                $db->table('masterdatapelajaran')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/masterdatapelajaran');
+    }
+
     //tambah masterdata
     public function tambahmasterdatapelajaran()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'Form Tambah Data MasterData Pelajaran',
             'guru' => $this->gurumodel->getguru(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->findAll(),
             'kelas' => $this->kelasmodel->getkelas(),
@@ -1166,7 +1813,7 @@ class Operator extends BaseController
                 ]
             ],
             'id' => [
-                'rules' => 'required|is_unique[masterdatapelajaran.id]',
+                'rules' => 'required|is_unique[masterdatapelajaran.id_siswa]',
                 'errors' => [
                     'required' => 'Nomor induk siswa harus di isi',
                     'is_unique' => 'Nis sudah didaftarkan'
@@ -1193,14 +1840,17 @@ class Operator extends BaseController
         ])) {
             return redirect()->to('/operator/tambahmasterdatapelajaran')->withInput();
         }
-        $this->masterdata->save([
+
+
+        $data = [
             'id_ajaran' => $this->request->getVar('tahun_ajaran'),
             'id_siswa' => $this->request->getVar('id'),
             'nama_lengkap' => $this->request->getVar('nama_lengkap'),
             'id_kelas' => $this->request->getVar('kelas'),
             'id_jurusan' => $this->request->getVar('jurusan'),
             'id_guru' => $this->request->getVar('nama_walikelas')
-        ]);
+        ];
+        $this->masterdata->insert($data);
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
 
         return redirect()->to('operator/masterdatapelajaran');
@@ -1208,11 +1858,12 @@ class Operator extends BaseController
 
     public function editmasterdatapelajaran($id_master)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Admin',
             'masterdata' => $this->masterdata->getmasterdata($id_master),
             'guru' => $this->gurumodel->getguru(),
-            'cek' => $this->operator->findAll(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'jurusan' => $this->jurusan->getjurusan(),
             'nis' => $this->siswamodel->getsiswa(),
             'kelas' => $this->kelasmodel->getkelas(),
@@ -1533,8 +2184,9 @@ class Operator extends BaseController
         return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
     }
 
-    public function datajadwal($user_id)
+    public function datajadwal()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
@@ -1543,34 +2195,236 @@ class Operator extends BaseController
         return view('operator/jadwal/index', $data);
     }
 
+    public function exportjadwalxlxs()
+    {
+        $mapel = $this->mapel->findAll();
+        $kelas = $this->kelasmodel->findAll();
+        $guru = $this->gurumodel->findAll();
+        $jadwal = $this->jadwal->findAll();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID KELAS')
+            ->setCellValue('B1', 'ID MAPEL')
+            ->setCellValue('C1', 'ID GURU')
+            ->setCellValue('D1', 'NAMA GURU')
+            ->setCellValue('E1', 'HARI')
+            ->setCellValue('F1', 'JAM MULAI')
+            ->setCellValue('G1', 'JAM SELESAI')
+            ->setCellValue('I1', 'ID KELAS TERDAFTAR')
+            ->setCellValue('J1', 'NAMA KELAS TERDAFTAR')
+            ->setCellValue('L1', 'ID MAPEL TERDAFTAR')
+            ->setCellValue('M1', 'MAPEL TERDAFTAR')
+            ->setCellValue('O1', 'ID GURU TERDAFTAR')
+            ->setCellValue('P1', 'NAMA GURU TERDAFTAR');
+
+
+        $column = 2;
+
+        foreach ($jadwal as $ska) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $ska['id_kelas'])
+                ->setCellValue('B' . $column, $ska['id_mapel'])
+                ->setCellValue('C' . $column, $ska['id_guru'])
+                ->setCellValue('D' . $column, $ska['nama_guru'])
+                ->setCellValue('E' . $column, $ska['hari'])
+                ->setCellValue('F' . $column, $ska['jam_mulai'])
+                ->setCellValue('G' . $column, $ska['jam_selesai']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($mapel as $as) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('L' . $column, $as['id_mapel'])
+                ->setCellValue('M' . $column, $as['nama_mapel']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($kelas as $jar) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('I' . $column, $jar['id_kelas'])
+                ->setCellValue('J' . $column, $jar['nama_kelas']);
+            $column++;
+        }
+
+        $column = 2;
+
+        foreach ($guru as $gur) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('O' . $column, $gur['id_guru'])
+                ->setCellValue('P' . $column, $gur['nama_guru']);
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Jadwal';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadjadwal()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $id_kelas = $row[0];
+            $id_mapel = $row[1];
+            $id_guru = $row[2];
+            $nama_guru = $row[3];
+            $hari = $row[4];
+            $jam_mulai = $row[5];
+            $jam_selesai = $row[6];
+
+            $db = \Config\Database::connect();
+
+            $cekmapel = $db->table('jadwal')->getWhere(['id_mapel' => $id_mapel])->getResult();
+            if (count($cekmapel) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Nama Mapel ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'id_kelas'          => $id_kelas,
+                    'id_mapel'        => $id_mapel,
+                    'id_guru'        => $id_guru,
+                    'nama_guru'        => $nama_guru,
+                    'hari'              => $hari,
+                    'jam_mulai'        => $jam_mulai,
+                    'jam_selesai'        => $jam_selesai,
+                ];
+
+                $db->table('jadwal')->insert($simpandata);
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/operator/datajadwal');
+    }
+
     public function tambahjadwal()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | Operator',
             'jurusan' => $this->jurusan->getjurusan(),
+            'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
             'jadwal' => $this->jadwal->find(),
             'kelas' => $this->kelasmodel->findAll(),
             'mapel' => $this->mapel->findAll()
         ];
         return view('operator/jadwal/add', $data);
     }
-    public function getdataprov()
+
+    public function getkelas()
     {
-        $searchTerm = $this->input->post('searchTerm');
-        $response   = $this->jadwal->getprov($searchTerm);
-        echo json_encode($response);
+        if ($this->request->isAJAX()) {
+            $id_kelas = $this->request->getVar('id_kelas');
+            // $db      = \Config\Database::connect();
+            // $this->builder = $db->table('mapel');
+            // $this->builder->select('');
+            // $this->builder->join('kelas', 'kelas.id_kelas = mapel.id_kelas');
+            // $this->builder->where('mapel.id_kelas', $id_kelas);
+            // $query = $this->builder->get();
+            // $user_id = user_id();
+            $data = $this->mapel->getkelas($id_kelas);
+            // foreach ($data as $row) {
+            //     $output = '<option value="' . $row->id_kelas . '">' . $row->nama_kelas . '</option>';
+            // }
+        }
+        // $this->output->set_content_type('application/json')->set_output(json_encode($output));
+        echo json_encode($data);
+        // dd($data);
     }
-    public function getdatakab($id_kelas)
+    public function getmapel()
     {
-        $searchTerm = $this->input->post('searchTerm');
-        $response   = $this->jadwal->getkab($id_kelas, $searchTerm);
-        echo json_encode($response);
+        if ($this->request->isAJAX()) {
+            $id_mapel = $this->request->getVar('id_mapel');
+            // $db      = \Config\Database::connect();
+            // $this->builder = $db->table('mapel');
+            // $this->builder->select('');
+            // $this->builder->join('kelas', 'kelas.id_kelas = mapel.id_kelas');
+            // $this->builder->where('mapel.id_kelas', $id_kelas);
+            // $query = $this->builder->get();
+            // $user_id = user_id();
+            $data = $this->gurumodel->getmapel($id_mapel);
+            // foreach ($data as $row) {
+            //     $output = '<option value="' . $row->id_kelas . '">' . $row->nama_kelas . '</option>';
+            // }
+        }
+        // $this->output->set_content_type('application/json')->set_output(json_encode($output));
+        echo json_encode($data);
+        // dd($data);
+    }
+    public function savejadwal()
+    {
+        //validasi
+        // if (!$this->validate([
+        //     'id' => [
+        //         'rules' => 'required|is_unique[masterdatapelajaran.id]',
+        //         'errors' => [
+        //             'required' => 'Nomor induk siswa harus di isi',
+        //             'is_unique' => 'Nis sudah didaftarkan'
+        //         ]
+        //     ],
+        //     'kelas' => [
+        //         'rules' => 'required',
+        //         'errors' => [
+        //             'required' => 'kelas Harus diisi.',
+        //         ]
+        //     ],
+        //     'jurusan' => [
+        //         'rules' => 'required',
+        //         'errors' => [
+        //             'required' => 'Jurusan Harus diisi.',
+        //         ]
+        //     ],
+        //     'nama_walikelas' => [
+        //         'rules' => 'required',
+        //         'errors' => [
+        //             'required' => 'Wali Kelas Harus diisi.',
+        //         ]
+        //     ],
+        // ])) {
+        //     return redirect()->to('/operator/tambahmasterdatapelajaran')->withInput();
+        // }
+        $this->jadwal->save([
+            'id_kelas' => $this->request->getVar('kelas'),
+            'id_mapel' => $this->request->getVar('mapel'),
+            'id_guru' => $this->request->getVar('id_guru'),
+            'nama_guru' => $this->request->getVar('nama_guru'),
+            'hari' => $this->request->getVar('jadwal'),
+            'jam_mulai' => $this->request->getVar('jam_mulai'),
+            'jam_selesai' => $this->request->getVar('jam_selesai')
+        ]);
+        session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
+
+        return redirect()->to('operator/datajadwal');
     }
 
-    function getkelas()
+    public function deletejadwal()
     {
-        $id_kelas = $this->input->post('id_kelas');
-        $data = $this->jadwal->mapel($id_kelas);
-        echo json_encode($data);
+        $model = new JadwalModel();
+        $id_jadwal = $this->request->getPost('id_jadwal');
+        $model->deletejadwal($id_jadwal);
+        session()->setFlashdata('Pesan', 'Data Berhasil Di Delete.');
+        return redirect()->to('/operator/datajadwal');
     }
 }

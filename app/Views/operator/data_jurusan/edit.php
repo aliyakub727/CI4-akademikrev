@@ -37,16 +37,20 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>ID Kelas</label>
-                                        <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
-                                            <option selected value="">Pilih id Kelas</option>
-                                            <?php foreach ($kelas as $ak) : ?>
-                                                <option selected hidden value="<?= (old('id_kelas')) ? old('id_kelas') : $ak['id_kelas'] ?>"><?= (old('nama_kelas')) ? old('nama_kelas') : $ak['nama_kelas'] ?></option>
-                                                <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
+                                        <label>Tahun Ajaran</label>
+                                        <select name="tahun_ajaran" id="tahun_ajaran" class="selectpicker form-control tahun_ajaran form-select <?= ($validation->hasError('tahun_ajaran')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                            <?php foreach ($tahunajaran as $tahunajaran) : ?>
+                                                <?php
+                                                if ($jurusan['id_ajaran'] == $tahunajaran['id_ajaran']) {
+                                                    $tahun1 = 'selected';
+                                                } else {
+                                                    $tahun1 = '';
+                                                } ?>
+                                                <option <?= $tahun1 ?> value="<?= $tahunajaran['id_ajaran']; ?>"><?= $tahunajaran['tahun_ajaran']; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">
-                                            <?= $validation->getError('id_kelas'); ?>
+                                            <?= $validation->getError('tahun_ajaran'); ?>
                                         </div>
                                     </div>
                                 </div>

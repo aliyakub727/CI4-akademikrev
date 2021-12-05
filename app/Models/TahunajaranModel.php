@@ -10,7 +10,7 @@ class TahunajaranModel extends Model
     protected $primaryKey = "id_ajaran";
 
     protected $useAutoIncrement = true;
-    protected $allowedFields = ['tahun_ajaran', 'id_jurusan'];
+    protected $allowedFields = ['tahun_ajaran'];
 
     public function gettahun($id_ajaran = false)
     {

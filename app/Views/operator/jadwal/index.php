@@ -27,7 +27,10 @@
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahjadwal">Tambah</a>
+                            <a href="<?= base_url() ?>/operator/exportjadwalxlxs" class="btn btn-primary">Export</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                            <br>
+                            <a class="btn btn-primary mb-4 mt-3" href="<?= base_url(); ?>/operator/tambahjadwal">Tambah</a>
 
                             <?php if (session()->getFlashdata('Pesan')) : ?>
                                 <div class="alert alert-success" role="alert">
@@ -60,8 +63,7 @@
                                                 <td><?= $k['jam_mulai']; ?></td>
                                                 <td><?= $k['jam_selesai']; ?></td>
                                                 <td>
-                                                    <a href="<?= base_url(); ?>/operator/editguru/<?= $k['id_jadwal']; ?>" style="color:#ffffff" class="btn btn-primary   fa fa-edit "></a>
-                                                    <a href="#" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jadwal="<?= $k['id_jadwal'] ?>"></a>
+                                                    <a style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jadwal="<?= $k['id_jadwal'] ?>"></a>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -72,26 +74,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Data Guru</h5>
-                                <button class="close" data-dismiss="modal">
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="form" action="<?= base_url(); ?>/Guru/updateguru" method="post">
-
-                                    <button class="btn btn-success" type="submit">Tambah</button>
-                                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form action="/operator/deleteguru" method="post">
+                <form action="/operator/deletejadwal" method="post">
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -107,7 +90,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="hidden" name="id_guru" class="id_guru">
+                                    <input type="hidden" name="id_jadwal" class="id_jadwal">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-primary">Yes</button>
                                 </div>
@@ -120,7 +103,30 @@
     </div>
 </div>
 <!-- End of Main Content -->
-
+<div class="modal fade" id="import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <form method="post" action="/operator/uploadjadwal" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Import Guru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label>File Excel</label>
+                            <input type="file" name="fileexcel" class="form-control" id="file" required accept=".xls, .xlsx" /></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -133,28 +139,11 @@
         dateFormat: "yy-mm-dd"
     });
     $(document).ready(function() {
-        $('.btn-edit').on('click', function() {
-            // get data from button edit
-            const id_guru = $(this).data('id_guru');
-            const id_mapel = $(this).data('id_mapel');
-            const nama_guru = $(this).data('nama_guru');
-            const alamat = $(this).data('alamat');
-            const no_telp = $(this).data('no_telp');
-            // Set data to Form Edit
-            $('.id_guru').val(id_guru);
-            $('.id_mapel').val(id_mapel);
-            $('.nama_guru').val(nama_guru);
-            $('.alamat').val(alamat);
-            $('.no_telp').val(no_telp);
-
-            // Call Modal Edit
-            $('#editModal').modal('show');
-        });
         $('.btn-delete').on('click', function() {
             // get data from button edit
-            const id_guru = $(this).data('id_guru');
+            const id_jadwal = $(this).data('id_jadwal');
             // Set data to Form Edit
-            $('.id_guru').val(id_guru);
+            $('.id_jadwal').val(id_jadwal);
             // Call Modal Edit
             $('#deleteModal').modal('show');
         });

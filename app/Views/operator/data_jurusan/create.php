@@ -32,15 +32,15 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>ID Kelas</label>
-                                        <select name="id_kelas" id="id_kelas" class="selectpicker form-control form-select <?= ($validation->hasError('id_kelas')) ? 'is-invalid' : ''; ?>" data-live-search="true">
-                                            <option selected value="">Pilih id Kelas</option>
-                                            <?php foreach ($kelas as $ak) : ?>
-                                                <option value="<?= $ak['id_kelas']; ?>"><?= $ak['nama_kelas']; ?></option>
+                                        <label>Tahun Ajaran</label>
+                                        <select name="tahun_ajaran" id="tahun_ajaran" class="tahun_ajaran selectpicker form-control form-select <?= ($validation->hasError('tahun_ajaran')) ? 'is-invalid' : ''; ?>" data-live-search="true">
+                                            <option selected value="">Pilih Tahun ajaran</option>
+                                            <?php foreach ($tahunajaran as $tahunajaran) : ?>
+                                                <option value="<?= $tahunajaran['id_ajaran']; ?>"><?= $tahunajaran['tahun_ajaran']; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                         <div class="invalid-feedback">
-                                            <?= $validation->getError('id_kelas'); ?>
+                                            <?= $validation->getError('tahun_ajaran'); ?>
                                         </div>
                                     </div>
                                 </div>

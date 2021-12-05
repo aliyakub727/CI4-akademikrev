@@ -24,24 +24,64 @@
                             Data Mapel
                         </div>
                         <div class="card-body">
-                            <form id="form" action="<?= base_url(); ?>/operator/savetahunajaran" method="post">
+                            <form id="form" action="<?= base_url(); ?>/operator/savejadwal" method="post">
                                 <?= csrf_field(); ?>
-                                <div class="form-group">
-                                    <label>Tahun Ajaran</label>
-                                    <input type="text" class="form-control" name="tahun_ajaran" id="tahun_ajaran" required>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Kelas</label>
+                                            <select name="kelas" id="kelas" class="select-picker form-control  form-select " data-live-search="true">
+                                                <option selected value="">---</option>
+                                                <?php foreach ($kelas as $kelas) : ?>
+                                                    <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Nama Guru</label>
+                                            <input type="hidden" name="id_guru" id="id_guru">
+                                            <input type="text" readonly class="form-control" name="nama_guru" id="nama_guru">
+                                        </div>
+                                    </div>
                                 </div>
-                                <label>Kelas</label>
-                                <select name="kelas" id="kelas" class="selectpicker form-control select2 form-select " data-live-search="true">
-                                    <option selected value="">---</option>
-                                    <?php foreach ($kelas as $kelas) : ?>
-                                        <option value="<?= $kelas['id_kelas']; ?>"><?= $kelas['nama_kelas']; ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <label>Mapel</label>
-                                <select name="mapel" id="mapel" class="selectpicker form-control form-select " data-live-search="true">
-
-
-                                </select>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Mapel</label>
+                                            <select name="mapel" id="mapel" class="select-picker form-control form-select " data-live-search="true">
+                                                <option selected value="">---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <label>Hari</label>
+                                            <select name="jadwal" id="jadwal" class="select-picker form-control form-select " data-live-search="true">
+                                                <option selected value="">---</option>
+                                                <option value="senin">Senin</option>
+                                                <option value="selasa">Selasa</option>
+                                                <option value="rabu">Rabu</option>
+                                                <option value="kamis">Kamis</option>
+                                                <option value="jumat">Jumat</option>
+                                                <option value="Sabtu">Sabtu</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <label>Jam Mulai</label>
+                                            <input type="text" class="form-control" name="jam_mulai" id="jam_mulai">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <label>Jam Selesai</label>
+                                            <input type="text" class="form-control" name="jam_selesai" id="jam_selesai">
+                                        </div>
+                                    </div>
+                                </div>
                                 <button class="btn btn-success" type="submit">Tambah</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Close</button>
                             </form>
@@ -58,57 +98,57 @@
 
 
 <script>
-    $("#kelas").change(function() {
+    $(document).ready(function() {
+        $("#kelas").change(function() {
 
-        // variabel dari nilai combo box kelas
-        var id_kelas = $("#kelas").val();
+            // variabel dari nilai combo box kelas
+            var id_kelas = $(this).val();
 
-        // Menggunakan ajax untuk mengirim dan dan menerima data dari server
-        $.ajax({
-            url: "<?php echo base_url(); ?>/Operator/getkelas",
-            method: "POST",
-            data: {
-                id_kelas: id_kelas
-            },
-            async: false,
-            dataType: 'json',
-            success: function(data) {
-                var html = '';
-                var i;
+            // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url('Operator/getkelas'); ?>",
+                data: {
+                    id_kelas: id_kelas
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    // $('#mapel').html(data);
+                    var html = '<option value="">---</option>';
+                    var i;
 
-                for (i = 0; i < data.length; i++) {
-                    html += '<option value=' + data[i].id_mapel + '>' + data[i].nama_mapel + '</option>';
+                    for (i = 0; i < data.length; i++) {
+                        html += '<option value=' + data[i].id_mapel + '>' + data[i].nama_mapel + '</option>';
+                    }
+                    $('#mapel').html(html);
                 }
-                $('#mapel').html(html);
-
-            }
+            });
         });
-    });
+        $("#mapel").change(function() {
 
-    $("#merk").change(function() {
+            // variabel dari nilai combo box kelas
+            var id_mapel = $(this).val();
 
-        // variabel dari nilai combo box kendaraan
-        var id_merk = $("#merk").val();
+            // Menggunakan ajax untuk mengirim dan dan menerima data dari server
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url('Operator/getmapel'); ?>",
+                data: {
+                    id_mapel: id_mapel
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    // $('#mapel').html(data);
+                    // var html = data.id_mapel;
 
-        // Menggunakan ajax untuk mengirim dan dan menerima data dari server
-        $.ajax({
-            url: "<?php echo base_url(); ?>/kendaraan/get_tipe",
-            method: "POST",
-            data: {
-                id_merk: id_merk
-            },
-            async: false,
-            dataType: 'json',
-            success: function(data) {
-                var html = '';
-                var i;
-
-                for (i = 0; i < data.length; i++) {
-                    html += '<option value=' + data[i].id_tipe_kendaraan + '>' + data[i].tipe_kendaraan + '</option>';
+                    $('#nama_guru').val(data['nama_guru']);
+                    $('#id_guru').val(data['id_guru']);
                 }
-                $('#tipe').html(html);
-
-            }
+            });
         });
     });
 </script>

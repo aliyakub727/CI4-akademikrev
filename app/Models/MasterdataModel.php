@@ -40,6 +40,12 @@ class MasterdataModel extends Model
             ->get()->getResultArray();
     }
 
+    public function save_data($data)
+    {
+        $query = $this->db->table('masterdatapelajaran')->insert($data);
+        return $query;
+    }
+
     public function update_data($data, $id_master)
     {
         $query = $this->db->table('masterdatapelajaran')->update($data, array('id_master' => $id_master));

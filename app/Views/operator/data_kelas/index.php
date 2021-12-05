@@ -24,11 +24,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <form method="post" action="<?php echo site_url('Operator/uploadkelas') ?>" enctype="multipart/form-data">
-                                    <p>Cari file .csv - <input type="file" name="file" required /></p>
-                                    <p><button type="submit" class="btn btn-sm btn-success">Upload</button></p>
-                                </form>
-                                <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahkelas">Tambah
+                                <a href="<?= base_url() ?>/operator/exportkelasxlxs" class="btn btn-primary">Export</a>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                                <br><a class="btn btn-primary mb-4 mt-3" href="<?= base_url(); ?>/operator/tambahkelas">Tambah
                                     Kelas</a>
                                 <?php if (session()->getFlashdata('Pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
@@ -40,6 +38,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Kelas</th>
+                                            <th scope="col">Jurusan</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -49,6 +48,7 @@
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
                                                 <td><?= $k['nama_kelas']; ?></td>
+                                                <td><?= $k['jurusan']; ?></td>
                                                 <td>
 
                                                     <a href="<?= base_url(); ?>/operator/editdatakelas/<?= $k['id_kelas']; ?>" class="btn btn-info btn-sm">Edit</a>
@@ -60,6 +60,31 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="modal fade" id="import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <form method="post" action="/operator/uploadkelas" enctype="multipart/form-data">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Import Kelas</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label>File Excel</label>
+                                                <input type="file" name="fileexcel" class="form-control" id="file" required accept=".xls, .xlsx" /></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Import</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                     <form action="/operator/deletekelas" method="post">

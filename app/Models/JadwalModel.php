@@ -8,7 +8,7 @@ class JadwalModel extends Model
 {
     protected $table = "jadwal";
     protected $primaryKey = "id_jadwal";
-    protected $allowedFields = ['id_mapel', 'id_guru', 'nama_mapel', 'hari', 'jam_mulai', 'jam_selesai'];
+    protected $allowedFields = ['id_kelas', 'id_mapel', 'id_guru', 'nama_guru', 'hari', 'jam_mulai', 'jam_selesai'];
 
     public function getjadwal($id_jadwal = false)
     {
@@ -47,7 +47,7 @@ class JadwalModel extends Model
     {
         return $this->db->table('mapel')
             ->db->where('id_kelas', $id_kelas)
-            ->db->get()->result();
+            ->db->get()->result_array();
     }
 
     public function joinjadwal()
@@ -88,5 +88,11 @@ class JadwalModel extends Model
             $data[] = array("id" => $kab['id_mapel'], "text" => $kab['nama_mapel']);
         }
         return $data;
+    }
+
+    public function deletejadwal($id_jadwal)
+    {
+        $query = $this->db->table('jadwal')->delete(array('id_jadwal' => $id_jadwal));
+        return $query;
     }
 }

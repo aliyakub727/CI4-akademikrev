@@ -25,7 +25,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahjurusan">Tambah Jurusan</a>
+                                <a href="<?= base_url() ?>/operator/exportjurusanxlxs" class="btn btn-primary">Export</a>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                                <br> <a class="btn btn-primary mb-4 mt-3" href="<?= base_url(); ?>/operator/tambahjurusan">Tambah Jurusan</a>
                                 <?php if (session()->getFlashdata('Pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('Pesan'); ?>
@@ -36,7 +38,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Jurusan</th>
-                                            <th scope="col">Nama Kelas</th>
+                                            <th scope="col">Tahun Ajaran</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,7 +48,7 @@
                                             <tr>
                                                 <th scope="row"><?= $i++; ?></th>
                                                 <td><?= $k['jurusan']; ?></td>
-                                                <td><?= $k['nama_kelas']; ?></td>
+                                                <td><?= $k['tahun_ajaran']; ?></td>
                                                 <td>
                                                     <a href="<?= base_url(); ?>/operator/editjurusan/<?= $k['id_jurusan']; ?>" style="color:#ffffff" class="btn btn-primary  fa fa-edit "></a>
                                                     <a href=" #" style="color:#ffffff;padding-top:6px;size: 2px" class="btn btn-danger btn-delete fa fa-trash " data-id_jurusan="<?= $k['id_jurusan'] ?>"></a>
@@ -89,7 +91,30 @@
     </div>
 </div>
 <!-- End of Main Content -->
-
+<div class="modal fade" id="import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <form method="post" action="/operator/uploadjurusan" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Import Jurusan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label>File Excel</label>
+                            <input type="file" name="fileexcel" class="form-control" id="file" required accept=".xls, .xlsx" /></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

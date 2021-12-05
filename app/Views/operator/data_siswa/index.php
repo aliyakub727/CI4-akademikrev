@@ -30,7 +30,10 @@ font-family: 'Holtwood One SC', serif; ">Data Siswa</h1>
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/operator/tambahsiswa">Tambah Siswa</a>
+                            <a href="<?= base_url() ?>/operator/exportsiswaxlxs" class="btn btn-primary">Export</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+
+                            <br><a class="btn btn-primary mb-4 mt-5" href="<?= base_url(); ?>/operator/tambahsiswa">Tambah Siswa</a>
                             <?php if (session()->getFlashdata('Pesan')) : ?>
                                 <div class="alert alert-success" role="alert">
                                     <?= session()->getFlashdata('Pesan'); ?>
@@ -97,6 +100,32 @@ font-family: 'Holtwood One SC', serif; ">Data Siswa</h1>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form method="post" action="/operator/uploadsiswa" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Import Siswa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label>File Excel</label>
+                                <input type="file" name="fileexcel" class="form-control" id="file" required accept=".xls, .xlsx" /></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <!-- End of Main Content -->
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -266,6 +266,7 @@ class Siswa extends BaseController
         $this->builder->join('jadwal', 'jadwal.id_mapel=mapel.id_mapel');
         $this->builder->where('kelas.id_kelas', $id_kelas);
         $query = $this->builder->get();
+
         $user_id = user_id();
 
         $ac      = \Config\Database::connect();

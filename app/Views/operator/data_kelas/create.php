@@ -31,6 +31,18 @@
                                         <?= $validation->getError('nama_kelas'); ?>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label>Jurusan</label>
+                                    <select class="selectpicker jurusan form-control <?= ($validation->hasError('jurusan')) ? 'is-invalid' : ''; ?>" data-live-search="true" name="jurusan" id="jurusan">
+                                        <option value="" selected>Pilih jurusan</option>
+                                        <?php foreach ($jurusan as $jur) : ?>
+                                            <option value="<?= $jur['id_jurusan']; ?>"><?= $jur['jurusan']; ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('jurusan'); ?>
+                                    </div>
+                                </div>
                                 <button class="btn btn-success" type="submit">Tambah</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Close</button>
                             </div>

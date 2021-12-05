@@ -8,7 +8,7 @@ class KelasModel extends Model
 {
     protected $primaryKey = "id_kelas";
     protected $table = "kelas";
-    protected $allowedFields = ['nama_kelas'];
+    protected $allowedFields = ['nama_kelas', 'id_jurusan'];
 
     public function getkelas($id_kelas = false)
     {
