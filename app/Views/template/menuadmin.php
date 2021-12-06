@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <?php if (empty($admin)) { ?>
+                <?php if (empty($cekadmin)) { ?>
                     <a class="nav-link" href="<?= base_url(); ?>/Admin/lengkapi/<?= user_id(); ?>">
                         <i class="fas fa-user"></i>
                         <span>My Profile</span>

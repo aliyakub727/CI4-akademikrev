@@ -10,6 +10,12 @@ use App\Models\LandingPageModel;
 use App\Models\SliderModel;
 use App\Models\AboutModel;
 use App\Models\AdminModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use Myth\Auth\Config\Auth as AuthConfig;
+use Myth\Auth\Entities\User;
 
 class Admin extends BaseController
 {
@@ -41,7 +47,7 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN|ADMIN',
             'admin' => $this->admin->getadmin(),
-            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('index', $data);
     }
@@ -57,13 +63,14 @@ class Admin extends BaseController
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
             'users' => $query->getResultArray(),
-            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/listdata', $data);
     }
 
     public function editakun($id)
     {
+        $user_id = user_id();
         $this->builder->select('users.id as userid, username, email, user_image, name, description, password_hash');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
@@ -72,13 +79,15 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
-            'users' => $query->getRow()
+            'users' => $query->getRow(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/editakun', $data);
     }
 
     public function detail($id)
     {
+        $user_id = user_id();
         $this->builder->select('users.id as userid, username, email, fullname, user_image, name, description, password_hash');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
@@ -87,19 +96,129 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
-            'users' => $query->getRow()
+            'users' => $query->getRow(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/detailakun', $data);
     }
+
+    public function exportusersxlxs()
+    {
+        $db      = \Config\Database::connect();
+        $this->builder = $db->table('auth_groups');
+        $query = $this->builder->get();
+
+        $users = $query->getResultArray();
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'EMAIL')
+            ->setCellValue('B1', 'USERNAME')
+            ->setCellValue('C1', 'PASSWORD')
+            ->setCellValue('D1', 'ROLE')
+            ->setCellValue('F1', 'ROLE TERDAFTAR')
+            ->setCellValue('G1', 'DESCRIPTION ROLE');
+
+        $column = 2;
+
+        foreach ($users as $ska) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('F' . $column, $ska['name'])
+                ->setCellValue('G' . $column, $ska['description']);
+            $column++;
+        }
+
+
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-Users';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function uploadusers()
+    {
+        $file_excel = $this->request->getFile('fileexcel');
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            $render = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        $spreadsheet = $render->load($file_excel);
+
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        foreach ($data as $x => $row) {
+            if ($x == 0) {
+                continue;
+            }
+
+            $email = $row[0];
+            $username = $row[1];
+            $password = $row[2];
+            // $role = $row[3];
+
+            $db = \Config\Database::connect();
+
+            $cekusername = $db->table('users')->getWhere(['username' => $username])->getResult();
+            if (count($cekusername) > 0) {
+                session()->setFlashdata('pesan', 'Data Gagal di Import Username ada yang sama');
+            } else {
+
+                $simpandata = [
+                    'email'          => $email,
+                    'username'        => $username,
+                    'password'        => $password,
+
+                ];
+                // $kesatian = [
+                //     'kesaktian'        => $role,
+                // ];
+
+                // $db->table('jadwal')->insert($simpandata);
+                // $this->usermodel->save($simpandata);
+                // route_to('register', $simpandata);
+                // $this->usermodel->withGroup('admin')->insert($simpandata);
+                // $rules = [
+                //     'username' => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
+                //     'email'    => 'required|valid_email|is_unique[users.email]',
+                // ];
+
+                // if (!$this->validate($rules)) {
+                //     return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+                // }
+
+                // // Validate passwords since they can only be validated properly here
+                // $rules = [
+                //     'password'     => 'required|strong_password',
+                //     'pass_confirm' => 'required|matches[password]',
+                // ];
+
+                // if (!$this->validate($rules)) {
+                //     return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+                // }
+                $this->usermodel->withGroup('admin')->insert($simpandata);
+                // $allowedPostFields = array_merge(['password']);
+                // $user = new User($this->request->getPost($allowedPostFields));
+                session()->setFlashdata('pesan', 'Berhasil import excel');
+            }
+        }
+        return redirect()->to('/admin/dataakun');
+    }
+
     public function buatakun()
     {
-
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'users' => $this->innerjoin->getguru(),
             'admin' => $this->admin->getadmin(),
-            'guru' => $this->gurumodel->getguru()
-
+            'guru' => $this->gurumodel->getguru(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/createakun', $data);
     }
@@ -122,11 +241,13 @@ class Admin extends BaseController
 
     public function updateakun()
     {
+        $user_id = user_id();
         $id = $this->request->getPost('id');
         $data = [
             'password' => $this->request->getPost('password_hash'),
             'username' => $this->request->getPost('username'),
             'email'    => $this->request->getPost('email'),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         $this->uss->update($id, $data);
         return redirect()->to('/admin/dataakun');
@@ -137,17 +258,19 @@ class Admin extends BaseController
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'landing_page' =>  $this->pagemodel->getPage(),
-            'admin' => $this->admin->where('id_akun', $user_id)->findAll(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
         return view('admin/landing_page', $data);
     }
 
     public function ubahpage($id = null)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
             'landing_page' => $this->pagemodel->where('id', $id)->first(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
 
         return view('admin/edit_page', $data);
@@ -193,10 +316,12 @@ class Admin extends BaseController
 
     public function ubahslider($id_slider)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
             'slider' => $this->sliderku->where('id_slider', $id_slider)->first(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
 
         return view('admin/edit_slider', $data);
@@ -441,10 +566,12 @@ class Admin extends BaseController
 
     public function ubahfasilitas($id)
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
             'fasilitas' => $this->about->where('id', $id)->first(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
 
         return view('admin/edit_fasilitas', $data);
@@ -480,9 +607,11 @@ class Admin extends BaseController
 
     public function tambahfasilitas()
     {
+        $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN | ADMIN',
             'admin' => $this->admin->getadmin(),
+            'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
         ];
 
         return view('admin/tambahfasilitas', $data);

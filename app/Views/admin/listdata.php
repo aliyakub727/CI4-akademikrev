@@ -21,6 +21,9 @@
                 <!-- Content Row -->
                 <div class="row">
                     <div class="col">
+                        <a href="<?= base_url() ?>/admin/exportusersxlxs" class="btn btn-primary">Export</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                        <br>
                         <a class="btn btn-primary mb-4" href="<?= base_url(); ?>/admin/buatakun">Tambah Akun</a>
                         <?php if (session()->getFlashdata('Pesan')) : ?>
                             <div class="alert alert-success" role="alert">
@@ -86,6 +89,32 @@
         </div>
     </div>
 </form>
+
+
+<div class="modal fade" id="import" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <form method="post" action="/admin/uploadusers" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Import Users</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label>File Excel</label>
+                            <input type="file" name="fileexcel" class="form-control" id="file" required accept=".xls, .xlsx" /></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
