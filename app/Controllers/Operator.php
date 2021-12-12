@@ -12,6 +12,8 @@ use App\Models\KelasModel;
 use App\Models\MasterdataModel;
 use App\Models\OperatorModel;
 use App\Models\JadwalModel;
+use App\Models\RaportModel;
+use App\Models\RaportDetailModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -30,6 +32,8 @@ class Operator extends BaseController
     protected $jurusan;
     protected $operator;
     protected $jadwal;
+          protected $raport;
+    protected $raportdetail;
 
     public function __construct()
     {
@@ -44,6 +48,8 @@ class Operator extends BaseController
         $this->tahunajaranmodel = new TahunajaranModel();
         $this->kelasmodel = new KelasModel();
         $this->operator = new OperatorModel();
+         $this->raport = new RaportModel();
+        $this->raportdetail = new RaportDetailModel();
     }
 
     public function index()
@@ -199,7 +205,23 @@ class Operator extends BaseController
             'jurusan' => $this->request->getVar('jurusan')
 
         ]);
-
+         $SiswaID = $this->siswamodel->insertID();
+        $dataJurusan = $this->jurusan->where('jurusan',$this->request->getVar('jurusan'))->first();
+        $this->raport->save([
+            'id_siswa' => $SiswaID,
+            'id_ajaran' => 3,
+            'id_jurusan' => $dataJurusan['id_jurusan'],
+            'id_kelas' =>  3,
+        ]);
+        $raportID = $this->raport->insertID();
+        $dataMapel = $this->mapel->findAll();
+        foreach ($dataMapel as $k) {
+             $this->raportdetail->save([
+                'id_raport' => $raportID,
+                'id_mapel' =>  $k['id_mapel'],
+                'id_nilai' => 0,
+             ]);
+        }
         session()->setFlashdata('Pesan', 'Data Berhasil Ditambahkan.');
         return redirect()->to('operator/datasiswa/');
     }
@@ -2183,7 +2205,7 @@ class Operator extends BaseController
 
         return redirect()->to('/operator/profile/' . $this->request->getVar('id'));
     }
-
+ 
     public function datajadwal()
     {
         $user_id = user_id();
