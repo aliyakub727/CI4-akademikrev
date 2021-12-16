@@ -22,6 +22,18 @@ class SiswaModel extends Model
         return $this->where(['id_akun' => $id])->first();
     }
 
+    // function Jum_mahasiswa_perjurusan()
+    // {
+    //     $db      = \Config\Database::connect();
+    //     $this->builder = $db->table('users')
+    //     $this->builder->group_by('jurusan')
+    //     $this->builder->select('jurusan')
+    //     $this->builder->select("count(*) as total")
+    //     return $this->builder->from('mahasiswa')
+    //         ->get()
+    //         ->result();
+    // }
+
     public function updateSiswa($data, $id)
     {
         $query = $this->db->table('siswa')->update($data, array('id' => $id));

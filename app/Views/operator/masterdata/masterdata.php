@@ -11,17 +11,23 @@
             <div class="card">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-left: 20px;margin-top: 20px">
-                    <h1 class="h3 mb-0 text-gray-800">Masterdata Pelajaran</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Set Kelas</h1>
                 </div>
                 <hr>
                 <div class="container mb-5">
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col">
-                            <a href="<?= base_url() ?>/operator/exportmasterxlxs" class="btn btn-primary">Export</a>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <a class="btn btn-primary" href="/operator/tambahmasterdatapelajaran">Set Kelas</a>
+                                </div>
+                                <div class="col" style="text-align: end;">
+                                    <a href="<?= base_url() ?>/operator/exportmasterxlxs" class="btn btn-primary">Export</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                                </div>
+                            </div>
                             <br>
-                            <a class="btn btn-primary mb-4 mt-3" href="/operator/tambahmasterdatapelajaran">Tambah Siswa</a>
                             <?php if (session()->getFlashdata('Pesan')) : ?>
                                 <div class="alert alert-success" role="alert">
                                     <?= session()->getFlashdata('Pesan'); ?>
@@ -119,14 +125,26 @@
 </div>
 <!-- End of Main Content -->
 
-</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 <script>
-    $('#users-list').DataTable();
+    $('#users-list').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
     $('.nis').selectpicker('click', function() {
         const nama = $(this).data('nama');
         $('#nama_lengkap').val(nama);

@@ -24,10 +24,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <a href="<?= base_url() ?>/operator/exportkelasxlxs" class="btn btn-primary">Export</a>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
-                                <br><a class="btn btn-primary mb-4 mt-3" href="<?= base_url(); ?>/operator/tambahkelas">Tambah
-                                    Kelas</a>
+                                <div class="row mb-4">
+                                    <a class="btn btn-primary" href="<?= base_url(); ?>/operator/tambahkelas">Tambah Kelas</a>
+                                </div>
+                                <div class="col" style="text-align: end;">
+                                    <a href="<?= base_url() ?>/operator/exportkelasxlxs" class="btn btn-primary">Export</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                                </div>
+
                                 <?php if (session()->getFlashdata('Pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('Pesan'); ?>

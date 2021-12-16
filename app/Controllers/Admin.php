@@ -43,13 +43,27 @@ class Admin extends BaseController
 
     public function index()
     {
+        $siswa = 'siswa';
+        $db = \config\Database::connect();
+        $this->builder = $this->db->table('users');
+        $this->builder->select('users.id as userid, username, email, name');
+        $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
+        $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        // $this->builder->where('name', $siswa);
+        $this->builder->countAllResults('name', $siswa);
+        // $this->builder->group_by('name');
+        // $this->builder->select("count(*) as name");
+        $asw = $this->builder->get();
+
         $user_id = user_id();
         $data = [
             'judul' => 'SUZURAN|ADMIN',
             'admin' => $this->admin->getadmin(),
             'cekadmin' => $this->admin->where('id_akun', $user_id)->findAll(),
+            'jumlahsiswa' => $this->usermodel->countAllResults(),
+            // 'jumlahsiswa' => $asw->getFieldCount(),
         ];
-        return view('index', $data);
+        return view('admin/index', $data);
     }
 
     public function dataakun()

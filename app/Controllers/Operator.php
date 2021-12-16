@@ -53,8 +53,11 @@ class Operator extends BaseController
             'cek' => $this->operator->findAll(),
             'judul' => 'SUZURAN | OPERATOR',
             'cek' => $this->operator->where('id_akun', $user_id)->findAll(),
+            'jumlahsiswa' => $this->siswamodel->countAllResults(),
+            'jumlahguru'  => $this->gurumodel->countAllResults(),
+            'jumlahkelas'  => $this->kelasmodel->countAllResults(),
         ];
-        return view('index', $data);
+        return view('operator/index', $data);
     }
 
     //munculin data siswa

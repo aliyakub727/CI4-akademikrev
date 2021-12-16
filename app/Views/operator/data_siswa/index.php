@@ -30,10 +30,16 @@ font-family: 'Holtwood One SC', serif; ">Data Siswa</h1>
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col">
-                            <a href="<?= base_url() ?>/operator/exportsiswaxlxs" class="btn btn-primary">Export</a>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <a class="btn btn-primary" href="<?= base_url(); ?>/operator/tambahsiswa">Tambah Siswa</a>
+                                </div>
+                                <div class="col" style="text-align: end;">
+                                    <a href="<?= base_url() ?>/operator/exportsiswaxlxs" class="btn btn-primary">Export</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#import">Import</button>
+                                </div>
+                            </div>
 
-                            <br><a class="btn btn-primary mb-4 mt-5" href="<?= base_url(); ?>/operator/tambahsiswa">Tambah Siswa</a>
                             <?php if (session()->getFlashdata('Pesan')) : ?>
                                 <div class="alert alert-success" role="alert">
                                     <?= session()->getFlashdata('Pesan'); ?>
