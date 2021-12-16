@@ -105,7 +105,7 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>/Guru/tambahnilai/<?= user_id(); ?>">
+                <a class="nav-link" href="<?= base_url(); ?>/NilaiController">
                     <i class="fas fa-plus-circle"></i>
                     <span>Input Nilai</span>
                 </a>
@@ -281,8 +281,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">laporan-laporan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Nilai</a>
-                        <a class="collapse-item" href="<?= base_url(); ?>/home/error">Absensi</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/Guru/laporannilai">Nilai</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/NilaiController/absen">Absensi</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>/NilaiController">Tambah Nilai</a>
                     </div>
                 </div>
             </li>
